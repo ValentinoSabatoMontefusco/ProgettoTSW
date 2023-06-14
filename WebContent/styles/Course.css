@@ -1,0 +1,40 @@
+@charset "ISO-8859-1";
+
+.main_section > h1 {
+	
+	text-align: center;
+	font-family: serif;
+	font-size: 3em;
+	
+}
+
+.main_section > p {
+	
+	margin: 5px;
+	font-size: 1em;
+	font-family: sans-serif;
+}
+
+.lesson > h1 {
+	
+	font-weight: bold;
+	font-size: 1.5em;
+	margin-left: 18%;
+	
+}
+
+.lesson > p {
+	
+	margin: 0em 18%;
+	padding: 1em;
+	background-color: #c28832;
+	color: orange;
+	font-weight: 500;
+}
+
+img#course_logo {
+	
+	max-width: 20%;
+	height: auto;
+	float: right;
+}
