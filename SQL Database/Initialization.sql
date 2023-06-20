@@ -65,15 +65,24 @@ CREATE TABLE orders (
 );
 
 -- create table to keep track of the multivalue attribute "Products" that would relate to orders
-CREATE TABLE order_Products (
+CREATE TABLE order_products (
 	order_id INT NOT NULL,
     product_id INT NOT NULL,
     product_name VARCHAR(50),
+    product_type VARCHAR(15) CHECK (product_type in ("Course", "Merchandise")),
     product_price DECIMAL(10,2),
     quantity int NOT NULL default 1,
     PRIMARY KEY (order_id, product_id),
     FOREIGN KEY (order_id) REFERENCES orders(id),
     FOREIGN KEY (product_id) REFERENCES products(id)
+);
+
+CREATE TABLE user_products_owned (
+	user_username VARCHAR(20) NOT NULL,
+    product_id INT NOT NULL,
+    PRIMARY KEY (user_username, product_id),
+    FOREIGN KEY (user_username) REFERENCES users(username) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 );
 
 -- create table for user lessons
@@ -116,6 +125,25 @@ BEGIN
 	IF NEW.quantity <= 0 THEN
     DELETE FROM cart WHERE user_username = NEW.user_username AND product_id = NEW.product_id;
     END IF;
+END;
+$$
+CREATE TRIGGER user_owns_product_ordered AFTER INSERT ON order_products
+FOR EACH ROW
+BEGIN
+	DECLARE p_type VARCHAR(15);
+    DECLARE p_id INT;
+    DECLARE u_username VARCHAR(20);
+    
+    SELECT new.product_type, new.product_id INTO p_type, p_id;
+    
+    SELECT DISTINCT user_username INTO u_username
+    FROM orders 
+    WHERE id = new.order_id;
+    
+    IF p_type <> 'Merchandise' THEN
+		INSERT INTO user_products_owned (user_username, product_id)
+		VALUES (u_username, p_id);
+	END IF;
 END;
 $$
 DELIMITER ;

@@ -30,9 +30,15 @@
 				
 				<label for="username">Nome Utente: </label>
 				<input type = "text" id = "username" name = "username" placeholder = "pluto2000" autofocus="autofocus"></input>
+				<div class="username_error"></div>
 				<br>
 				<label for="password">Password: </label>
 				<input type = "password" id = "password" name = "password" autofocus="autofocus"></input>
+				<div class="password_error"></div>
+				<% if (accessType.equals("register")) { %>
+				<label for="oassword_confirm">Confirm Password: </label>
+				<input type = "password" id = "password_confirm" name = "password_confirm" autofocus = "autofocus"></input>
+				<% } %>
 				<br>
 			</fieldset>
 			

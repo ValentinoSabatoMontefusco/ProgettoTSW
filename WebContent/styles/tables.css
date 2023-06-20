@@ -1,0 +1,26 @@
+@charset "ISO-8859-1";
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 3em 10px;
+}
+
+table th,
+table td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+table th {
+  background-color: #B98D66;
+}
+
+table tr:nth-child(even) {
+  background-color: #FFC998;
+}
+
+table tr:hover {
+  background-color: #FFDF86;
+}

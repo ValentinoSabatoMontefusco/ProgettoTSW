@@ -49,8 +49,9 @@ public class OrderDAO implements IOrderDAO<OrderBean, Integer> {
 				int orderID = rs.getInt(1);
 				int count = 0;
 				System.out.println(String.format("orderID = %d", orderID));
-				prepStmt = connection.prepareStatement("INSERT INTO " + TABLE_NAME2 + " (order_id, product_id, product_name, product_price, quantity)"
-						+ " VALUES (?, ?, ?, ?, ?)");
+				prepStmt = connection.prepareStatement("INSERT INTO " + TABLE_NAME2 + " (order_id, product_id, product_name, product_type, "
+						+ "product_price, quantity)"
+						+ " VALUES (?, ?, ?, ?, ?, ?)");
 				
 				ProductDAO productDAO = new ProductDAO(dataSource);
 				
@@ -65,8 +66,9 @@ public class OrderDAO implements IOrderDAO<OrderBean, Integer> {
 						prepStmt.setInt(1, orderID);
 						prepStmt.setInt(2, entry.getKey());
 						prepStmt.setString(3, currentProduct.getName());
-						prepStmt.setFloat(4, currentProduct.getPrice());
-						prepStmt.setInt(5, entry.getValue());
+						prepStmt.setString(4, currentProduct.getType());
+						prepStmt.setFloat(5, currentProduct.getPrice());
+						prepStmt.setInt(6, entry.getValue());
 						prepStmt.addBatch();
 						count++;
 					} else {
@@ -232,6 +234,7 @@ public class OrderDAO implements IOrderDAO<OrderBean, Integer> {
 			currentProduct = new ProductBean();
 			currentProduct.setId(rs.getInt("product_id"));
 			currentProduct.setName(rs.getString("product_name"));
+			currentProduct.setType(rs.getString("product_type"));
 			currentProduct.setPrice(rs.getFloat("product_price"));
 			products.add(new SimpleEntry<ProductBean, Integer>(currentProduct, rs.getInt("quantity")));
 		}

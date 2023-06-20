@@ -11,6 +11,7 @@
 	<link rel="stylesheet" href="${ctxPath}/styles/home.css"/>
 	<link rel="stylesheet" href="${ctxPath}/styles/mycart.css"/>
 	<link rel="stylesheet" href="${ctxPath}/styles/buttons.css"/>
+	<link rel="stylesheet" href="${ctxPath}/styles/tables.css"/>
 	<title>My Cart</title>
 </head>
 <body>
@@ -46,14 +47,16 @@
 		   	</tr>
 		   	
 		   	<%
+		   		
 		   		for (Entry<ProductBean, Integer> entry : order.getProducts()) {
 		   			
 		   			ProductBean product = entry.getKey();
+
 		   			%>
 		   			
 		   		<tr>
-		   			<td><img src="${ctxPath}/images/logios/<%= product.getName().toLowerCase() %>.png"
-		   			 alt = "product logo"></td>
+		   			<td><img src="${ctxPath}/images/logos/<%= product.getName().toLowerCase().replaceAll("\\s", "") %>.png"
+		   			 alt = "product logo" width="30px" height="30px"></td>
 		   			 <td><%= product.getName() %></td>
 		   			 <td><%= product.getPrice() %></td>
 		   			 <td><%= entry.getValue() %></td>
