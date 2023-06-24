@@ -41,7 +41,8 @@
 			<%= cart == null ? 0 : cart.getTotalQuantity() %></button>
 	
 	</a>
-	<% if (request.getSession().getAttribute("role") == null) { %>
+	<% String role = (String) request.getSession().getAttribute("role");
+	if (role == null) { %>
 	<ul>
 		<li><a href="${ctxPath}/access.jsp?type=login">Log in</a></li>
 		<li><a href="${ctxPath}/access.jsp?type=register">Register</a></li>
@@ -50,6 +51,9 @@
 	<ul>
 		<li><a href= "${ctxPath}/user/myaccount.jsp">My Account</a></li>
 		<li><a href= "${ctxPath}/logout">Log Out</a></li>
+		<% if (role.equals("admin")) { %>
+		<li><a href= "${ctxPath}/admin/overview.jsp" id ="admin_anchor">Admin Section</a><li>
+		<%} %>
 	</ul>
 	
 	<%} %>

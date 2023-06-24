@@ -66,15 +66,26 @@ public class CourseServlet extends HttpServlet {
 				}
 				
 				request.setAttribute("course", course);
+				
+				String role = (String) request.getSession().getAttribute("role");
+				Boolean isOwned = false;
+				
+				if (role != null) {
+					
+					Collection<Integer> productsOwned = (Collection<Integer>) request.getSession().getAttribute("productsOwned");
+					if (productsOwned != null)
+						
+						if (productsOwned.contains(course.getId()))
+							
+							isOwned = true;
+								
+				}
+				
+				request.setAttribute("isOwned", isOwned);
+			
 			}
-//			try {
-//				CourseBean selectedCourse = courseDao.doRetrieveByKey("");
-//				request.setAttribute("course", selectedCourse);
-//			} catch (SQLException e) {
-//				e.printStackTrace();
-//			}
-//			
-//			
+
+			
 
 			RequestDispatcher view = request.getRequestDispatcher("view/Course.jsp");
 			view.forward(request, response);

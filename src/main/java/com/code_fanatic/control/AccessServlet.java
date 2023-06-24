@@ -85,6 +85,7 @@ public class AccessServlet extends HttpServlet {
 						//request.getSession(true).removeAttribute("user");
 						request.getSession(true).setAttribute("username", newUser.getUsername());
 						request.getSession(true).setAttribute("role", newUser.getRole());
+						request.getSession(true).setAttribute("productsOwned", newUser.getOwnedProducts());
 						
 						// Handling guest Cart; following GPT hint of destroying guest cart 
 						

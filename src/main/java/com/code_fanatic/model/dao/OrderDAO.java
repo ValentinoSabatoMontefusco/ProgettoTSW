@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,9 +14,11 @@ import java.util.Map.Entry;
 
 import javax.sql.DataSource;
 
+import com.code_fanatic.control.SecurityUtilities;
 import com.code_fanatic.model.bean.Cartesio;
 import com.code_fanatic.model.bean.OrderBean;
 import com.code_fanatic.model.bean.ProductBean;
+import com.mysql.cj.util.StringUtils;
 
 
 public class OrderDAO implements IOrderDAO<OrderBean, Integer> {
@@ -144,10 +147,11 @@ public class OrderDAO implements IOrderDAO<OrderBean, Integer> {
 			Connection connection = null;
 			PreparedStatement prepStmt = null;
 			
+			String sanitizedOrder = SecurityUtilities.sanitize(order);
 		
 			connection = dataSource.getConnection();
-			prepStmt = connection.prepareStatement("SELECT * FROM " + TABLE_NAME + " ORDER BY ?;");
-			prepStmt.setString(1, order);
+			System.err.println("sanitizedOrder = " + sanitizedOrder);
+			prepStmt = connection.prepareStatement("SELECT * FROM " + TABLE_NAME + " ORDER BY " + sanitizedOrder+ " ;");
 			
 			ResultSet rs = prepStmt.executeQuery();
 			
@@ -172,6 +176,45 @@ public class OrderDAO implements IOrderDAO<OrderBean, Integer> {
 			
 	}
 	
+	public synchronized Collection<OrderBean> doRetrieveAll(Timestamp fromDate, Timestamp toDate, String order) throws SQLException {
+		
+		Collection<OrderBean> orders = new ArrayList<OrderBean>();
+		
+		Connection connection = null;
+		PreparedStatement prepStmt = null;
+		
+	
+		connection = dataSource.getConnection();
+		prepStmt = connection.prepareStatement("SELECT * FROM " + TABLE_NAME + " WHERE order_date >= ? "
+				+ " AND order_date <= ? ORDER BY ?;");
+		prepStmt.setTimestamp(1, fromDate);
+		prepStmt.setTimestamp(2, toDate);
+		prepStmt.setString(3, order);
+
+		
+		ResultSet rs = prepStmt.executeQuery();
+		
+		OrderBean currentOrder = null;
+		
+		while(rs.next()) {
+			
+			ResultSet proxyRS = rs;
+			currentOrder = buildOrder(proxyRS, prepStmt, connection);
+			orders.add(currentOrder);
+		}
+		
+
+		if (prepStmt != null)
+			prepStmt.close();
+
+		if (connection != null)
+			connection.close();
+		
+		
+		return orders;
+		
+	
+	}
 	
 	public Collection<OrderBean> doRetrieveAllByUsername(String value) throws SQLException {
 

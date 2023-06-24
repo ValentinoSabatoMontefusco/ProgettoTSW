@@ -68,35 +68,44 @@ $(document).ready(function() {
 			})
 		})
 		
-		$("#buy_now").on("click", function() {
+	$("#buy_now").on("click", function() {
+		
+		var confirmed = confirm("Are you sure you want to finalize the purchase?");
+		
+		if (confirmed) {
 			
-			var confirmed = confirm("Are you sure you want to finalize the purchase?");
+			var jqxhr = updateCart(0, "Checkout");
 			
-			if (confirmed) {
+			jqxhr.done(function() {
 				
-				var jqxhr = updateCart(0, "Checkout");
 				
-				jqxhr.done(function() {
-					
-					
-					clearCartVista();
-					alert("Purchase completed successfully! Thanks for your support :)");
-				})
+				clearCartVista();
+				alert("Purchase completed successfully! Thanks for your support :)");
+			})
+			
+			jqxhr.fail(function(jqXHR, textStatus, errorThrown) {
 				
-				jqxhr.fail(function() {
-					
-					alert("Oops! Something went wrong!");
-				})
-				
-			} else {
-				
-				alert("Purchase not completed");
-			}
-		})
+				alert("Oops! Something went wrong: " + jqXHR.responseText);
+				location.reload();
+			})
+			
+		} else {
+			
+			alert("Purchase not completed");
+		}
+	})
 	
+	$(document).on("cartUpdated", function() {
+		
+		
+	});
 	
 	
 	$("#total_price").text(totalPrice.toFixed(2));
+	if (productBlocks.length == 0)
+		$("#buy_now").prop("disabled", true);
+		
+		
 	trimDescriptions();
 	
 	
@@ -125,6 +134,12 @@ $(document).ready(function() {
 		totalPrice += (delta*price);
 		
 		$("#total_price").text(totalPrice.toFixed(2));
+		
+		let qt = document.getElementsByClassName("product_block").length;
+		if (qt == 0)
+			$("#buy_now").prop("disabled", true);
+		else
+			$("buy_now").prop("disabled", false);
 		
 	}
 	

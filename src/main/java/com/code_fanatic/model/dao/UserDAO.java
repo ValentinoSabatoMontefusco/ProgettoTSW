@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.HashSet;
 
 import javax.sql.DataSource;
 
@@ -96,6 +97,21 @@ public class UserDAO implements IGenericDAO<UserBean, String> {
 				}
 				
 				userCorrespondence.setCarrello(carrello);
+				
+				prepStmt.close();
+				prepStmt = connection.prepareStatement("SELECT product_id FROM user_products_owned WHERE user_username = ?;");
+				
+				prepStmt.setString(1, key);
+				rs = prepStmt.executeQuery();
+				HashSet<Integer> productsOwned = new HashSet<Integer>();
+				
+				while(rs.next()) {
+					
+					productsOwned.add(rs.getInt("product_id"));
+					
+				}
+				
+				userCorrespondence.setOwnedProducts(productsOwned);
 				
 			} else {
 				

@@ -19,19 +19,28 @@
 			<img src="${ctxPath}/images/logos/<%= course.getName().toLowerCase() %>.png" id="course_logo" alt="course logo">
 			<p><!--<jsp:getProperty name="course" property = "description" />--> ${course.description}</p>
 			<br>
-			<% 	ArrayList<LessonBean> lessons = course.getLessons();
-				for (LessonBean lesson : lessons) { %>
-				
-				<div class="lesson">
-				
-					<h1>Lesson <%= lesson.getNumber() %> ~ <%= lesson.getTitle() %></h1>
-					<p><%= lesson.getContent() %></p>
-				
-				</div>
-				<br>
-				
+			<%	
+				Collection<LessonBean> lessons = course.getLessons();
+				boolean isOwned = (boolean) request.getAttribute("isOwned");
 					
-			<% 	} 	%>
+					
+					for (LessonBean lesson : lessons) { %>
+					
+					<div class="lesson">
+					
+						<h1>Lesson <%= lesson.getNumber() %> ~ <%= lesson.getTitle() %></h1>
+						<p><%= lesson.getContent() %></p>
+					
+					</div>
+					<br>
+					
+						
+				<% 	if (!isOwned) break;}
+					
+					
+					%>
+				}
+				
 		</section>
 		
 	</body>

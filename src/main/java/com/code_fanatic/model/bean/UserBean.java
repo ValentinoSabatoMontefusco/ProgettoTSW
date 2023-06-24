@@ -1,6 +1,7 @@
 package com.code_fanatic.model.bean;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
 
 public class UserBean {
 
@@ -8,6 +9,17 @@ public class UserBean {
 	private String username;
 	private String password;
 	private String role;
+	private HashSet<Integer> ownedProducts; 
+
+	public HashSet<Integer> getOwnedProducts() {
+		return ownedProducts;
+	}
+
+
+	public void setOwnedProducts(HashSet<Integer> ownedProducts) {
+		this.ownedProducts = ownedProducts;
+	}
+
 
 	private Cartesio carrello;
 	

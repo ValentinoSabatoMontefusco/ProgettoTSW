@@ -36,11 +36,21 @@ public class ShopServlet extends HttpServlet {
 		
 		IGenericDAO<ProductBean, Integer> productDao = new ProductDAO((DataSource) getServletContext().getAttribute("DataSource"));
 		Collection<ProductBean> products = null; 
+		Collection<Integer> productsOwned = (Collection<Integer>) request.getSession().getAttribute("productsOwned"); 
 		
 		try {
 			products = productDao.doRetrieveAll("name");
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}
+		
+		if (productsOwned != null && productsOwned.size() > 0) {
+			
+			//for (ProductBean product : products) {
+				
+				//if (productsOwned.contains((Integer) product.getId()))
+					products.removeIf( p -> productsOwned.contains(p.getId()));
+			//}
 		}
 		
 		request.setAttribute("products", products);

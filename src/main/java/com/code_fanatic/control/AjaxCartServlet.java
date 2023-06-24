@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.Collection;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -104,23 +105,36 @@ public class AjaxCartServlet extends HttpServlet {
 							break;
 							
 			case "Checkout": if (username!= null) {
-								orderDao = new OrderDAO(ds);
-								OrderBean newOrder = new OrderBean();
-								newOrder.setUsername(username);
-								newOrder.setCart(cart);
-								newOrder.setOrder_date(new Timestamp(System.currentTimeMillis()));
-								
-								try {
-									orderDao.doSave(newOrder);
-									cart.clear();
-									cartDAO.doDelete(username);
-								} catch (SQLException e) {
-									e.printStackTrace();
+								if (cart.getTotalQuantity() > 0) {
+									orderDao = new OrderDAO(ds);
+									OrderBean newOrder = new OrderBean();
+									newOrder.setUsername(username);
+									newOrder.setCart(cart);
+									newOrder.setOrder_date(new Timestamp(System.currentTimeMillis()));
+									
+									Collection<Integer> newProductsOwned = null;
+									
+									try {
+										orderDao.doSave(newOrder);
+										cart.clear();
+										cartDAO.doDelete(username);
+										newProductsOwned = new UserDAO(ds).doRetrieveByKey(username).getOwnedProducts();
+									} catch (SQLException e) {
+										e.printStackTrace();
+									}
+									
+									request.getSession().setAttribute("productsOwned", newProductsOwned);
+									
+									
+									
+									break;
+								} else {
+									System.err.println("Can't order if cart empty");
+									response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+									response.getWriter().write("Tried purchase with empty cart");
+									return;
+									
 								}
-								
-								
-								
-								break;			
 			
 							} else {
 								

@@ -1,6 +1,9 @@
 package com.code_fanatic.control;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -16,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet Filter implementation class AuthenticationFilter
  */
-@WebFilter("/user/*")
+@WebFilter(urlPatterns = {"/user/*", "/admin/*"})
 public class AuthenticationFilter extends HttpFilter implements Filter {
        
 
@@ -36,11 +39,22 @@ public class AuthenticationFilter extends HttpFilter implements Filter {
 
 		// place your code here
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
-		HttpServletResponse httpResponse = (HttpServletResponse) response; 
+		HttpServletResponse httpResponse = (HttpServletResponse) response;
+		String reqURI = httpRequest.getRequestURI();
+		String roleToken = (String) httpRequest.getSession().getAttribute("role"); 
+		Collection<String> errors = new ArrayList<String>();
 		
-		if (httpRequest.getSession().getAttribute("role") == null) {
+		if (roleToken == null) {
+			errors.add("You must log in to access this page");
+			request.setAttribute("errors", errors);
 			RequestDispatcher view = httpRequest.getRequestDispatcher("/access.jsp?type=login");
 			view.forward(httpRequest, httpResponse);
+		} else if (reqURI.contains("admin") && (!roleToken.equals("admin"))) {
+				
+				errors.add("You're unauthorized to see this page");
+				RequestDispatcher view = httpRequest.getRequestDispatcher("/access.jsp?type=login");
+				view.forward(httpRequest, httpResponse);
+				
 		} else {
 			System.out.println("Filter ok");
 			chain.doFilter(request, response);
