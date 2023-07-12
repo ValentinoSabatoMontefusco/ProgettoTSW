@@ -19,6 +19,10 @@ $(document).ready(function() {
 		buttonAdd  = productBlocks[i].querySelector(".product_buttonAdd");
 		buttonSub  = productBlocks[i].querySelector(".product_buttonSub");
 		
+		quantityBlock = productBlocks[i].querySelector(".quantity_block");
+		console.log("Quantity Block mi penzo dovresbe esistere: " + quantityBlock);
+		
+		
 		productID = productBlocks[i].querySelector(".product_id").value;
 		productPrice = parseFloat(productBlocks[i].querySelector(".product_price").textContent);
 		
@@ -33,7 +37,7 @@ $(document).ready(function() {
 			let thisProductBlock = event.currentTarget.closest(".product_block");
 			let thisPrID = thisProductBlock.querySelector(".product_id").value;
 
-			let response = updateCart(thisPrID, "Add");
+			let response = updateCart(thisPrID, "Add", this);
 			response.done(function(response){
 				
 				updateProductBlock(thisProductBlock, response.productQuantity, 1);
@@ -44,7 +48,7 @@ $(document).ready(function() {
 			
 			let thisProductBlock = event.currentTarget.closest(".product_block");
 			let thisPrID = thisProductBlock.querySelector(".product_id").value;
-			let response = updateCart(thisPrID, "Sub");
+			let response = updateCart(thisPrID, "Sub", this);
 			response.done(function(response){
 				
 				updateProductBlock(thisProductBlock, response.productQuantity, -1);
@@ -53,16 +57,38 @@ $(document).ready(function() {
 		
 		
 		
+		$(quantityBlock).on("cartUpdated", function(event, cartInfo) {
+			
+			console.log("QuantityBlock listena cart updated? + " + cartInfo + event.detail);
+			let amountDiv = this.querySelector(".merch_amount");
+			console.log("amountDiv type = " + amountDiv.dataset.productType + " and amount = " + amountDiv.dataset.amount);
+			if (amountDiv.dataset.productType == "Merchandise" && amountDiv.dataset.amount - cartInfo.productQuantity <= 5) {
+				amountDiv.textContent = "Total Left: " + amountDiv.dataset.amount;
+				$(amountDiv).slideDown(600);
+				if(amountDiv.dataset.amount == cartInfo.productQuantity)
+					this.querySelector(".product_buttonAdd").disabled = true;
+				else
+					this.querySelector(".product_buttonAdd").disabled = false;
+			} else {
+				
+				$(amountDiv).slideUp(600);
+				amountDiv.textContent = "";
+			}
+			
+		})
+		
 		
 		
 		
 	}
 	
+
+	
 	// CLEAR / CHECKOUT BUTTONS
 	
 	$("#empty_cart").on("click", function() {
 			
-			updateCart(0, "Clear").done(function() {
+			updateCart(0, "Clear", this).done(function() {
 				
 			clearCartVista();
 			})
@@ -74,13 +100,14 @@ $(document).ready(function() {
 		
 		if (confirmed) {
 			
-			var jqxhr = updateCart(0, "Checkout");
+			var jqxhr = updateCart(0, "Checkout", this);
 			
 			jqxhr.done(function() {
 				
 				
 				clearCartVista();
 				alert("Purchase completed successfully! Thanks for your support :)");
+				location.reload();
 			})
 			
 			jqxhr.fail(function(jqXHR, textStatus, errorThrown) {
@@ -95,10 +122,7 @@ $(document).ready(function() {
 		}
 	})
 	
-	$(document).on("cartUpdated", function() {
-		
-		
-	});
+	
 	
 	
 	$("#total_price").text(totalPrice.toFixed(2));
@@ -115,7 +139,7 @@ $(document).ready(function() {
 	function updateProductBlock(productBlock, productQuantity, delta) {
 		
 		console.log("updateProductBlock says productQuantity = " + productQuantity +  " and delta = " + delta);
-		console.log(productBlock.innerHTML);
+		//console.log(productBlock.innerHTML);
 		
 		var totalPrice = parseFloat($("#total_price").text());
 		const price = parseFloat(productBlock.querySelector(".product_price").textContent.trim());
@@ -157,6 +181,7 @@ $(document).ready(function() {
 				this.remove();
 			});
 			$("#total_price").text("0.00");
+			$("#buy_now").prop("disabled", true);
 	}
 		
 		

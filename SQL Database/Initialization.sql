@@ -29,9 +29,9 @@ CREATE TABLE products (
 -- create table for merchandise, subclass of products
 CREATE TABLE merchandise (
 	product_id INT NOT NULL,
-    amount INT DEFAULT 0,
+    amount INT DEFAULT 0 CHECK (amount >= 0),
     PRIMARY KEY (product_id),
-    FOREIGN KEY (product_id) REFERENCES products(id)
+    FOREIGN KEY (product_id) REFERENCES products(id) on delete cascade on update cascade
 );
 
     
@@ -73,16 +73,15 @@ CREATE TABLE order_products (
     product_price DECIMAL(10,2),
     quantity int NOT NULL default 1,
     PRIMARY KEY (order_id, product_id),
-    FOREIGN KEY (order_id) REFERENCES orders(id),
-    FOREIGN KEY (product_id) REFERENCES products(id)
+    FOREIGN KEY (order_id) REFERENCES orders(id) on update cascade on delete cascade
 );
 
 CREATE TABLE user_products_owned (
 	user_username VARCHAR(20) NOT NULL,
     product_id INT NOT NULL,
     PRIMARY KEY (user_username, product_id),
-    FOREIGN KEY (user_username) REFERENCES users(username) ON DELETE CASCADE,
-    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+    FOREIGN KEY (user_username) REFERENCES users(username) ON DELETE CASCADE on update cascade,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE on update cascade
 );
 
 -- create table for user lessons
@@ -92,9 +91,9 @@ CREATE TABLE user_lessons (
   course_id INT NOT NULL,
   status VARCHAR(20) NOT NULL DEFAULT 'uncompleted',
   PRIMARY KEY (user_username, lesson_number, course_id),
-  FOREIGN KEY (user_username) REFERENCES users(username),
-  FOREIGN KEY (lesson_number) REFERENCES lessons(number),
-  FOREIGN KEY (course_id) REFERENCES lessons(course_id)
+  FOREIGN KEY (user_username) REFERENCES users(username) ON UPDATE cascade ON DELETE cascade,
+  FOREIGN KEY (lesson_number) REFERENCES lessons(number) ON UPDATE cascade ON DELETE cascade,
+  FOREIGN KEY (course_id) REFERENCES lessons(course_id) ON UPDATE cascade ON DELETE cascade
 );
 
 CREATE TABLE cart (
@@ -102,8 +101,8 @@ user_username VARCHAR(20) NOT NULL,
 product_id INT NOT NULL,
 quantity INT NOT NULL DEFAULT 1,
 PRIMARY KEY (user_username, product_id),
-FOREIGN KEY (user_username) REFERENCES users(username),
-FOREIGN KEY (product_id) REFERENCES products(id)
+FOREIGN KEY (user_username) REFERENCES users(username) ON UPDATE cascade ON DELETE cascade,
+FOREIGN KEY (product_id) REFERENCES products(id) ON UPDATE cascade ON DELETE cascade
 );
 
 DELIMITER $$

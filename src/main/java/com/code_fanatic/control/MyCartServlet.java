@@ -16,6 +16,7 @@ import javax.sql.DataSource;
 
 import com.code_fanatic.model.bean.Cartesio;
 import com.code_fanatic.model.bean.ProductBean;
+import com.code_fanatic.model.dao.MerchDAO;
 import com.code_fanatic.model.dao.ProductDAO;
 
 /**
@@ -40,15 +41,18 @@ public class MyCartServlet extends HttpServlet {
 		if (cart != null && cart.getTotalQuantity() != 0) {
 			
 			Collection<Entry<ProductBean, Integer>> products = new ArrayList<Entry<ProductBean,Integer>>();
+			DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
 			ProductBean currentProduct;
 			int currentQuantity;
 			
-			ProductDAO productDAO = new ProductDAO((DataSource) getServletContext().getAttribute("DataSource"));
+			ProductDAO productDAO = new ProductDAO(ds);
 			
 			for (Entry<Integer, Integer> entry : cart.getProducts()) {
 				
 				try {
 					currentProduct = productDAO.doRetrieveByKey(entry.getKey());
+					if (currentProduct.getType().equals("Merchandise"))
+						currentProduct = new MerchDAO(ds).doRetrieveByKey(currentProduct.getId());
 					currentQuantity = entry.getValue();
 					products.add(new SimpleEntry<ProductBean, Integer>(currentProduct, currentQuantity));
 					

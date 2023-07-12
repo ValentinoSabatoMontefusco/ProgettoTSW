@@ -138,7 +138,11 @@ public class AjaxCartServlet extends HttpServlet {
 			
 							} else {
 								
+								response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+								response.getWriter().write("You're currently not logged in");
 								System.err.println("Can't checkout if not logged");
+								return;
+								
 							}
 														
 			default: System.out.println("Ajax call failed");
@@ -151,8 +155,9 @@ public class AjaxCartServlet extends HttpServlet {
 		// Packing the response up with JSON
 		response.setContentType("application/json");
 		
-		cartResponse cartResp = new cartResponse(cart.getTotalQuantity(), cart.getProductQuantity(ProductID));
-		System.out.println("Expected JS output for cart = " + cartResp.getCartQuantity() );
+		cartResponse cartResp = new cartResponse(cart.getTotalQuantity(),
+				ProductID == 0 ? 0 : cart.getProductQuantity(ProductID));
+		System.out.println("Expected JS output for cart = " + cartResp.getCartQuantity());
 		String JcartResp = new Gson().toJson(cartResp);
 		response.getWriter().write(JcartResp);
 		

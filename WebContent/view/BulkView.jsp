@@ -29,7 +29,7 @@
 		while (iterator.hasNext()) {
 			currentCourse = (CourseBean) iterator.next();
 		%>
-		<li><a href="${ctxPath}/courses?name=<%=currentCourse.getName()%>"><%= currentCourse.getName()%></a>
+		<li><a href="${ctxPath}/courses?name=<%=currentCourse.getName()%>" class="hoverable"><%= currentCourse.getName()%></a>
 		<%} %>
 	</ul>
 	
@@ -44,15 +44,15 @@
 	<% String role = (String) request.getSession().getAttribute("role");
 	if (role == null) { %>
 	<ul>
-		<li><a href="${ctxPath}/access.jsp?type=login">Log in</a></li>
-		<li><a href="${ctxPath}/access.jsp?type=register">Register</a></li>
+		<li><a href="${ctxPath}/access.jsp?type=login" class="hoverable">Log in</a></li>
+		<li><a href="${ctxPath}/access.jsp?type=register" class="hoverable">Register</a></li>
 	</ul>
 	<%} else { %>
 	<ul>
-		<li><a href= "${ctxPath}/user/myaccount.jsp">My Account</a></li>
-		<li><a href= "${ctxPath}/logout">Log Out</a></li>
+		<li><a href= "${ctxPath}/user/myaccount.jsp" class="hoverable">My Account</a></li>
+		<li><a href= "${ctxPath}/logout" class="hoverable">Log Out</a></li>
 		<% if (role.equals("admin")) { %>
-		<li><a href= "${ctxPath}/admin/overview.jsp" id ="admin_anchor">Admin Section</a><li>
+		<li><a href= "${ctxPath}/admin/overview.jsp" id ="admin_anchor" class="hoverable">Admin Section</a><li>
 		<%} %>
 	</ul>
 	

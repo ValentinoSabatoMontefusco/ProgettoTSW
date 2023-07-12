@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
+import com.code_fanatic.control.utils.SecurityUtils;
 import com.code_fanatic.model.bean.Cartesio;
 import com.code_fanatic.model.bean.UserBean;
 import com.code_fanatic.model.dao.CartDAO;
@@ -43,7 +44,7 @@ public class AccessServlet extends HttpServlet {
 		
 		ArrayList<String> errors = new ArrayList<String>();
 		
-		password = SecurityUtilities.toHash(password);	//ad hoc class with static methods to provide Security Management
+		password = SecurityUtils.toHash(password);	//ad hoc class with static methods to provide Security Management
 
 		
 		UserBean newUser = new UserBean();
@@ -60,6 +61,7 @@ public class AccessServlet extends HttpServlet {
 			try {
 				userDAO.doSave(newUser);
 				System.out.print("Registrazione effettuata, credo");
+				
 				
 			} catch (SQLIntegrityConstraintViolationException e) {
 				
@@ -92,7 +94,14 @@ public class AccessServlet extends HttpServlet {
 						Cartesio cart = null;
 						try {
 							cart = (new CartDAO(ds).doRetrieveByKey(username));
-							System.out.println("Il carrello dell'utente " + username + " ha stato riconosciuto e contiene " + cart.getTotalQuantity() + " articoli");
+							if (cart.getTotalQuantity() > 0)
+								System.out.println("Il carrello dell'utente " + username + " ha stato riconosciuto e contiene " + cart.getTotalQuantity() + " articoli");
+							else { 
+								cart = (Cartesio) request.getSession().getAttribute("cart");
+								if (cart != null) {
+									new CartDAO(ds).doSave(cart, newUser.getUsername());
+								}
+							}
 						} catch (SQLException e) {
 						
 							e.printStackTrace();

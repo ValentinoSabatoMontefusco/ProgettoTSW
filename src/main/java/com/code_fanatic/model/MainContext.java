@@ -9,17 +9,21 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebListener;
 import javax.sql.*;
 
+import org.apache.jasper.compiler.NewlineReductionServletWriter;
+
 import com.code_fanatic.model.dao.CourseDAO;
 
 
 @WebListener
 public class MainContext implements ServletContextListener  {
 
+	static DataSource dataSource;
+	
 	public void contextInitialized(ServletContextEvent sce) {
 		
 		ServletContext context = sce.getServletContext();
-		DataSource dataSource = null;
 		
+		System.out.println("Path di salvataggio: " + sce.getServletContext().getRealPath(""));
 		try {
 			Context initContext = new InitialContext();
 			Context envContext = (Context) initContext.lookup("java:comp/env");
@@ -55,6 +59,16 @@ public class MainContext implements ServletContextListener  {
 		System.out.print("DataSource"+ dataSource.toString() + " handled on servlet expiring");
 		
 		
+	}
+	
+	public static void updateAttributes(ServletContext ctx) {
+		
+		try {
+			ctx.setAttribute("courses", new CourseDAO(dataSource).doRetrieveAll("name") );
+		} catch (SQLException e) {
+	
+			e.printStackTrace();
+		}
 	}
 	
 //	private ArrayList<CourseBean> fetchDBCourses(DataSource ds){

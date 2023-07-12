@@ -2,6 +2,7 @@ package com.code_fanatic.model.bean;
 
 import java.util.ArrayList;
 
+
 public class CourseBean extends ProductBean {
 
 	private int lesson_count;
@@ -9,6 +10,17 @@ public class CourseBean extends ProductBean {
 		
 	
 	public CourseBean() {
+		
+	}
+	
+	public CourseBean(ProductBean pb) {
+		
+		if (pb.getId() != 0)
+			setId(pb.getId());
+		setName(pb.getName());
+		setDescription(pb.getDescription());
+		setPrice(pb.getPrice());
+		setType(pb.getType());
 		
 	}
 

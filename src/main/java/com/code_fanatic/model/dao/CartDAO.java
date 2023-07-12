@@ -32,7 +32,7 @@ public class CartDAO implements ICartDAO {
 		try {
 			
 			connection = dataSource.getConnection();
-			prepStmt = connection.prepareStatement("INSERT INTO " + TABLE_NAME + " (user_id, product_id, quantity) VALUES (?, ?, ?);");
+			prepStmt = connection.prepareStatement("INSERT INTO " + TABLE_NAME + " (user_username, product_id, quantity) VALUES (?, ?, ?);");
 			
 			Collection<Entry<Integer, Integer>> products = cart.getProducts();
 			for (Entry<Integer, Integer> entry : products) {

@@ -41,14 +41,16 @@
 		   
 		   	<div class="product_block">
 		   		<input type="hidden" class="product_id" value="<%=currentProduct.getId()%>"></input>
-	  			<img src="${ctxPath}/images/logos/<%=currentProduct.getName().toLowerCase()%>.png" class= "product_logo" alt="product_logo">
+	  			<img src="${ctxPath}/images/logos/<%=currentProduct.getName().toLowerCase().replaceAll("\\s", "") %>.png" class= "product_logo" alt="product_logo">
 	  			<div class="product_name"><%= currentProduct.getName() %></div>
 	  			<div class="product_description"><%= currentProduct.getDescription() %></div>
 	  			<div class="quantity_block">
+	  				<div class="merch_amount" data-product-type="<%= currentProduct.getType()%>" 
+	  				data-amount="<%= currentProduct.getType().equals("Merchandise") ? ((MerchBean) currentProduct).getAmount() : 1 %>"></div>
 	  				<div class="product_quantity">Qt. <span class = "quantity"><%= quantity %></span></div>
 	  				<!--  <input type="button" class="product_buttonAdd" value="+"></input>
 	  				<input type="button" class="product_buttonSub" value="-"></input>-->
-	  				<button class="product_buttonAdd">+</button>
+	  				<button class="product_buttonAdd"  <%= currentProduct.getType().equals( "Course") ? "disabled" : "" %>>+</button>
 	  				<button class="product_buttonSub">-</button>
 	  			</div>
 	  			<div class="product_price"><%= currentProduct.getPrice() %> $</div>

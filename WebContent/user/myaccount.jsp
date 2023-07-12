@@ -16,13 +16,14 @@
 		<h1>My Account</h1>
 		<div>Hi ${username}, here you can control and manage all your personal information and items!</div>
 		<br><br>
-		
-		<a href="${ctxPath}/user/myCourses">My Courses</a>
+		<div class ="options_container">
+			<a href="${ctxPath}/user/myCourses">My Courses</a>
+			<br><br>
+			<a href="${ctxPath}/user/myCart">My Cart</a>
+			<br><br>
+			<a href="${ctxPath}/user/myOrders">My Orders</a>
 		<br><br>
-		<a href="${ctxPath}/user/myCart">My Cart</a>
-		<br><br>
-		<a href="${ctxPath}/user/myOrders">My Orders</a>
-		<br><br>
+		</div>
 	</section>
 	
 </body>

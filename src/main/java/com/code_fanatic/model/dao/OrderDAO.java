@@ -14,8 +14,9 @@ import java.util.Map.Entry;
 
 import javax.sql.DataSource;
 
-import com.code_fanatic.control.SecurityUtilities;
+import com.code_fanatic.control.utils.SecurityUtils;
 import com.code_fanatic.model.bean.Cartesio;
+import com.code_fanatic.model.bean.MerchBean;
 import com.code_fanatic.model.bean.OrderBean;
 import com.code_fanatic.model.bean.ProductBean;
 import com.mysql.cj.util.StringUtils;
@@ -38,6 +39,8 @@ public class OrderDAO implements IOrderDAO<OrderBean, Integer> {
 		Connection connection = dataSource.getConnection();
 		PreparedStatement prepStmt = connection.prepareStatement("INSERT INTO " + TABLE_NAME + " (user_username, order_date)"
 													+ " VALUES (?, ?);", PreparedStatement.RETURN_GENERATED_KEYS);
+		
+		PreparedStatement consumeMerch = connection.prepareStatement("UPDATE merchandise SET amount = amount - ? WHERE product_id = ?;");
 		
 		prepStmt.setString(1, bean.getUsername());
 		prepStmt.setTimestamp(2,  bean.getOrder_date());
@@ -74,13 +77,21 @@ public class OrderDAO implements IOrderDAO<OrderBean, Integer> {
 						prepStmt.setInt(6, entry.getValue());
 						prepStmt.addBatch();
 						count++;
+						
+						if (currentProduct.getType().equals("Merchandise")) {
+							
+							MerchBean tempMerch = new MerchDAO(dataSource).doRetrieveByKey(entry.getKey());
+							consumeMerch.setInt(1, entry.getValue());
+							consumeMerch.setInt(2, tempMerch.getId());
+							consumeMerch.addBatch();
+						}
 					} else {
 						System.err.println("Nessuna corrispondenza trovata in Products per un articolo nell'ordine");
 					}
 					
 				
 				}
-				
+				consumeMerch.executeBatch();
 				if (count == prepStmt.executeBatch().length) {
 					
 					System.err.println("Salvataggio ordine apparentemente a buon fine");
@@ -147,7 +158,7 @@ public class OrderDAO implements IOrderDAO<OrderBean, Integer> {
 			Connection connection = null;
 			PreparedStatement prepStmt = null;
 			
-			String sanitizedOrder = SecurityUtilities.sanitize(order);
+			String sanitizedOrder = SecurityUtils.sanitize(order);
 		
 			connection = dataSource.getConnection();
 			System.err.println("sanitizedOrder = " + sanitizedOrder);

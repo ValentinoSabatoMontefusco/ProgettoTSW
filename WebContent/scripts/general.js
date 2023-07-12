@@ -11,14 +11,14 @@ $(document).ready(function() {
 	}
 });
 
-	let contextPath = "/" +  window.location.pathname.split('/')[1];
+	var contextPath = "/" +  window.location.pathname.split('/')[1];
 	
-	function updateCart(productID, type) {
+	function updateCart(productID, type, source) {
 		
 
 		return $.get({url: contextPath + "/ajaxCart", data: {prodID: productID, type: type},  success: function(response) {
 			
-			$(document).trigger('cartUpdated', response);
+			$(source).trigger('cartUpdated', response);
 			console.log("Cart Quantity = " + response.cartQuantity);
 
 		}, dataType: "json"});
@@ -39,3 +39,28 @@ $(document).ready(function() {
 	}
 	
 	}
+	
+	function fakePostRequest(event, href, ...hiddenParams) {
+	
+	event.preventDefault;
+	
+	const form = document.createElement("form");
+	form.method = "POST";
+	form.action = href;
+	for (let i = 0; i < hiddenParams.length; i += 2) {
+		
+		const param = document.createElement("input");
+		param.type = "hidden";
+		param.name = hiddenParams[i];
+		param.value = hiddenParams[i+1];
+		form.appendChild(param);
+	}
+	
+	
+	document.body.appendChild(form);
+	console.log(hiddenParams);
+	form.submit();
+	
+	
+	
+}

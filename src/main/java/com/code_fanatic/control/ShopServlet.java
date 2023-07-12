@@ -13,12 +13,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 import com.code_fanatic.model.bean.CourseBean;
+import com.code_fanatic.model.bean.MerchBean;
 import com.code_fanatic.model.bean.ProductBean;
 import com.code_fanatic.model.dao.CourseDAO;
 import com.code_fanatic.model.dao.IGenericDAO;
+import com.code_fanatic.model.dao.MerchDAO;
 import com.code_fanatic.model.dao.ProductDAO;
 
-@WebServlet("/shop")
+@WebServlet(urlPatterns = {"/shop", "/admin/productManagement"})
 public class ShopServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -30,32 +32,39 @@ public class ShopServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		System.out.println("ShopServlet avviata");
+		System.out.println("ShopServlet avviata con request URI: " + request.getRequestURI());
 		
 		// Temporary method to verify everything works
-		
-		IGenericDAO<ProductBean, Integer> productDao = new ProductDAO((DataSource) getServletContext().getAttribute("DataSource"));
+		DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
+		ProductDAO productDao = new ProductDAO(ds);
 		Collection<ProductBean> products = null; 
-		Collection<Integer> productsOwned = (Collection<Integer>) request.getSession().getAttribute("productsOwned"); 
+		 
 		
 		try {
-			products = productDao.doRetrieveAll("name");
+			products = productDao.doRetrieveAllSubclasses("name");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
-		if (productsOwned != null && productsOwned.size() > 0) {
-			
-			//for (ProductBean product : products) {
+		if (!request.getRequestURI().contains("admin")) {
+			Collection<Integer> productsOwned = (Collection<Integer>) request.getSession().getAttribute("productsOwned");
+			if (productsOwned != null && productsOwned.size() > 0) {
 				
-				//if (productsOwned.contains((Integer) product.getId()))
-					products.removeIf( p -> productsOwned.contains(p.getId()));
-			//}
+				//for (ProductBean product : products) {
+					
+					//if (productsOwned.contains((Integer) product.getId()))
+						products.removeIf( p -> productsOwned.contains(p.getId()));
+				//}
+			}
 		}
 		
-		request.setAttribute("products", products);
 		
-		RequestDispatcher view = request.getRequestDispatcher("shop.jsp");
+		request.setAttribute("products", products);
+		RequestDispatcher view = null;
+		if (!request.getRequestURI().contains("admin"))
+			view = request.getRequestDispatcher("shop.jsp");
+		else
+			view = request.getRequestDispatcher("productManagement.jsp");
 		view.forward(request, response);
 	}
 

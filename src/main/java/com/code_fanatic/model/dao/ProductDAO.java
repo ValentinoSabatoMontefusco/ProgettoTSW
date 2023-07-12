@@ -25,14 +25,78 @@ public class ProductDAO implements IGenericDAO<ProductBean, Integer> {
 
 	public synchronized void  doSave(ProductBean bean) throws SQLException {
 			
-
+		Connection connection = dataSource.getConnection();
+		PreparedStatement prepStmt = null;
+		if ( bean.getId() != 0) {
+			prepStmt = connection.prepareStatement("SELECT * FROM " + TABLE_NAME + " WHERE"
+					+ " id = ?;");
+			
+			prepStmt.setInt(1, bean.getId());
+			
+			ResultSet rs = prepStmt.executeQuery();
+			
+			if (rs.next()) {
+				
+				prepStmt = connection.prepareStatement("UPDATE " + TABLE_NAME + " SET name = ?, description = ?"
+						+ ", price = ? WHERE id = ?;");
+						
+				prepStmt.setString(1, bean.getName());
+				prepStmt.setString(2, bean.getDescription());
+				prepStmt.setFloat(3, bean.getPrice());
+				prepStmt.setInt(4, bean.getId());
+				
+				prepStmt.executeUpdate();
+				System.err.println("Prodotto allegedly modificato");
+			}
+		} else { 
+			
+			prepStmt = connection.prepareStatement("INSERT INTO "+ TABLE_NAME + " (name, description, price) "
+					+ " VALUE (?, ?, ?);");
+			
+			prepStmt.setString(1, bean.getName());
+			prepStmt.setString(2, bean.getDescription());
+			prepStmt.setFloat(3, bean.getPrice());
+					
+			prepStmt.executeUpdate();
+			System.err.println("Prodotto allegedly inserito");
+				
+		}
 		
-	}
+		
+	
+		
+		
+		try {
+			if (prepStmt != null)
+				prepStmt.close();
+		} finally {
+			if (connection != null)
+				connection.close();
+		}
+	
+		
+}
 
 
 	public synchronized boolean doDelete(int key) throws SQLException {
 
-		return false;
+		Connection connection = null;
+		PreparedStatement prepStmt = null;
+		
+		connection = dataSource.getConnection();
+		prepStmt = connection.prepareStatement("DELETE FROM " + TABLE_NAME + " WHERE id = ?;");
+		
+		prepStmt.setInt(1, key);
+		int del = prepStmt.executeUpdate();
+		try {
+			if (prepStmt != null)
+				prepStmt.close();
+		} finally {
+			if (connection != null)
+				connection.close();
+		}
+		
+		return del > 0;
 	}
 
 
@@ -114,6 +178,38 @@ public class ProductDAO implements IGenericDAO<ProductBean, Integer> {
 				products.add(currentProduct);
 				
 			}
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		} finally {
+			try {
+				if (prepStmt != null)
+					prepStmt.close();
+			} finally {
+				if (connection != null)
+					connection.close();
+			}
+		}
+		
+		return products;
+		
+		
+		
+	}
+	
+public synchronized Collection<ProductBean> doRetrieveAllSubclasses(String order) throws SQLException {
+		
+		Connection connection = null;
+		PreparedStatement prepStmt = null;
+		Collection<ProductBean> products = new ArrayList<ProductBean>(); 
+		
+		try {
+			
+			connection = dataSource.getConnection();
+			products.addAll(new MerchDAO(dataSource).doRetrieveAll(order));
+			products.addAll(new CourseDAO(dataSource).doRetrieveAll(order));
+			
 			
 		} catch (SQLException e) {
 			
