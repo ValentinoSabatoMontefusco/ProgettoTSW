@@ -145,7 +145,7 @@ public class OrderDAO implements IOrderDAO<OrderBean, Integer> {
 			ResultSet rs = prepStmt.executeQuery();
 			
 			
-			order = buildOrder(rs, prepStmt, connection);
+			order = buildOrder(rs, connection);
 			
 			
 			
@@ -189,7 +189,7 @@ public class OrderDAO implements IOrderDAO<OrderBean, Integer> {
 			while(rs.next()) {
 				
 				ResultSet proxyRS = rs;
-				currentOrder = buildOrder(proxyRS, prepStmt, connection);
+				currentOrder = buildOrder(proxyRS, connection);
 				orders.add(currentOrder);
 			}
 			
@@ -236,7 +236,7 @@ public class OrderDAO implements IOrderDAO<OrderBean, Integer> {
 		while(rs.next()) {
 			
 			ResultSet proxyRS = rs;
-			currentOrder = buildOrder(proxyRS, prepStmt, connection);
+			currentOrder = buildOrder(proxyRS, connection);
 			orders.add(currentOrder);
 		}
 		
@@ -279,7 +279,7 @@ public class OrderDAO implements IOrderDAO<OrderBean, Integer> {
 		while(rs.next()) {
 			
 			ResultSet proxyRS = rs;
-			currentOrder = buildOrder(proxyRS, prepStmt, connection);
+			currentOrder = buildOrder(proxyRS, connection);
 			orders.add(currentOrder);
 		}
 		
@@ -299,18 +299,19 @@ public class OrderDAO implements IOrderDAO<OrderBean, Integer> {
 		return orders;
 	}
 	
-	public OrderBean buildOrder(ResultSet rs, PreparedStatement prepStmt, Connection connection) throws SQLException {
+	public OrderBean buildOrder(ResultSet rs/*, PreparedStatement prepStmt*/, Connection connection) throws SQLException {
 		
 		OrderBean order = null;
 		
-
+		PreparedStatement prepStmt = null;
 		
 		order = new OrderBean();
 		
 		order.setId(rs.getInt("id"));
 		order.setUsername(rs.getString("user_username"));
 		order.setOrder_date(rs.getTimestamp("order_date"));
-		
+		try {
+			
 		prepStmt = connection.prepareStatement("SELECT * FROM " + TABLE_NAME2 + /*" INNER JOIN "
 				+ "products ON product_id = id " +*/  " WHERE order_id = ?;");
 		
@@ -331,7 +332,13 @@ public class OrderDAO implements IOrderDAO<OrderBean, Integer> {
 		}
 
 		order.setProducts(products);
+		} finally {
+			
 		
+			if (prepStmt != null)
+				prepStmt.close();
+			
+		}
 		return order;
 	}
 

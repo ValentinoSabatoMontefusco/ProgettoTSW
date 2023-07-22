@@ -168,7 +168,7 @@ public class ProductControlServlet extends HttpServlet {
 					
 				} catch (SQLException e1) {
 	
-					e1.printStackTrace();
+					LOGGER.log(Level.SEVERE, e1.getMessage());
 				}
 							break;
 							
@@ -184,7 +184,7 @@ public class ProductControlServlet extends HttpServlet {
 				} catch (SQLException e1) {
 				
 					
-					e1.printStackTrace();
+					LOGGER.log(Level.SEVERE, e1.getMessage());
 				}
 								break;
 							
@@ -227,7 +227,7 @@ public class ProductControlServlet extends HttpServlet {
 						
 					} catch (SQLException e1) {
 
-						e1.printStackTrace();
+						LOGGER.log(Level.SEVERE, e1.getMessage());
 					}
 								break;
 								
@@ -243,7 +243,7 @@ public class ProductControlServlet extends HttpServlet {
 					} catch (SQLException e1) {
 					
 						
-						e1.printStackTrace();
+						LOGGER.log(Level.SEVERE, e1.getMessage());
 					}
 									break;
 								

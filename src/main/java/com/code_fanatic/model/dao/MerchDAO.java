@@ -125,9 +125,15 @@ public class MerchDAO implements IGenericDAO<MerchBean, Integer> {
 	@Override
 	public MerchBean doRetrieveByKey(Integer key) throws SQLException {
 
-		Connection connection = dataSource.getConnection();
-		PreparedStatement prepStmt = connection.prepareStatement("SELECT * FROM " + TABLE_NAME + " WHERE id = ?;");
 		MerchBean merch = null;
+		Connection connection = null;
+		PreparedStatement prepStmt = null;
+		
+		try {
+			
+		connection = dataSource.getConnection();
+		prepStmt = connection.prepareStatement("SELECT * FROM " + TABLE_NAME + " WHERE id = ?;");
+
 		
 		prepStmt.setInt(1, key);
 		
@@ -143,15 +149,18 @@ public class MerchDAO implements IGenericDAO<MerchBean, Integer> {
 			merch.setId(rs.getInt("id"));
 			
 		}
-		
-		try {
-			if (prepStmt != null)
-				prepStmt.close();
-		} finally {
-			if (connection != null)
-				connection.close();
+		}finally {
+			
+			try {
+				if (prepStmt != null)
+					prepStmt.close();
+			} finally {
+				if (connection != null)
+					connection.close();
+			}
+			
 		}
-		
+
 		return merch;
 	}
 
