@@ -6,9 +6,12 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.jdt.core.compiler.InvalidInputException;
 
+import com.code_fanatic.control.admin.OrdersRecapServlet;
 import com.mysql.cj.xdevapi.Schema.Validation;
 
 
@@ -19,6 +22,7 @@ public class SecurityUtils {
 												"order_date ASC", "order_date DESC", "name ASC", "name DESC",
 												"product_id ASC", "product_id DESC", "create_time ASC", "create_time DESC"));
 	
+	private static final Logger LOGGER = Logger.getLogger(OrdersRecapServlet.class.getName());
 	
 	public SecurityUtils() {
 //		validInputs.add("user_username ASC");
@@ -44,7 +48,7 @@ public class SecurityUtils {
 			
 			
 		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, e.getMessage());
 		}
 		
 		return hashword;

@@ -3,6 +3,8 @@ package com.code_fanatic.control;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
+import com.code_fanatic.control.admin.OrdersRecapServlet;
 import com.code_fanatic.model.bean.CourseBean;
 import com.code_fanatic.model.bean.MerchBean;
 import com.code_fanatic.model.bean.ProductBean;
@@ -23,6 +26,7 @@ import com.code_fanatic.model.dao.ProductDAO;
 @WebServlet(urlPatterns = {"/shop", "/admin/productManagement"})
 public class ShopServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static final Logger LOGGER = Logger.getLogger(OrdersRecapServlet.class.getName());
        
   
     public ShopServlet() {
@@ -43,7 +47,7 @@ public class ShopServlet extends HttpServlet {
 		try {
 			products = productDao.doRetrieveAllSubclasses("name");
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, e.getMessage());
 		}
 		
 		if (!request.getRequestURI().contains("admin")) {

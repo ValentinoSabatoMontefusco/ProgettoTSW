@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,6 +16,7 @@ import javax.sql.DataSource;
 
 import org.apache.jasper.tagplugins.jstl.core.If;
 
+import com.code_fanatic.control.admin.OrdersRecapServlet;
 import com.code_fanatic.model.bean.CommentBean;
 import com.code_fanatic.model.bean.OrderBean;
 import com.code_fanatic.model.dao.CommentDAO;
@@ -25,6 +28,7 @@ import com.code_fanatic.model.dao.ICommentDAO;
 @WebServlet(urlPatterns = {"/user/comment", "/admin/moderation"})
 public class CommentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static final Logger LOGGER = Logger.getLogger(OrdersRecapServlet.class.getName());
        
 
     public CommentServlet() {
@@ -61,7 +65,7 @@ public class CommentServlet extends HttpServlet {
 						try {
 							commentDAO.doSave(newComment);
 						} catch (SQLException e) {
-							e.printStackTrace();
+							LOGGER.log(Level.SEVERE, e.getMessage());
 						}
 						
 						
@@ -97,7 +101,7 @@ public class CommentServlet extends HttpServlet {
 									}
 								}
 							} catch (SQLException e) {
-								e.printStackTrace();
+								LOGGER.log(Level.SEVERE, e.getMessage());
 							}
 							} else {
 								
@@ -144,7 +148,7 @@ public class CommentServlet extends HttpServlet {
 								}
 							} catch (SQLException e) {
 
-								e.printStackTrace();
+								LOGGER.log(Level.SEVERE, e.getMessage());
 							} 
 							
 							request.setAttribute("comments", comments);

@@ -6,6 +6,8 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
+import com.code_fanatic.control.admin.OrdersRecapServlet;
 import com.code_fanatic.model.bean.Cartesio;
 import com.code_fanatic.model.bean.ProductBean;
 import com.code_fanatic.model.dao.MerchDAO;
@@ -25,6 +28,7 @@ import com.code_fanatic.model.dao.ProductDAO;
 @WebServlet("/user/myCart")
 public class MyCartServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static final Logger LOGGER = Logger.getLogger(OrdersRecapServlet.class.getName());
        
 
     public MyCartServlet() {
@@ -57,7 +61,7 @@ public class MyCartServlet extends HttpServlet {
 					products.add(new SimpleEntry<ProductBean, Integer>(currentProduct, currentQuantity));
 					
 				} catch (SQLException e) {
-					e.printStackTrace();
+					LOGGER.log(Level.SEVERE, e.getMessage());
 				}
 			}
 			

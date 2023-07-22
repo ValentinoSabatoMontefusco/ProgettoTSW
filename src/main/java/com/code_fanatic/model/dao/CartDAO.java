@@ -7,13 +7,17 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.Set;
 
 import javax.sql.DataSource;
 
+import com.code_fanatic.control.admin.OrdersRecapServlet;
 import com.code_fanatic.model.bean.Cartesio;
 
 public class CartDAO implements ICartDAO {
+	private static final Logger LOGGER = Logger.getLogger(OrdersRecapServlet.class.getName());
 	
 	DataSource dataSource = null;
 	private static final String TABLE_NAME = "cart"; //carts?
@@ -29,6 +33,10 @@ public class CartDAO implements ICartDAO {
 
 	public synchronized void doSave(Cartesio cart, String username) throws SQLException {
 
+		
+		Connection connection = null;
+		PreparedStatement prepStmt = null;
+		
 		try {
 			
 			connection = dataSource.getConnection();
@@ -45,7 +53,7 @@ public class CartDAO implements ICartDAO {
 			}
 		} catch (SQLException e) {
 			
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, e.getMessage());
 		} finally {
 			
 			try {
@@ -62,7 +70,8 @@ public class CartDAO implements ICartDAO {
 	public synchronized Cartesio doRetrieveByKey(String username) throws SQLException {
 
 		Cartesio newCart = null;
-		
+		Connection connection = null;
+		PreparedStatement prepStmt = null;
 		try {
 			
 			connection = dataSource.getConnection();
@@ -83,7 +92,7 @@ public class CartDAO implements ICartDAO {
 				
 		} catch (SQLException e) {
 				
-				e.printStackTrace();
+				LOGGER.log(Level.SEVERE, e.getMessage());
 			} finally {
 				
 				try {
@@ -101,6 +110,8 @@ public class CartDAO implements ICartDAO {
 
 	public synchronized void doUpdateAddProduct(String username, int productID) throws SQLException {
 		
+		Connection connection = null;
+		PreparedStatement prepStmt = null;
 		try {
 			
 			connection = dataSource.getConnection();
@@ -117,7 +128,7 @@ public class CartDAO implements ICartDAO {
 			
 		} catch (SQLException e) {
 			
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, e.getMessage());
 		} finally {
 			
 			try {
@@ -133,6 +144,9 @@ public class CartDAO implements ICartDAO {
 	}
 	
 	public synchronized void doUpdateSubtractProduct(String username, int productID) throws SQLException {
+		
+		Connection connection = null;
+		PreparedStatement prepStmt = null;
 		
 		try {
 			
@@ -150,7 +164,7 @@ public class CartDAO implements ICartDAO {
 			
 		} catch (SQLException e) {
 			
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, e.getMessage());
 		} finally {
 			
 			try {
@@ -169,6 +183,10 @@ public class CartDAO implements ICartDAO {
 
 	public synchronized  void doUpdateSetProduct(String username, int productID, int quantity) throws SQLException {
 
+		
+		Connection connection = null;
+		PreparedStatement prepStmt = null;
+		
 		try {
 			
 			connection = dataSource.getConnection();
@@ -187,7 +205,7 @@ public class CartDAO implements ICartDAO {
 			
 		} catch (SQLException e) {
 			
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, e.getMessage());
 		} finally {
 			
 			try {
@@ -204,6 +222,8 @@ public class CartDAO implements ICartDAO {
 	
 	public synchronized void doUpdateRemoveProduct(String username, int productID) throws SQLException {
 
+		Connection connection = null;
+		PreparedStatement prepStmt = null;
 		
 		try {
 			
@@ -217,7 +237,7 @@ public class CartDAO implements ICartDAO {
 			
 		}	catch (SQLException e) {
 			
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, e.getMessage());
 		} finally {
 			
 			try {
@@ -235,7 +255,11 @@ public class CartDAO implements ICartDAO {
 
 	public synchronized void doDelete(String username) throws SQLException {
 
-try {
+		
+		Connection connection = null;
+		PreparedStatement prepStmt = null;
+		
+			try {
 			
 			connection = dataSource.getConnection();
 			prepStmt = connection.prepareStatement("DELETE FROM " + TABLE_NAME + " WHERE user_username = ?;");
@@ -246,7 +270,7 @@ try {
 			
 		}	catch (SQLException e) {
 			
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, e.getMessage());
 		} finally {
 			
 			try {

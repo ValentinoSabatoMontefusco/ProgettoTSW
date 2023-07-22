@@ -36,8 +36,12 @@ public class OrderDAO implements IOrderDAO<OrderBean, Integer> {
 
 	public synchronized void doSave(OrderBean bean) throws SQLException {
 		
-		Connection connection = dataSource.getConnection();
-		PreparedStatement prepStmt = connection.prepareStatement("INSERT INTO " + TABLE_NAME + " (user_username, order_date)"
+		Connection connection = null;
+		PreparedStatement prepStmt = null;
+		
+		try {
+		connection = dataSource.getConnection();
+		prepStmt = connection.prepareStatement("INSERT INTO " + TABLE_NAME + " (user_username, order_date)"
 													+ " VALUES (?, ?);", PreparedStatement.RETURN_GENERATED_KEYS);
 		
 		PreparedStatement consumeMerch = connection.prepareStatement("UPDATE merchandise SET amount = amount - ? WHERE product_id = ?;");
@@ -101,14 +105,20 @@ public class OrderDAO implements IOrderDAO<OrderBean, Integer> {
 				}
 			}
 			
-			if (prepStmt != null)
-				prepStmt.close();
-			if (connection != null)
-				connection.close();
 			
+		
 			
+		}} finally {
+			try {
+				if (prepStmt != null)
+					prepStmt.close();
+			} finally {
+				if (connection != null)
+					connection.close();
+			}
 		}
 	
+		
 	}
 
 
@@ -125,6 +135,8 @@ public class OrderDAO implements IOrderDAO<OrderBean, Integer> {
 		OrderBean order = null;
 		
 		
+		try {
+			
 			
 			connection = dataSource.getConnection();
 			prepStmt = connection.prepareStatement("SELECT * FROM " + TABLE_NAME + " WHERE id = ?;");
@@ -139,14 +151,18 @@ public class OrderDAO implements IOrderDAO<OrderBean, Integer> {
 			
 				
 	
-
-		if (prepStmt != null)
-			prepStmt.close();
-
-		if (connection != null)
-			connection.close();
-
+		} finally {
+			try {
+				if (prepStmt != null)
+					prepStmt.close();
+			} finally {
+				if (connection != null)
+					connection.close();
+			}
 			
+			
+		}
+		
 		return order;
 	}
 
@@ -157,6 +173,8 @@ public class OrderDAO implements IOrderDAO<OrderBean, Integer> {
 			
 			Connection connection = null;
 			PreparedStatement prepStmt = null;
+			
+			try {
 			
 			String sanitizedOrder = SecurityUtils.sanitizeForOrder(order);
 		
@@ -175,12 +193,16 @@ public class OrderDAO implements IOrderDAO<OrderBean, Integer> {
 				orders.add(currentOrder);
 			}
 			
-
-			if (prepStmt != null)
-				prepStmt.close();
-
-			if (connection != null)
-				connection.close();
+			} finally {
+				try {
+					if (prepStmt != null)
+						prepStmt.close();
+				} finally {
+					if (connection != null)
+						connection.close();
+				}
+			}
+			
 			
 			
 			return orders;
@@ -193,6 +215,10 @@ public class OrderDAO implements IOrderDAO<OrderBean, Integer> {
 		
 		Connection connection = null;
 		PreparedStatement prepStmt = null;
+		
+		try {
+			
+		
 		
 		order = SecurityUtils.sanitizeForOrder(order);
 		
@@ -214,12 +240,17 @@ public class OrderDAO implements IOrderDAO<OrderBean, Integer> {
 			orders.add(currentOrder);
 		}
 		
-
-		if (prepStmt != null)
-			prepStmt.close();
-
-		if (connection != null)
-			connection.close();
+		} finally {
+			
+			try {
+				if (prepStmt != null)
+					prepStmt.close();
+			} finally {
+				if (connection != null)
+					connection.close();
+			}
+		}
+		
 		
 		
 		return orders;
@@ -234,7 +265,8 @@ public class OrderDAO implements IOrderDAO<OrderBean, Integer> {
 		Connection connection = null;
 		PreparedStatement prepStmt = null;
 		
-	
+		try {
+			
 		connection = dataSource.getConnection();
 		prepStmt = connection.prepareStatement("SELECT * FROM " + TABLE_NAME + " WHERE user_username = ?;");
 		
@@ -251,12 +283,17 @@ public class OrderDAO implements IOrderDAO<OrderBean, Integer> {
 			orders.add(currentOrder);
 		}
 		
-
-		if (prepStmt != null)
-			prepStmt.close();
-
-		if (connection != null)
-			connection.close();
+		} finally {
+			
+			try {
+				if (prepStmt != null)
+					prepStmt.close();
+			} finally {
+				if (connection != null)
+					connection.close();
+			}
+		}
+	
 		
 		
 		return orders;

@@ -2,7 +2,8 @@ package com.code_fanatic.model;
 
 
 import java.sql.SQLException;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.naming.*;
 import javax.servlet.*;
@@ -11,6 +12,7 @@ import javax.sql.*;
 
 import org.apache.jasper.compiler.NewlineReductionServletWriter;
 
+import com.code_fanatic.control.admin.OrdersRecapServlet;
 import com.code_fanatic.model.dao.CourseDAO;
 
 
@@ -18,6 +20,7 @@ import com.code_fanatic.model.dao.CourseDAO;
 public class MainContext implements ServletContextListener  {
 
 	static DataSource dataSource;
+	private static final Logger LOGGER = Logger.getLogger(OrdersRecapServlet.class.getName());
 	
 	public void contextInitialized(ServletContextEvent sce) {
 		
@@ -35,7 +38,7 @@ public class MainContext implements ServletContextListener  {
 		} catch (NamingException e) {
 			System.out.println("Error:" + e.getMessage());
 		}	catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, e.getMessage());
 		}
 		
 		context.setAttribute("DataSource", dataSource);
@@ -67,7 +70,7 @@ public class MainContext implements ServletContextListener  {
 			ctx.setAttribute("courses", new CourseDAO(dataSource).doRetrieveAll("name") );
 		} catch (SQLException e) {
 	
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, e.getMessage());
 		}
 	}
 	

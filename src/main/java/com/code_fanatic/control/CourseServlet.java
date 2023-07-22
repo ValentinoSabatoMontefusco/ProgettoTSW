@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
+import com.code_fanatic.control.admin.OrdersRecapServlet;
 import com.code_fanatic.model.bean.CourseBean;
 import com.code_fanatic.model.dao.CourseDAO;
 import com.code_fanatic.model.dao.IGenericDAO;
@@ -24,6 +27,7 @@ import com.code_fanatic.model.dao.IGenericDAO;
 @WebServlet("/courses")
 public class CourseServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static final Logger LOGGER = Logger.getLogger(OrdersRecapServlet.class.getName());
 
     public CourseServlet() {
         super();
@@ -45,7 +49,7 @@ public class CourseServlet extends HttpServlet {
 					courses = courseDao.doRetrieveAll("name");		
 					request.setAttribute("courses", courses);
 				} catch (SQLException e) {
-					e.printStackTrace();
+					LOGGER.log(Level.SEVERE, e.getMessage());
 					System.out.println("Courses exception doublecheck");
 				}
 			}
@@ -127,7 +131,7 @@ public class CourseServlet extends HttpServlet {
 			lang = pathSegments[0];System.out.println("Lang = " + lang);
 		} catch (Exception e) {
 			
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, e.getMessage());
 		
 		}
 		return lang;

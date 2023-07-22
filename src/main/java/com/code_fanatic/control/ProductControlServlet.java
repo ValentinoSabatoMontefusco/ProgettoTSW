@@ -11,6 +11,8 @@ import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -22,8 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import javax.sql.DataSource;
 
-
-
+import com.code_fanatic.control.admin.OrdersRecapServlet;
 import com.code_fanatic.model.MainContext;
 import com.code_fanatic.model.bean.CommentBean;
 import com.code_fanatic.model.bean.CourseBean;
@@ -41,6 +42,7 @@ import com.code_fanatic.model.dao.ProductDAO;
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, maxFileSize = 1024*1024*10, maxRequestSize = 1024*1024*100)
 public class ProductControlServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static final Logger LOGGER = Logger.getLogger(OrdersRecapServlet.class.getName());
        
 
     public ProductControlServlet() {
@@ -96,7 +98,7 @@ public class ProductControlServlet extends HttpServlet {
 					default: break; 
 					}
 				} catch (SQLException e) {
-					e.printStackTrace();
+					LOGGER.log(Level.SEVERE, e.getMessage());
 				}
 			}
 			
@@ -120,7 +122,7 @@ public class ProductControlServlet extends HttpServlet {
 				try {
 					 comments = commentDAO.doRetrieveAllByProduct(productID);
 				} catch (SQLException e) {
-					e.printStackTrace();
+					LOGGER.log(Level.SEVERE, e.getMessage());
 				} 
 				
 				request.setAttribute("comments", comments);
@@ -264,7 +266,7 @@ public class ProductControlServlet extends HttpServlet {
 			try {
 				productDao.doDelete(prodId);
 			} catch (SQLException e) {
-				e.printStackTrace();
+				LOGGER.log(Level.SEVERE, e.getMessage());
 			}
 			
 			// NOTIFY CONTEXT ATTRIBUTE
@@ -335,10 +337,10 @@ public class ProductControlServlet extends HttpServlet {
 				}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, e.getMessage());
 		} catch (ServletException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, e.getMessage());
 		}
 		}
 	public Path updatePath(Path oldPath, int counter) {

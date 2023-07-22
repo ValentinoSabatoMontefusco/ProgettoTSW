@@ -26,9 +26,16 @@ public class MerchDAO implements IGenericDAO<MerchBean, Integer> {
 	
 	@Override
 	public void doSave(MerchBean bean) throws SQLException {
-
-		Connection connection = dataSource.getConnection();
+		
 		PreparedStatement prepStmt = null;
+		Connection connection = null;
+		
+		try {
+			
+			
+
+			connection = dataSource.getConnection();
+		
 		
 
 			if (bean.getId() != 0) {
@@ -95,13 +102,16 @@ public class MerchDAO implements IGenericDAO<MerchBean, Integer> {
 				
 					
 				
-		}
-		try {
-			if (prepStmt != null)
-				prepStmt.close();
-		} finally {
-			if (connection != null)
-				connection.close();
+				}
+		} finally { 
+			
+			try {
+				if (prepStmt != null)
+					prepStmt.close();
+			} finally {
+				if (connection != null)
+					connection.close();
+			}
 		}
 		
 	}
@@ -147,12 +157,19 @@ public class MerchDAO implements IGenericDAO<MerchBean, Integer> {
 
 	@Override
 	public Collection<MerchBean> doRetrieveAll(String order) throws SQLException {
+		
+		Connection connection = null;
+		PreparedStatement prepStmt = null;
+		Collection<MerchBean> merchs = null; 
+		
+		try {
+			
 
-		Connection connection = dataSource.getConnection();
-		PreparedStatement prepStmt = connection.prepareStatement("SELECT * FROM " + TABLE_NAME);
+		connection = dataSource.getConnection();
+		prepStmt = connection.prepareStatement("SELECT * FROM " + TABLE_NAME);
 		
 		ResultSet rs = prepStmt.executeQuery();
-		Collection<MerchBean> merchs = new ArrayList<MerchBean>();
+		merchs = new ArrayList<MerchBean>();
 		MerchBean currentMerch;
 		
 		
@@ -168,15 +185,17 @@ public class MerchDAO implements IGenericDAO<MerchBean, Integer> {
 			
 			merchs.add(currentMerch);
 		}
-		
-		try {
-			if (prepStmt != null)
-				prepStmt.close();
 		} finally {
-			if (connection != null)
-				connection.close();
-		}
-	
+			
+			try {
+				if (prepStmt != null)
+					prepStmt.close();
+			} finally {
+				if (connection != null)
+					connection.close();
+			}
+		
+			}
 		
 		return merchs;
 		

@@ -3,6 +3,8 @@ package com.code_fanatic.control;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
+import com.code_fanatic.control.admin.OrdersRecapServlet;
 import com.code_fanatic.model.bean.OrderBean;
 import com.code_fanatic.model.dao.IOrderDAO;
 import com.code_fanatic.model.dao.OrderDAO;
@@ -19,7 +22,7 @@ import com.code_fanatic.model.dao.OrderDAO;
 @WebServlet("/user/myOrders")
 public class MyOrdersServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	private static final Logger LOGGER = Logger.getLogger(OrdersRecapServlet.class.getName());
 
     public MyOrdersServlet() {
         super();
@@ -45,7 +48,7 @@ public class MyOrdersServlet extends HttpServlet {
 				orders = orderDAO.doRetrieveAllByUsername(username);
 			} catch (SQLException e) {
 				
-				e.printStackTrace();
+				LOGGER.log(Level.SEVERE, e.getMessage());
 			}
 		}
 		

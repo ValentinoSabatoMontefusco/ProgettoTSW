@@ -7,14 +7,18 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
+import com.code_fanatic.control.admin.OrdersRecapServlet;
 import com.code_fanatic.model.bean.Cartesio;
 import com.code_fanatic.model.bean.UserBean;
 
 public class UserDAO implements IGenericDAO<UserBean, String> {
 
+	private static final Logger LOGGER = Logger.getLogger(OrdersRecapServlet.class.getName());
 	DataSource dataSource = null;
 	private static final String TABLE_NAME = "users";
 	
@@ -118,7 +122,7 @@ public class UserDAO implements IGenericDAO<UserBean, String> {
 				System.out.print("Utente non trovato");
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, e.getMessage());
 		} finally {
 			try {
 				if (prepStmt != null)
@@ -161,7 +165,7 @@ public class UserDAO implements IGenericDAO<UserBean, String> {
 			
 		} catch (SQLException e) {
 			
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, e.getMessage());
 		} finally {
 			
 			try {

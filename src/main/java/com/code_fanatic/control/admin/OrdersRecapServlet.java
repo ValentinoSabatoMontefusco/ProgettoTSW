@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,6 +24,8 @@ import com.google.gson.Gson;
 @WebServlet("/admin/ordersRecap")
 public class OrdersRecapServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	private static final Logger LOGGER = Logger.getLogger(OrdersRecapServlet.class.getName());
        
 
     public OrdersRecapServlet() {
@@ -89,7 +93,7 @@ public class OrdersRecapServlet extends HttpServlet {
 			}
 		} catch (SQLException e) {
 
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, e.getMessage());
 		} 
 		
 		request.setAttribute("view", "recap");

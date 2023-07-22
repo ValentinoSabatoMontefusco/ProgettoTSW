@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
+import com.code_fanatic.control.admin.OrdersRecapServlet;
 import com.code_fanatic.control.utils.SecurityUtils;
 import com.code_fanatic.model.bean.Cartesio;
 import com.code_fanatic.model.bean.UserBean;
@@ -24,7 +27,7 @@ import com.code_fanatic.model.dao.UserDAO;
 @WebServlet ("/access")
 public class AccessServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	private static final Logger LOGGER = Logger.getLogger(OrdersRecapServlet.class.getName());
     public AccessServlet() {
         super();
 
@@ -66,7 +69,9 @@ public class AccessServlet extends HttpServlet {
 			} catch (SQLIntegrityConstraintViolationException e) {
 				
 				errors.add("The username '" + username + "' is already in use");
-				e.printStackTrace();
+				
+			
+				LOGGER.log(Level.SEVERE, e.getMessage());
 				
 				request.setAttribute("errors",  errors);
 				request.getRequestDispatcher("access.jsp?type=register").forward(request, response);
@@ -74,7 +79,7 @@ public class AccessServlet extends HttpServlet {
 				
 				
 			} catch (SQLException e) {
-				//e.printStackTrace();
+				//LOGGER.log(Level.SEVERE, e.getMessage());
 				System.out.println(e.getMessage());
 			}
 		} else if (request.getParameter("action").equals("login")) {
@@ -104,7 +109,7 @@ public class AccessServlet extends HttpServlet {
 							}
 						} catch (SQLException e) {
 						
-							e.printStackTrace();
+							LOGGER.log(Level.SEVERE, e.getMessage());
 						}
 						if (cart == null)
 							cart = new Cartesio();
@@ -131,7 +136,7 @@ public class AccessServlet extends HttpServlet {
 				}
 			} catch (SQLException e) {
 				
-				e.printStackTrace();
+				LOGGER.log(Level.SEVERE, e.getMessage());
 			}
 		}
 		

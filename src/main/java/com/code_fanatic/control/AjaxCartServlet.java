@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
+import com.code_fanatic.control.admin.OrdersRecapServlet;
 import com.code_fanatic.model.bean.Cartesio;
 import com.code_fanatic.model.bean.OrderBean;
 import com.code_fanatic.model.bean.UserBean;
@@ -28,6 +31,7 @@ import com.google.gson.Gson;
 @WebServlet("/ajaxCart")
 public class AjaxCartServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static final Logger LOGGER = Logger.getLogger(OrdersRecapServlet.class.getName());
 
     public AjaxCartServlet() {
         super();
@@ -73,7 +77,7 @@ public class AjaxCartServlet extends HttpServlet {
 							try {
 								cartDAO.doUpdateAddProduct(username, ProductID);
 							} catch (SQLException e) {
-								e.printStackTrace();
+								LOGGER.log(Level.SEVERE, e.getMessage());
 							}
 						
 			
@@ -88,7 +92,7 @@ public class AjaxCartServlet extends HttpServlet {
 								else 
 									cartDAO.doUpdateSubtractProduct(username, ProductID);
 							} catch (SQLException e) {
-								e.printStackTrace();
+								LOGGER.log(Level.SEVERE, e.getMessage());
 							}
 						
 						break;
@@ -99,7 +103,7 @@ public class AjaxCartServlet extends HttpServlet {
 									
 									cartDAO.doDelete(username);
 								} catch (SQLException e) {
-									e.printStackTrace();
+									LOGGER.log(Level.SEVERE, e.getMessage());
 								}
 							
 							break;
@@ -120,7 +124,7 @@ public class AjaxCartServlet extends HttpServlet {
 										cartDAO.doDelete(username);
 										newProductsOwned = new UserDAO(ds).doRetrieveByKey(username).getOwnedProducts();
 									} catch (SQLException e) {
-										e.printStackTrace();
+										LOGGER.log(Level.SEVERE, e.getMessage());
 									}
 									
 									request.getSession().setAttribute("productsOwned", newProductsOwned);
@@ -181,7 +185,7 @@ public class AjaxCartServlet extends HttpServlet {
 		try {
 			user = userDAO.doRetrieveByKey(username);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, e.getMessage());
 		}
 		
 		return user;

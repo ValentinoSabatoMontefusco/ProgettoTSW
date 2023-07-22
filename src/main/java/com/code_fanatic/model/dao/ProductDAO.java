@@ -6,13 +6,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
+import com.code_fanatic.control.admin.OrdersRecapServlet;
 import com.code_fanatic.model.bean.ProductBean;
 
 
 public class ProductDAO implements IGenericDAO<ProductBean, Integer> {
+	
+	private static final Logger LOGGER = Logger.getLogger(OrdersRecapServlet.class.getName());
 
 	DataSource dataSource = null;
 	private static final String TABLE_NAME = "products";
@@ -24,9 +29,15 @@ public class ProductDAO implements IGenericDAO<ProductBean, Integer> {
 	}
 
 	public synchronized void  doSave(ProductBean bean) throws SQLException {
-			
-		Connection connection = dataSource.getConnection();
+		
+		Connection connection = null;
 		PreparedStatement prepStmt = null;
+		
+		try {
+		
+			
+		connection = dataSource.getConnection();
+	
 		if ( bean.getId() != 0) {
 			prepStmt = connection.prepareStatement("SELECT * FROM " + TABLE_NAME + " WHERE"
 					+ " id = ?;");
@@ -37,6 +48,7 @@ public class ProductDAO implements IGenericDAO<ProductBean, Integer> {
 			
 			if (rs.next()) {
 				
+				prepStmt.close();
 				prepStmt = connection.prepareStatement("UPDATE " + TABLE_NAME + " SET name = ?, description = ?"
 						+ ", price = ? WHERE id = ?;");
 						
@@ -47,6 +59,7 @@ public class ProductDAO implements IGenericDAO<ProductBean, Integer> {
 				
 				prepStmt.executeUpdate();
 				System.err.println("Prodotto allegedly modificato");
+				
 			}
 		} else { 
 			
@@ -61,19 +74,16 @@ public class ProductDAO implements IGenericDAO<ProductBean, Integer> {
 			System.err.println("Prodotto allegedly inserito");
 				
 		}
-		
-		
-	
-		
-		
-		try {
-			if (prepStmt != null)
-				prepStmt.close();
 		} finally {
-			if (connection != null)
-				connection.close();
+		
+			try {
+				if (prepStmt != null)
+					prepStmt.close();
+			} finally {
+				if (connection != null)
+					connection.close();
+			}
 		}
-	
 		
 }
 
@@ -82,20 +92,25 @@ public class ProductDAO implements IGenericDAO<ProductBean, Integer> {
 
 		Connection connection = null;
 		PreparedStatement prepStmt = null;
-		
+		int del;
+		try {
+			
 		connection = dataSource.getConnection();
 		prepStmt = connection.prepareStatement("DELETE FROM " + TABLE_NAME + " WHERE id = ?;");
 		
 		prepStmt.setInt(1, key);
-		int del = prepStmt.executeUpdate();
-		try {
-			if (prepStmt != null)
-				prepStmt.close();
-		} finally {
-			if (connection != null)
-				connection.close();
-		}
+		del = prepStmt.executeUpdate();
 		
+		} finally {
+				
+			try {
+				if (prepStmt != null)
+					prepStmt.close();
+			} finally {
+				if (connection != null)
+					connection.close();
+			}
+		}
 		return del > 0;
 	}
 
@@ -132,7 +147,7 @@ public class ProductDAO implements IGenericDAO<ProductBean, Integer> {
 			} 
 		} catch (SQLException e) {
 				
-				e.printStackTrace();
+				LOGGER.log(Level.SEVERE, e.getMessage());
 			} finally {
 				try {
 					if (prepStmt != null)
@@ -181,7 +196,7 @@ public class ProductDAO implements IGenericDAO<ProductBean, Integer> {
 			
 		} catch (SQLException e) {
 			
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, e.getMessage());
 		} finally {
 			try {
 				if (prepStmt != null)
@@ -213,7 +228,7 @@ public synchronized Collection<ProductBean> doRetrieveAllSubclasses(String order
 			
 		} catch (SQLException e) {
 			
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, e.getMessage());
 		} finally {
 			try {
 				if (prepStmt != null)
