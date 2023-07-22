@@ -10,6 +10,9 @@ import java.util.Collection;
 
 import javax.sql.DataSource;
 
+import org.apache.naming.java.javaURLContextFactory;
+
+import com.code_fanatic.control.utils.SecurityUtils;
 import com.code_fanatic.model.bean.CourseBean;
 import com.code_fanatic.model.bean.LessonBean;
 
@@ -17,7 +20,7 @@ public class CourseDAO implements IGenericDAO<CourseBean, Integer> {
 
 	DataSource dataSource;
 	private static final String TABLE_NAME = "courses INNER JOIN products ON products.id = courses.product_id";
-	
+
 	public CourseDAO(DataSource dataSource) {
 		
 		this.dataSource = dataSource;
@@ -155,16 +158,16 @@ public class CourseDAO implements IGenericDAO<CourseBean, Integer> {
 	public synchronized Collection<CourseBean> doRetrieveAll(String order) throws SQLException {
 
 		Connection connection = null;
-		Statement stmt = null;
+		PreparedStatement prepStmt = null;
 		Collection<CourseBean> courses = new ArrayList<CourseBean>();
 		
 		try {
 			connection = dataSource.getConnection();
-			stmt = connection.createStatement();
+			String sanitizedOrder = SecurityUtils.sanitizeForCourse(order);
+			prepStmt= connection.prepareStatement("SELECT * FROM " + TABLE_NAME + " ORDER BY " + sanitizedOrder + ";");
 			
-			String sqlQuery = "SELECT * FROM " + TABLE_NAME + " ORDER BY " + order;
 			
-			ResultSet rs = stmt.executeQuery(sqlQuery);
+			ResultSet rs = prepStmt.executeQuery();
 			while (rs.next()) {
 				courses.add(buildCourse(rs,  connection));
 			}
@@ -173,8 +176,8 @@ public class CourseDAO implements IGenericDAO<CourseBean, Integer> {
 			e.printStackTrace();
 		} finally {
 			try {
-				if (stmt != null)
-					stmt.close();
+				if (prepStmt != null)
+					prepStmt.close();
 			} finally {
 				if (connection != null)
 					connection.close();

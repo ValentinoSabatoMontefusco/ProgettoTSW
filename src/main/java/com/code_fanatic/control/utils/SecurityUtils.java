@@ -16,7 +16,8 @@ import com.mysql.cj.xdevapi.Schema.Validation;
 public class SecurityUtils {
 
 	private static HashSet<String> validInputs = new HashSet<String>(Arrays.asList("user_username ASC", "user_username DESC",
-												"order_date ASC", "order_date DESC"));
+												"order_date ASC", "order_date DESC", "name ASC", "name DESC",
+												"product_id ASC", "product_id DESC", "create_time ASC", "create_time DESC"));
 	
 	
 	public SecurityUtils() {
@@ -50,10 +51,24 @@ public class SecurityUtils {
 		
 	}
 	
-	public static String sanitize(String input) {
+	public static String sanitizeForOrder(String input) {
 		
 		if (validInputs.contains(input))
 			return input;
 		return "order_date DESC";
+	}
+	
+	public static String sanitizeForCourse(String input) {
+		
+		if (validInputs.contains(input))
+			return input;
+		return "name ASC";
+	}
+	
+	public static String sanitizeForComment(String input) {
+		
+		if (validInputs.contains(input))
+			return input;
+		return "id ASC";
 	}
 }

@@ -19,7 +19,7 @@
 			<br><br>
 			<a href="${ctxPath}/admin/ordersRecap">Orders Recap</a>
 			<br><br>
-			<a href="${ctxPath}/user/myOrders">Moderation</a>
+			<a href="${ctxPath}/admin/moderation">Moderation</a>
 			<br><br>
 		</div>
 	</section>

@@ -1,5 +1,5 @@
 <%@ page import="com.code_fanatic.model.bean.*" %>
-<%@ page import="java.util.Map.*" import="java.util.*" %>
+<%@ page import="java.util.Map.*" import="java.util.*" import="java.text.DecimalFormat" %>
 
 <section>
 		<div class="navigation_div"><a href = "${ctxPath}/user/myaccount.jsp">My Account</a> > My Cart</div>
@@ -18,9 +18,10 @@
 		   <%} else {
 			   
 			   String view = (String) request.getAttribute("view");
-		   
+		   		Float total;
+		   		DecimalFormat format = new DecimalFormat("#0.00");
 		   for(OrderBean order : orders) {
-		   		
+		   		total = 0f;
 			   
 		   		%>
 		   <div class="order_presentation">Order made in date: <%= order.getOrder_date() %>
@@ -39,7 +40,7 @@
 		   		for (Entry<ProductBean, Integer> entry : order.getProducts()) {
 		   			
 		   			ProductBean product = entry.getKey();
-
+					total += entry.getValue() * product.getPrice();
 		   			%>
 		   			
 		   		<tr>
@@ -52,7 +53,8 @@
 		   		</tr>
 		   		<% }
 		   	%>
-		
+				<tr class="total_row">
+					<td colspan="3" > Total = <%= format.format(total) %> $</td>
 
 		   
 		   <%} %>

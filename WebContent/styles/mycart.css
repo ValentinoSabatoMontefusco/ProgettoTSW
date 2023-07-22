@@ -24,8 +24,15 @@ div.product_block {
 	border-style: inset;
 	border-radius: 0.5em;
 	position: relative;
-	display: block;
+	display: flex;
+	flex-direction: row;
+
 	
+}
+
+.info_block {
+	
+	flex-grow:2;
 }
 
 .product_logo {
@@ -62,8 +69,9 @@ div.product_block {
 	
 	position: absolute;
 	right: 5px;
-	vertical-align: middle;
+	align-items: center;
 	text-align: center;
+	top: auto;
 }
 
 .product_quantity {

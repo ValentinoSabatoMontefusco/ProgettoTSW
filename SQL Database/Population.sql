@@ -1,7 +1,13 @@
 -- INSERT INTO users (username, email, password, create_time)
 
 INSERT INTO users (username, password, role, create_time)
-VALUE ("admin", "d7f830a94900f25e4985d51ca317308735cf8129405c834d3ebfe899e03989946517b519fe7c44201ee09b7d2cbe24a10448ee084395102e4d445f3b5ad7d0a4", "admin", "2021-12-25 12:00:00");
+VALUES 
+("admin", "d7f830a94900f25e4985d51ca317308735cf8129405c834d3ebfe899e03989946517b519fe7c44201ee09b7d2cbe24a10448ee084395102e4d445f3b5ad7d0a4", "admin", "2021-12-25 12:00:00"),
+("frontend_guy", "b64385f13633f9bf4627e0ed72952c88a645836a3f6ac4ff4d65efea3c31d07111ba4d6c3295ae33b842511d69256a69dc4f7408234359873c7d3f4de8e2d730", "user", "2023-04-22 19:32:11"),
+("gotoRevival", "140d3cc42d270d0fca36c67192148622c0240cb0b1871263183387431fd6f4c47e32056d204b8346d4a30b07e40b1933f83887e940a1f2e65181a5f226cd6082", "user", "2023-05-10 14:11:26"),
+("filler_feller", "1993c859495f0296a327d45c2e17e294cf8e0fc885b7192770d18d021c1f5f905fa2532f5d126331d6cb8a80bd102852c3bb869ccf7fa19904c8095de777361d", "user", "2023-02-14 10:10:10"),
+("moneyfornothing", "8edbc686fc026da3867b26228fc980019e7b1bc6780f6ce437147c8202dad1a48eeb61358c7cef2a5afa9062c0bbf64e392a66342c1bb82776f088bc3f0da613", "user", "2023-06-27 8:15:00");
+
 
 INSERT INTO products (name, description, type, price)
 VALUES
@@ -39,3 +45,33 @@ SELECT id,
 FROM products
 WHERE name = 'Ajax'
 LIMIT 10;
+
+INSERT INTO orders (user_username, order_date)
+VALUES 
+("frontend_guy", '2023-05-12 09:37:21'),
+("gotoRevival", '2023-06-05 15:21:46'),
+("moneyfornothing", '2023-06-10 14:30:58'),
+("moneyfornothing", '2023-06-10 14:41:22'),
+("moneyfornothing",  '2023-06-18 08:12:59'),
+("filler_feller", '2023-06-28 06:59:12'),
+("frontend_guy", '2023-07-02 23:45:33' );
+
+INSERT INTO order_products  (order_id, product_id, product_name, product_type, product_price, quantity)
+VALUES 
+(1, 3, "JavaScript", "Course", 19.99, 1),
+(1, 4, "CSS", "Course", 19.99, 1),
+(1, 10, "HTML", "Course", 19.99, 1),
+(2, 2, "Java", "Course", 24.99, 1),
+(2, 9, "JSP", "Course", 19.99, 1), 
+(3, 11, "Web Coding and Development All in One For Dummies", "Merchandise", 39.99, 1),
+(3, 10, "HTML", "Course", 19.99, 1),
+(3, 2, "Java", "Course", 24.99, 1),
+(4, 11, "Web Coding and Development All in One For Dummies", "Merchandise", 39.99, 2),
+(4, 1, "Ajax", "Course", 14.99, 1),
+(4, 3, "JavaScript", "Course", 19.99, 1),
+(4, 5, "XML", "Course", 14.99, 1),
+(5, 11, "Web Coding and Development All in One For Dummies", "Merchandise", 44.99, 4),
+(5, 9, "JSP", "Course", 19.99, 1),
+(6, 6, "JSON", "Course", 12.99, 1),
+(7, 7, "JQuery", "Course", 9.99, 1),
+(7, 11, "Web Coding and Development All in One For Dummies", "Merchandise", 44.99, 1);

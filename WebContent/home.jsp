@@ -13,7 +13,7 @@
 		<%@include file = "/view/header.jsp"%>
 
 		<section class = "main_section">
-			<div id = "main">Start by <a href="korriban/selecct.html?lang=yuppi">selecting</a> one of our courses <br>and seeing what we have to offer!</div>
+			<div id = "main">Start by <a href="${ctxPath}/shop">selecting</a> one of our courses <br>and seeing what we have to offer!</div>
 			
 		
 		</section>

@@ -10,7 +10,7 @@ import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
-
+import java.util.Collection;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -25,10 +25,13 @@ import javax.sql.DataSource;
 
 
 import com.code_fanatic.model.MainContext;
+import com.code_fanatic.model.bean.CommentBean;
 import com.code_fanatic.model.bean.CourseBean;
 import com.code_fanatic.model.bean.MerchBean;
 import com.code_fanatic.model.bean.ProductBean;
+import com.code_fanatic.model.dao.CommentDAO;
 import com.code_fanatic.model.dao.CourseDAO;
+import com.code_fanatic.model.dao.ICommentDAO;
 import com.code_fanatic.model.dao.IGenericDAO;
 import com.code_fanatic.model.dao.MerchDAO;
 import com.code_fanatic.model.dao.ProductDAO;
@@ -99,6 +102,7 @@ public class ProductControlServlet extends HttpServlet {
 			
 			
 			request.setAttribute("product", product);
+			
 			if (request.getRequestURI().contains("productCreate")) {
 				
 				request.setAttribute("isEdit", false);
@@ -107,8 +111,24 @@ public class ProductControlServlet extends HttpServlet {
 			} else if (request.getRequestURI().contains("productEdit")) {
 				request.setAttribute("isEdit", true);
 				reqDisp = request.getRequestDispatcher("productEdit.jsp");
-			}	else 
+			}	else {
+				
+				// RECUPERO COMMENTI
+				
+				ICommentDAO commentDAO = new CommentDAO(ds);
+				Collection<CommentBean> comments = null;
+				try {
+					 comments = commentDAO.doRetrieveAllByProduct(productID);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				} 
+				
+				request.setAttribute("comments", comments);
+				
 				reqDisp = request.getRequestDispatcher("product.jsp");
+				
+			}
+				
 			
 			break;
 			

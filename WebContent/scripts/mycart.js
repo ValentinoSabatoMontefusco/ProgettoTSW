@@ -55,12 +55,13 @@ $(document).ready(function() {
 			})
 		})
 		
+		var amountDiv = this.querySelector(".merch_amount");
 		
 		
 		$(quantityBlock).on("cartUpdated", function(event, cartInfo) {
 			
 			console.log("QuantityBlock listena cart updated? + " + cartInfo + event.detail);
-			let amountDiv = this.querySelector(".merch_amount");
+			
 			console.log("amountDiv type = " + amountDiv.dataset.productType + " and amount = " + amountDiv.dataset.amount);
 			if (amountDiv.dataset.productType == "Merchandise" && amountDiv.dataset.amount - cartInfo.productQuantity <= 5) {
 				amountDiv.textContent = "Total Left: " + amountDiv.dataset.amount;

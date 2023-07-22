@@ -19,6 +19,27 @@ $(document).ready(function() {
 			
 			alert("The product hasn't been deleted");
 		}
-	}
+	});
 	
-)});
+	document.getElementById("submit_comment").addEventListener("click", function(event) {
+		
+		event.preventDefault();
+		let type = document.getElementById("comment_type").value;
+		let product_id = document.getElementById("comment_pid").value;
+		let username = document.getElementById("comment_username").value;
+		let content = document.getElementById("content_input").value;
+		
+		var xhr =$.post({url: "user/comment", data: {type: type, product_id: product_id, user_username: username, content_input: content}});
+		
+		xhr.always(function () {
+			
+			location.reload();
+		});
+		
+	});
+
+
+	
+	
+	
+});

@@ -24,3 +24,10 @@ table tr:nth-child(even) {
 table tr:hover {
   background-color: #FFDF86;
 }
+
+.total_row {
+
+	font-weight: bolder;
+	font-size: 110%;
+	text-align: right;
+}

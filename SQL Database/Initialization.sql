@@ -85,15 +85,15 @@ CREATE TABLE user_products_owned (
 );
 
 -- create table for user lessons
-CREATE TABLE user_lessons (
-  user_username VARCHAR(20) NOT NULL,
-  lesson_number INT NOT NULL,
-  course_id INT NOT NULL,
-  status VARCHAR(20) NOT NULL DEFAULT 'uncompleted',
-  PRIMARY KEY (user_username, lesson_number, course_id),
-  FOREIGN KEY (user_username) REFERENCES users(username) ON UPDATE cascade ON DELETE cascade,
-  FOREIGN KEY (lesson_number) REFERENCES lessons(number) ON UPDATE cascade ON DELETE cascade,
-  FOREIGN KEY (course_id) REFERENCES lessons(course_id) ON UPDATE cascade ON DELETE cascade
+CREATE TABLE comments (
+	id INT NOT NULL AUTO_INCREMENT,
+	user_username VARCHAR (20) NOT NULL,
+    product_id INT NOT NULL,
+    create_time TIMESTAMP NOT NULL, 
+    content TEXT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_username) references users(username) on delete cascade on update cascade,
+    FOREIGN KEY (product_id) references products(id) on delete cascade on update cascade
 );
 
 CREATE TABLE cart (
@@ -146,4 +146,16 @@ BEGIN
 END;
 $$
 DELIMITER ;
+
+-- create table for user lessons
+-- CREATE TABLE user_lessons (
+--  user_username VARCHAR(20) NOT NULL,
+ -- lesson_number INT NOT NULL,
+ -- course_id INT NOT NULL,
+ -- status VARCHAR(20) NOT NULL DEFAULT 'uncompleted',
+ -- PRIMARY KEY (user_username, lesson_number, course_id),
+ -- FOREIGN KEY (user_username) REFERENCES users(username) ON UPDATE cascade ON DELETE cascade,
+ -- FOREIGN KEY (lesson_number) REFERENCES lessons(number) ON UPDATE cascade ON DELETE cascade,
+ -- FOREIGN KEY (course_id) REFERENCES lessons(course_id) ON UPDATE cascade ON DELETE cascade
+-- );
 

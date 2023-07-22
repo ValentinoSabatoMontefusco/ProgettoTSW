@@ -158,7 +158,7 @@ public class OrderDAO implements IOrderDAO<OrderBean, Integer> {
 			Connection connection = null;
 			PreparedStatement prepStmt = null;
 			
-			String sanitizedOrder = SecurityUtils.sanitize(order);
+			String sanitizedOrder = SecurityUtils.sanitizeForOrder(order);
 		
 			connection = dataSource.getConnection();
 			System.err.println("sanitizedOrder = " + sanitizedOrder);
@@ -194,13 +194,13 @@ public class OrderDAO implements IOrderDAO<OrderBean, Integer> {
 		Connection connection = null;
 		PreparedStatement prepStmt = null;
 		
-	
+		order = SecurityUtils.sanitizeForOrder(order);
+		
 		connection = dataSource.getConnection();
 		prepStmt = connection.prepareStatement("SELECT * FROM " + TABLE_NAME + " WHERE order_date >= ? "
-				+ " AND order_date <= ? ORDER BY ?;");
+				+ " AND order_date <= ? ORDER BY " + order + ";");
 		prepStmt.setTimestamp(1, fromDate);
 		prepStmt.setTimestamp(2, toDate);
-		prepStmt.setString(3, order);
 
 		
 		ResultSet rs = prepStmt.executeQuery();

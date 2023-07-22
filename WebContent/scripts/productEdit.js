@@ -93,6 +93,8 @@ function createMerchandiseBlock(product) {
 	amountInput.setAttribute ("min", "0");
 	if (isEdit)
 		amountInput.value = product.amount;
+	else
+		amountInput.value = 5;
 	
 	let amountLabel = document.createElement("label");
 	amountLabel.setAttribute("for", "amount_input");
@@ -118,7 +120,9 @@ function createCourseBlock(product) {
 	lescountInput.setAttribute ("min", "1");
 	lescountInput.setAttribute("max", "30");
 	if (isEdit) 
-		lescountInput.value = product.lesson_count
+		lescountInput.value = product.lesson_count;
+	else
+		lescountInput.value = 3;
 	
 	let lescountLabel = document.createElement("label");
 	lescountLabel.setAttribute("for", "lescount_input");
