@@ -6,8 +6,7 @@ const passwordRegex = /^[a-zA-Z0-9._]+$/;
 
 $(document).ready(function() {
 	
-	var form = document.getElementsByTagName("form")[0];
-	var submitButton = document.getElementById("submit_button");
+	const form = document.getElementsByTagName("form")[0];
 	
 
 	
@@ -19,6 +18,9 @@ $(document).ready(function() {
 			event.target.classList.remove("invalid");
 		}
 		
+		
+//		const submitButton = document.getElementById("submit_button");
+	
 //		if (!(form.reportValidity())) {
 //			
 //			submitButton.disabled = true;

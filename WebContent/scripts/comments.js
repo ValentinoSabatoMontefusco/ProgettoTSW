@@ -13,7 +13,7 @@
 			servletTarget= "moderation";
 		
 		
-		var xhr = $.post({url: servletTarget, data: {type: "Delete", comment_id: event.target.dataset.id}});
+		let xhr = $.post({url: servletTarget, data: {type: "Delete", comment_id: event.target.dataset.id}});
 		
 		xhr.always(function() {
 			

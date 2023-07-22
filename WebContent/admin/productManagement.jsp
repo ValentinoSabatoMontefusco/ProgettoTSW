@@ -8,16 +8,15 @@
 	<script src="${ctxPath}/scripts/jquery-3.6.3.js"></script>
 	<script src="${ctxPath}/scripts/general.js"></script>
 	<script src="${ctxPath}/scripts/shop.js"></script>
-	<link rel="stylesheet" href="${ctxPath}/styles/home.css"/>
+	<link rel="stylesheet" href="${ctxPath}/styles/general.css"/>
 	<link rel="stylesheet" href="${ctxPath}/styles/shop.css"/>
-	<!--  <link rel="stylesheet" href="${ctxPath}/styles/buttons.css"/> -->
 <title>Product Management</title>
 </head>
 <body>
 
-<%@include file = "../view/BulkView.jsp" %>
+<%@include file = "/view/header.jsp" %>
 	
-	<section>
+	<section class="main_section">
 		<h1>Admin Product Management</h1>
 		<br>
 		<div>Click below to add a new product or click on the already existing products to edit (or delete!) them</div>
@@ -26,7 +25,7 @@
 		<div id = "course_container" class = "product_container"></div>
 		<br>
 		<h2>Our Merchandise</h2>
-		<div id = "merchandise_container" class = "product_container"></div>
+		<div id = "merchandise_container" class = "product_container">
 		<% @SuppressWarnings("unchecked")
 		   Collection<ProductBean> Products = (Collection<ProductBean>) request.getAttribute("products");
 		
@@ -47,6 +46,6 @@
 		   </div>
 	</section>
 	
-
+<%@include file = "/view/footer.jsp" %>
 </body>
 </html>

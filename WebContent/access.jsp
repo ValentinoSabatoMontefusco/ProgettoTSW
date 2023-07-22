@@ -45,8 +45,7 @@
 				<br>
 			</fieldset>
 			
-			<!--  <input type="submit" id="submitButton" value = "Conferma"/>
-			<input type="reset" value = "Reset">-->
+
 			<button type="submit" id="submit_button">Confirm</button>
 			<button type="reset">Reset</button>
 		
@@ -59,7 +58,3 @@
 	<script src="${ctxPath}/scripts/forms.js"></script>
 </body>
 </html>
-
-<% /* 				<label for="email">E-Mail: </label>
-				<input type = "email" id = "email" name = "email" placeholder = "pippo@topolino.it" autofocus="autofocus"></input>
-				<br> */ %>

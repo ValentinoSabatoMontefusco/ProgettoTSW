@@ -106,14 +106,3 @@
 
 </body>
 </html>
-
-
-<!--  
-
-<label for="sort_by">Sort By: </label>
-			<input type="radio" name="sort_by" id = "sort_by_user" value="User">
-			<input type="radio" name="sort_by" id = "sort_by_date" checked="checked" value="Creation_Date">
-			
-			<label for="order">Order: </label>
-			<input type="radio" name="order" id="order_ASC" value="Ascending">
-			<inpuyt type="radio" name="order" id="order_DESC" checked="checked" value ="Descending"> -->

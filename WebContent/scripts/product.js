@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	
-	var product = JSON.parse(JSONProduct);
+	const product = JSON.parse(JSONProduct);
 	$(".product_edit").on("click", function(event) {
 		
 		fakePostRequest(event, /*contextPath +*/ "admin/productEdit?name=" + product.name, "product_id", product.id, "type", "retrieve");
@@ -9,7 +9,7 @@ $(document).ready(function() {
 	
 	$(".product_delete").on("click", function(event) {
 		
-		confirmed = confirm("Are you sure you want to delete this product? The decision cannot be reversed");
+		let confirmed = confirm("Are you sure you want to delete this product? The decision cannot be reversed");
 		
 		if (confirmed) {
 			
@@ -29,7 +29,7 @@ $(document).ready(function() {
 		let username = document.getElementById("comment_username").value;
 		let content = document.getElementById("content_input").value;
 		
-		var xhr =$.post({url: "user/comment", data: {type: type, product_id: product_id, user_username: username, content_input: content}});
+		let xhr =$.post({url: "user/comment", data: {type: type, product_id: product_id, user_username: username, content_input: content}});
 		
 		xhr.always(function () {
 			

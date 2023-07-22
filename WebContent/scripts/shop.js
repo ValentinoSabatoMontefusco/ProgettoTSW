@@ -16,23 +16,23 @@ var testCounter = 0;
 
 function createProductBlock(JSONProduct, type, admin, inCart) {
 	
-	var product = JSON.parse(JSONProduct);
+	const product = JSON.parse(JSONProduct);
 	
 	if (testCounter++ == 0)
 		console.log(JSONProduct);
 	
 	
-	var productLogo = document.createElement("a");
+	let productLogo = document.createElement("a");
 	productLogo.href = contextPath + "/product?name=" + product.name;
 	productLogo.addEventListener("click", function(event) {
 		event.preventDefault();
 		fakePostRequest(event, productLogo.href, "product_id", product.id, "type", "retrieve")});
-	var productImage = document.createElement("img");
+	let productImage = document.createElement("img");
 	productImage.className = "product_logo hoverable";
 	productImage.src = "/Code_Fanatic/images/logos/" + product.name.toLowerCase().replace(/\s/g, '') + ".png"
 	productLogo.appendChild(productImage);
 	
-	var productName = document.createElement("a");
+	let productName = document.createElement("a");
 	productName.className = "product_name hoverable";
 	productName.innerText = product.name;
 	productName.href = contextPath + "/product?name=" +  product.name;
@@ -40,16 +40,39 @@ function createProductBlock(JSONProduct, type, admin, inCart) {
 		event.preventDefault();
 		fakePostRequest(event, productName.href,  "product_id", product.id, "type", "retrieve")});
 	
-	var productDescription = document.createElement("div");
+	let productDescription = document.createElement("div");
 	productDescription.className = "product_description";
 	productDescription.innerText = product.description;
 	
-	var productPrice = document.createElement("div");
+	let productPrice = document.createElement("div");
 	productPrice.className = "product_price";
 	productPrice.innerText = product.price + " $";
 	
+	
+	
+	let productBlock = document.createElement("div");
+	productBlock.className = "product_block";
+	productBlock.setAttribute("data-product-type", product.type);
+	if (product.type === "Merchandise")
+		productBlock.setAttribute("data-amount", product.amount);
+	productBlock.appendChild(productLogo);
+	productBlock.appendChild(productName);
+	productBlock.appendChild(productDescription);
+	productBlock.appendChild(productPrice);
 	if (admin === false) {
-		var productButton = document.createElement("button");
+		let productButton = createProductButton(product, inCart);
+		productBlock.appendChild(productButton);
+	}
+		
+	
+	console.log(type.toLowerCase() + "_container");
+	document.getElementById(type.toLowerCase() + "_container").appendChild(productBlock);
+	
+}
+
+function createProductButton(product, inCart) {
+	
+	let productButton = document.createElement("button");
 		productButton.className = "product_button";
 		if (product.type == "Course")
 			productButton.innerText = inCart ? "Already in Cart" : "Add to Cart";
@@ -80,31 +103,10 @@ function createProductBlock(JSONProduct, type, admin, inCart) {
 						
 			}
 				
-				
-				
-			})
-			
-		
-				
+			})	
 	
 		});
-	}
-	
-	var productBlock = document.createElement("div");
-	productBlock.className = "product_block";
-	productBlock.setAttribute("data-product-type", product.type);
-	if (product.type === "Merchandise")
-		productBlock.setAttribute("data-amount", product.amount);
-	productBlock.appendChild(productLogo);
-	productBlock.appendChild(productName);
-	productBlock.appendChild(productDescription);
-	productBlock.appendChild(productPrice);
-	if (admin === false) 
-		productBlock.appendChild(productButton);
-	
-	console.log(type.toLowerCase() + "_container");
-	document.getElementById(type.toLowerCase() + "_container").appendChild(productBlock);
-	
+		
+		return productButton;
 }
-
 

@@ -32,8 +32,9 @@
 		
 			ProductBean currentProduct = null;
 			int quantity;
+			Boolean addable;
 		   	for (Entry<ProductBean, Integer> entry : products) {
-		   		
+		   		addable = true;
 		   		currentProduct = entry.getKey();
 		   		quantity = entry.getValue();
 		   		
@@ -46,7 +47,7 @@
 		  			<div class="product_name"><%= currentProduct.getName() %></div>
 		  			<div class="product_description"><%= currentProduct.getDescription() %></div>
 		  			<div class="product_price"><%= currentProduct.getPrice() %> $</div>
-	  				<div class="product_subtotal">Subtotal: <%= currentProduct.getPrice() * quantity %> $</div>
+	  				<div class="product_subtotal">Subtotal: <span class="subtotal_span"><%= currentProduct.getPrice() * quantity %></span> $</div>
 	  			</div>
 	  			<div class="quantity_block">
 	  				<div class="merch_amount" data-product-type="<%= currentProduct.getType()%>" 
@@ -59,7 +60,13 @@
 	  				<div class="product_quantity">Qt. <span class = "quantity"><%= quantity %></span></div>
 	  				<!--  <input type="button" class="product_buttonAdd" value="+"></input>
 	  				<input type="button" class="product_buttonSub" value="-"></input>-->
-	  				<button class="product_buttonAdd"  <%= currentProduct.getType().equals( "Course") ? "disabled" : "" %>>+</button>
+	  				<button class="product_buttonAdd"  
+	  				<% if (currentProduct.getType().equals("Course") || 
+	  					(currentProduct.getType().equals("Merchandise") &&
+	  					((MerchBean) currentProduct).getAmount() <= quantity))
+	  						addable = false;
+	  					%>
+	  				<%= !addable ? "disabled" : "" %>>+</button>
 	  				<button class="product_buttonSub">-</button>
 	  			</div>
 	  			

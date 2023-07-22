@@ -6,8 +6,8 @@ $(document).ready(function() {
 	
 	console.log(product);
 	
-	var insertBefore = document.getElementById("product_id");
-	var parent = document.getElementById("product_fieldset"); //$("#product_fieldset");
+	let insertBefore = document.getElementById("product_id");
+	let parent = document.getElementById("product_fieldset");
 	
 	if (isEdit)
 		switch(product.type) {
@@ -22,7 +22,7 @@ $(document).ready(function() {
 			
 		} else {
 		
-		var select = document.getElementById("type_input");
+		let select = document.getElementById("type_input");
 		parent.insertBefore(createCourseBlock(), insertBefore);
 		
 		select.addEventListener("input", function(event) {
@@ -60,7 +60,7 @@ $(document).ready(function() {
 		
 		if (logoInput.files.length <= 0 && document.getElementById("name_input").value) {
 			
-			var oldnameInput = document.createElement("input");
+			let oldnameInput = document.createElement("input");
 			oldnameInput.type = "hidden";
 			oldnameInput.name = "oldname_input";
 			oldnameInput.value = startingName;

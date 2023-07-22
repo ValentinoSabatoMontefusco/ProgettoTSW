@@ -1,14 +1,14 @@
 $(document).ready(function() {
 	
-	var productBlocks = document.getElementsByClassName("product_block");
+	let productBlocks = document.getElementsByClassName("product_block");
 	
-	var quantity;
-	var totalPrice = 0;
+	let quantity;
+	let totalPrice = 0;
 
-	var buttonAdd;
-	var buttonSub;
-	var productID;
-	var productPrice;
+	let buttonAdd;
+	let buttonSub;
+	let productID;
+	let productPrice;
 
 	
 	for (let i = 0; i < productBlocks.length; i++) {
@@ -55,12 +55,13 @@ $(document).ready(function() {
 			})
 		})
 		
-		var amountDiv = this.querySelector(".merch_amount");
+	
 		
 		
 		$(quantityBlock).on("cartUpdated", function(event, cartInfo) {
 			
-			console.log("QuantityBlock listena cart updated? + " + cartInfo + event.detail);
+			let amountDiv = this.querySelector(".merch_amount");
+			console.log("QuantityBlock listena cart updated? + " + JSON.stringify(cartInfo));
 			
 			console.log("amountDiv type = " + amountDiv.dataset.productType + " and amount = " + amountDiv.dataset.amount);
 			if (amountDiv.dataset.productType == "Merchandise" && amountDiv.dataset.amount - cartInfo.productQuantity <= 5) {
@@ -97,11 +98,11 @@ $(document).ready(function() {
 		
 	$("#buy_now").on("click", function() {
 		
-		var confirmed = confirm("Are you sure you want to finalize the purchase?");
+		let confirmed = confirm("Are you sure you want to finalize the purchase?");
 		
 		if (confirmed) {
 			
-			var jqxhr = updateCart(0, "Checkout", this);
+			let jqxhr = updateCart(0, "Checkout", this);
 			
 			jqxhr.done(function() {
 				
@@ -140,19 +141,20 @@ $(document).ready(function() {
 	function updateProductBlock(productBlock, productQuantity, delta) {
 		
 		console.log("updateProductBlock says productQuantity = " + productQuantity +  " and delta = " + delta);
-		//console.log(productBlock.innerHTML);
+
 		
-		var totalPrice = parseFloat($("#total_price").text());
+		let totalPrice = parseFloat($("#total_price").text());
 		const price = parseFloat(productBlock.querySelector(".product_price").textContent.trim());
 		
 		if (productQuantity == 0) {
 			
-			//$(".product_container").removeChild(productBlock);
+
 			productBlock.remove();
 		} else {
 			
-			const subtotal = parseFloat(productBlock.querySelector(".product_subtotal").textContent.trim());
-			productBlock.querySelector(".product_subtotal").textContent = (subtotal + (delta*price)).toFixed(2) + " $";
+			let subtotal = parseFloat(productBlock.querySelector(".subtotal_span").textContent.trim());
+			console.log("Subtotal = " + subtotal + ", price = " + price + ", newSubtotal = " + (subtotal + (delta*price)));
+			productBlock.querySelector(".subtotal_span").textContent = (subtotal + (delta*price)).toFixed(2);
 			productBlock.querySelector(".quantity").textContent = productQuantity;
 		}
 		
@@ -169,12 +171,6 @@ $(document).ready(function() {
 	}
 	
 	function clearCartVista() {
-		
-//			let productBlocks = document.getElementsByClassName("product_block");
-//				for (let i = 0; productBlocks.length; i++)
-//					productBlocks[i].remove();
-//					
-//				$("#total_price").text("0.00");
 				
 				
 			$(".product_block").each(function() {

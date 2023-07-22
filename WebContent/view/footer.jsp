@@ -3,7 +3,7 @@
 	<div class="cart_container">
 	<a href="${ctxPath}/user/myCart"><img src="${ctxPath}/images/cart.png" id="cart_icon" alt="cart icon">
 	<button id ="cart_span">
-		<% Cartesio footerCart = (Cartesio)  request.getAttribute("cart"); %>
+		<% Cartesio footerCart = (Cartesio)  request.getSession().getAttribute("cart"); %>
 			<%= footerCart == null ? 0 : footerCart.getTotalQuantity() %></button>
 	</a>
 	</div>

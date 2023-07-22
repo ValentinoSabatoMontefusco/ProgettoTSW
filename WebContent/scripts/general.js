@@ -29,14 +29,13 @@ $(document).ready(function() {
 	function trimDescriptions() {
 		
 		const descriptions = document.getElementsByClassName("product_description");
-	
-	for (let i = 0; i < descriptions.length; i++) {
 		
-		if (descriptions[i].innerText.length > 100) {
+		for (const element of descriptions) {
 			
-			descriptions[i].innerText = descriptions[i].innerText.substring(0,100) + "...";
+			if(element.innerText.length > 100) {
+				element.innerText = element.innerText.substring(0, 100) + "...";
+			}
 		}
-	}
 	
 	}
 	
