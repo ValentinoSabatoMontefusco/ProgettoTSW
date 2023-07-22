@@ -1,0 +1,43 @@
+@charset "ISO-8859-1";
+
+#comments_container {
+	
+	
+}
+
+.comment_container {
+	
+	position: relative;
+	margin: 0.75em 3%;
+	padding: 4% 3%;
+	border-style: none;
+	border-radius: 1em;
+	background-color: orange;
+	
+}
+
+.comment_user {
+	
+	font-family: Druk Wide, HelveticaNow, Arial,sans-serif;
+	font-weight: bold;
+	margin-bottom: 0.25em;
+}
+
+.comment_date {
+	
+	font-style: oblique;
+	font-size: small;
+}
+
+.comment_content {
+	
+	margin-bottom: 2em;
+}
+
+.delete_comment {
+	
+	position: absolute;
+	right: 1em;
+	bottom: 1em;
+	min-width: 100px;
+}

@@ -3,7 +3,7 @@
     pageEncoding="ISO-8859-1"%>
     <%@page import="com.google.gson.*" %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 	<script src="${ctxPath}/scripts/jquery-3.6.3.js"></script>
 	<script src="${ctxPath}/scripts/general.js"></script>

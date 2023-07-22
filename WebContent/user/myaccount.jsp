@@ -3,7 +3,7 @@
 <%@ page import="com.code_fanatic.model.bean.*" %>
 <%  String username = (String) request.getAttribute("username"); %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="ISO-8859-1">
 	<script src="${ctxPath}/scripts/jquery-3.6.3.js"></script>

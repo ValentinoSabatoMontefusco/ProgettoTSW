@@ -29,8 +29,14 @@ public class CommentDAO implements ICommentDAO {
 	@Override
 	public synchronized void doSave(CommentBean bean) throws SQLException {
 		
-		Connection connection = ds.getConnection();
+		
+		Connection connection = null;
 		PreparedStatement prepStmt = null;
+		try {
+			
+		
+		connection = ds.getConnection();
+
 		// INSERIMENTO NUOVO COMMENTO 
 		
 		if (bean.getId() == 0) {
@@ -70,15 +76,19 @@ public class CommentDAO implements ICommentDAO {
 				System.out.println("Modifca commento fallita");
 			}
 		}
-	
-		try {
-			if (prepStmt != null)
-				prepStmt.close();
-		} finally {
-			if (connection != null)
-				connection.close();
-		}
 		
+		} finally {
+			try {
+				if (prepStmt != null)
+					prepStmt.close();
+			} finally {
+				if (connection != null)
+					connection.close();
+			}
+			
+		}
+	
+	
 	}
 
 	@Override
@@ -86,19 +96,26 @@ public class CommentDAO implements ICommentDAO {
 
 		Connection connection = null;
 		PreparedStatement prepStmt = null;
+		int del;
 		
+		try {
+					
 		connection = ds.getConnection();
 		prepStmt = connection.prepareStatement("DELETE FROM " + TABLE_NAME + " WHERE id = ?;");
 		
 		prepStmt.setInt(1, key);
-		int del = prepStmt.executeUpdate();
-		try {
-			if (prepStmt != null)
-				prepStmt.close();
+		del = prepStmt.executeUpdate();
+		
 		} finally {
-			if (connection != null)
-				connection.close();
+			try {
+				if (prepStmt != null)
+					prepStmt.close();
+			} finally {
+				if (connection != null)
+					connection.close();
+			}
 		}
+		
 		
 		return del > 0;
 	}
@@ -111,7 +128,9 @@ public class CommentDAO implements ICommentDAO {
 		CommentBean comment = null;
 		
 
+		try {
 			
+
 		connection = ds.getConnection();
 		prepStmt = connection.prepareStatement("SELECT * FROM " + TABLE_NAME + " WHERE id = ?;");
 		prepStmt.setInt(1, key);
@@ -123,12 +142,15 @@ public class CommentDAO implements ICommentDAO {
 			comment = buildComment(rs);
 		} 
 
-		try {
-			if (prepStmt != null)
-				prepStmt.close();
 		} finally {
-			if (connection != null)
-				connection.close();
+			
+			try {
+				if (prepStmt != null)
+					prepStmt.close();
+			} finally {
+				if (connection != null)
+					connection.close();
+			}
 		}
 	
 			
@@ -138,15 +160,21 @@ public class CommentDAO implements ICommentDAO {
 	@Override
 	public Collection<CommentBean> doRetrieveAll(String order) throws SQLException {
 		
+		Connection connection = null;
+		PreparedStatement prepStmt = null;
+		ArrayList<CommentBean> comments = null;
 		
-		Connection connection = ds.getConnection();
+		try {
+			
+			
+		connection = ds.getConnection();
 		
 		order = SecurityUtils.sanitizeForComment(order);
-		PreparedStatement prepStmt = connection.prepareStatement("SELECT * FROM " + TABLE_NAME + " ORDER BY "+ order + ";");
+		prepStmt = connection.prepareStatement("SELECT * FROM " + TABLE_NAME + " ORDER BY "+ order + ";");
 		
 		ResultSet rs = prepStmt.executeQuery();
 		
-		ArrayList<CommentBean> comments = new ArrayList<CommentBean>();
+		comments = new ArrayList<CommentBean>();
 		CommentBean currentComment;
 		
 		while(rs.next()) {
@@ -159,15 +187,18 @@ public class CommentDAO implements ICommentDAO {
 			
 		}
 		
-		try {
-			if (prepStmt != null)
-				prepStmt.close();
 		} finally {
-			if (connection != null)
-				connection.close();
+			try {
+			
+				if (prepStmt != null)
+					prepStmt.close();
+			} finally {
+				if (connection != null)
+					connection.close();
+			}
 		}
 	
-		if (comments.size() == 0)
+		if (comments != null && comments.size() == 0)
 			System.err.println("Nessun commento trovato");
 		
 		return comments;
@@ -175,16 +206,22 @@ public class CommentDAO implements ICommentDAO {
 	
 public Collection<CommentBean> doRetrieveAllByUser(String username) throws SQLException {
 		
+		Connection connection = null;
+		PreparedStatement prepStmt = null;
+		ArrayList<CommentBean> comments = null; 
 		
-		Connection connection = ds.getConnection();
+		try  {
+			
+			
+			connection = ds.getConnection();
 		
-		PreparedStatement prepStmt = connection.prepareStatement("SELECT * FROM " + TABLE_NAME + " WHERE user_username = ?;");
+			prepStmt = connection.prepareStatement("SELECT * FROM " + TABLE_NAME + " WHERE user_username = ?;");
 		
 		prepStmt.setString(1, username);
 		
 		ResultSet rs = prepStmt.executeQuery();
 		
-		ArrayList<CommentBean> comments = new ArrayList<CommentBean>();
+		comments = new ArrayList<CommentBean>();
 		CommentBean currentComment;
 		
 		while(rs.next()) {
@@ -196,6 +233,9 @@ public Collection<CommentBean> doRetrieveAllByUser(String username) throws SQLEx
 			
 			
 		}
+		} finally {
+			
+			
 		
 		try {
 			if (prepStmt != null)
@@ -204,8 +244,8 @@ public Collection<CommentBean> doRetrieveAllByUser(String username) throws SQLEx
 			if (connection != null)
 				connection.close();
 		}
-		
-		if (comments.size() == 0)
+		}
+		if (comments != null && comments.size() == 0)
 			System.err.println("Nessun commento trovato per questo utente");
 		
 		return comments;
@@ -251,10 +291,14 @@ public Collection<CommentBean> doRetrieveAllByUser(String username) throws SQLEx
 	
 public synchronized Collection<CommentBean> doRetrieveAll(Timestamp fromDate, Timestamp toDate, String order) throws SQLException {
 		
-		Collection<CommentBean> comments = new ArrayList<CommentBean>();
+		Collection<CommentBean> comments = null;
 		
 		Connection connection = null;
 		PreparedStatement prepStmt = null;
+		
+		try {
+			
+			
 		
 		order = SecurityUtils.sanitizeForComment(order);
 	
@@ -269,7 +313,7 @@ public synchronized Collection<CommentBean> doRetrieveAll(Timestamp fromDate, Ti
 		ResultSet rs = prepStmt.executeQuery();
 		
 		CommentBean currentComment = null;
-		
+		comments = new ArrayList<CommentBean>();
 		while(rs.next()) {
 			
 			currentComment = buildComment(rs);
@@ -277,7 +321,9 @@ public synchronized Collection<CommentBean> doRetrieveAll(Timestamp fromDate, Ti
 				comments.add(currentComment);
 		}
 		
-
+		} finally {
+			
+			
 		try {
 			if (prepStmt != null)
 				prepStmt.close();
@@ -285,8 +331,10 @@ public synchronized Collection<CommentBean> doRetrieveAll(Timestamp fromDate, Ti
 			if (connection != null)
 				connection.close();
 		}
+		
+		}
 	
-		if (comments.size() == 0)
+		if (comments == null || comments.size() == 0)
 			System.err.println("Nessun commento trovato");
 			
 		

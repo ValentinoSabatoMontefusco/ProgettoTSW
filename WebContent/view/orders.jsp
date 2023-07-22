@@ -27,6 +27,7 @@
 		   <div class="order_presentation">Order made in date: <%= order.getOrder_date() %>
 		   		<%if ("recap".equals(view)) { %> by <%= order.getUsername() %> <% } %></div>
 		   <table>
+		   <caption><%= order.getUsername() %> Order</caption>
 		   	<tr>
 		   		<th>Product</th>
 		   		<th>Name</th>

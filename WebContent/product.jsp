@@ -2,12 +2,13 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 	<meta charset="ISO-8859-1">
 	<script src="${ctxPath}/scripts/jquery-3.6.3.js"></script>
 	<script src="${ctxPath}/scripts/general.js"></script>
 	<link rel="stylesheet" href="${ctxPath}/styles/general.css"/>
+	<link rel="stylesheet" href="${ctxPath}/styles/comments.css"/>
 	
 	<jsp:useBean id="product" class="com.code_fanatic.model.bean.ProductBean" scope = "request"></jsp:useBean>
 		

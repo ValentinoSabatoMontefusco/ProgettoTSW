@@ -2,7 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 <%@ page import = "com.code_fanatic.model.bean.*" %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
 		<meta charset="ISO-8859-1">
 		<link rel="stylesheet" href = "${ctxPath}/styles/home.css" />

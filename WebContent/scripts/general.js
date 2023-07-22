@@ -42,7 +42,7 @@ $(document).ready(function() {
 	
 	function fakePostRequest(event, href, ...hiddenParams) {
 	
-	event.preventDefault;
+	event.preventDefault();
 	
 	const form = document.createElement("form");
 	form.method = "POST";

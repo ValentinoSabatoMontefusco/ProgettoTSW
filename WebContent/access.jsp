@@ -2,7 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 	<meta charset="ISO-8859-1">
 	<script src="${ctxPath}/scripts/jquery-3.6.3.js"></script>

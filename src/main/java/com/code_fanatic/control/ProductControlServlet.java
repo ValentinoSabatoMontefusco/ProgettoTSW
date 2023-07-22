@@ -325,7 +325,11 @@ public class ProductControlServlet extends HttpServlet {
 					File oldFile = new File(save_path + oldname);
 					
 					if (oldFile.exists()) 
-						oldFile.renameTo(new File(save_path + filename));
+					if(oldFile.renameTo(new File(save_path + filename)))
+						System.out.println("Manipolazione immagine avvenuta con successo");
+					else {
+						System.err.println("Manipolazione immagine fallita");
+					}
 					
 					
 				}
