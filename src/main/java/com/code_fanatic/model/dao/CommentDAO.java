@@ -253,37 +253,45 @@ public Collection<CommentBean> doRetrieveAllByUser(String username) throws SQLEx
 
 	public Collection<CommentBean> doRetrieveAllByProduct(int id) throws SQLException {
 		
-		
-		Connection connection = ds.getConnection();
-		
-		PreparedStatement prepStmt = connection.prepareStatement("SELECT * FROM " + TABLE_NAME + " WHERE product_id = ?;");
-		
-		prepStmt.setInt(1, id);
-		
-		ResultSet rs = prepStmt.executeQuery();
-		
-		ArrayList<CommentBean> comments = new ArrayList<CommentBean>();
-		CommentBean currentComment;
-		
-		while(rs.next()) {
-			
-			currentComment = buildComment(rs);
-			
-			if (currentComment != null)
-				comments.add(currentComment);
-			
-			
-		}
+		Connection connection = null;
+		PreparedStatement prepStmt = null;
+		ArrayList<CommentBean> comments = null;
 		
 		try {
-			if (prepStmt != null)
-				prepStmt.close();
+			
+			connection = ds.getConnection();
+			
+			prepStmt = connection.prepareStatement("SELECT * FROM " + TABLE_NAME + " WHERE product_id = ?;");
+			
+			prepStmt.setInt(1, id);
+			
+			ResultSet rs = prepStmt.executeQuery();
+			comments = new ArrayList<CommentBean>();
+			comments = new ArrayList<CommentBean>();
+			CommentBean currentComment;
+			
+			while(rs.next()) {
+				
+				currentComment = buildComment(rs);
+				
+				if (currentComment != null)
+					comments.add(currentComment);
+				
+				
+			}
 		} finally {
-			if (connection != null)
-				connection.close();
+			
+			
+			
+			try {
+				if (prepStmt != null)
+					prepStmt.close();
+			} finally {
+				if (connection != null)
+					connection.close();
+			}
 		}
-	
-		if (comments.size() == 0)
+		if (comments == null || comments.size() == 0)
 			System.err.println("Nessun commento trovato per questo utente");
 			
 		return comments;
