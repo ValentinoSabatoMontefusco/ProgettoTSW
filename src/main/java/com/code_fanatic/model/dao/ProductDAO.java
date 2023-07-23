@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
-import com.code_fanatic.control.admin.OrdersRecapServlet;
+
 import com.code_fanatic.model.bean.ProductBean;
 
 
@@ -167,7 +167,7 @@ public class ProductDAO implements IGenericDAO<ProductBean, Integer> {
 		
 		Connection connection = null;
 		PreparedStatement prepStmt = null;
-		Collection<ProductBean> products = new ArrayList<ProductBean>(); 
+		Collection<ProductBean> products = new ArrayList<>(); 
 		
 		try {
 			
@@ -217,7 +217,7 @@ public synchronized Collection<ProductBean> doRetrieveAllSubclasses(String order
 		
 		Connection connection = null;
 		PreparedStatement prepStmt = null;
-		Collection<ProductBean> products = new ArrayList<ProductBean>(); 
+		Collection<ProductBean> products = new ArrayList<>(); 
 		
 		try {
 			

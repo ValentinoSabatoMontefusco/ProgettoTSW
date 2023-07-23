@@ -2,7 +2,7 @@ package com.code_fanatic.control;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.http.HttpRequest;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import javax.sql.DataSource;
 
-import com.code_fanatic.control.admin.OrdersRecapServlet;
+
 import com.code_fanatic.model.MainContext;
 import com.code_fanatic.model.bean.CommentBean;
 import com.code_fanatic.model.bean.CourseBean;
@@ -66,7 +66,7 @@ public class ProductControlServlet extends HttpServlet {
 		
 		String type = request.getParameter("type");
 		
-		ArrayList<String> errors = new ArrayList<String>();
+		ArrayList<String> errors = new ArrayList<>();
 		
 		DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
 		IGenericDAO<ProductBean, Integer> productDao = new ProductDAO(ds);
@@ -108,7 +108,7 @@ public class ProductControlServlet extends HttpServlet {
 			
 			request.setAttribute("product", product);
 				
-			reqDisp = routeRequest(request, response, ds, productID);
+			reqDisp = routeRequest(request, ds, productID);
 			
 			break;
 			
@@ -268,9 +268,9 @@ public class ProductControlServlet extends HttpServlet {
 	
 	private synchronized void imageSave(HttpServletRequest request, String filename, String oldname)  {
 		
-		String save_path = request.getServletContext().getRealPath("") + "images\\logos\\";
+		String savePath = request.getServletContext().getRealPath("") + "images\\logos\\";
 		
-		File fileSaveDir = new File(save_path);
+		File fileSaveDir = new File(savePath);
 		if (!fileSaveDir.exists())
 			fileSaveDir.mkdir();
 		
@@ -281,18 +281,18 @@ public class ProductControlServlet extends HttpServlet {
 			if (part != null && part.getSize() > 0) {
 					
 					
-					bindImageFile(filename, save_path, part);
+					bindImageFile(filename, savePath, part);
 						
 					
 					
 			}  else if (oldname != null) {
 				
-				File oldFile = new File(save_path + oldname);
+				File oldFile = new File(savePath + oldname);
 				
 				if (oldFile.exists()) 
-					if(oldFile.renameTo(new File(save_path + filename)))
+					if(oldFile.renameTo(new File(savePath + filename))) {
 						LOGGER.log(Level.INFO, "Immagine rinominata");
-					else {
+					} else {
 						LOGGER.log(Level.WARNING, "Manipolazione immagine fallita");
 					}
 					
@@ -305,10 +305,10 @@ public class ProductControlServlet extends HttpServlet {
 		}
 	}
 	
-	private void bindImageFile(String filename, String save_path, Part part) throws IOException {
+	private void bindImageFile(String filename, String savePath, Part part) throws IOException {
 		
-		filename = filename.toLowerCase().replaceAll("\\s",  "") + ".png";//part.getSubmittedFileName();
-		Path path = Paths.get(save_path + File.separator + filename);
+		filename = filename.toLowerCase().replaceAll("\\s",  "") + ".png";
+		Path path = Paths.get(savePath + File.separator + filename);
 		
 		if (filename != null && !filename.equals("")) {
 			
@@ -322,9 +322,9 @@ public class ProductControlServlet extends HttpServlet {
 			if (i != 0)
 				Files.move(path, newPath, StandardCopyOption.REPLACE_EXISTING);
 				
-			part.write(save_path + filename);
+			part.write(savePath + filename);
 			
-			LOGGER.log(Level.INFO, "Dovrebbesi aver salvato in: " + save_path + filename);
+			LOGGER.log(Level.INFO, String.format("Dovrebbesi aver salvato in: %s%s", savePath, filename));
 		
 		}
 	}
@@ -337,14 +337,14 @@ public class ProductControlServlet extends HttpServlet {
 		int index = uri.lastIndexOf(".");
 		uri = stringBuilder.insert(index, "(" + counter + ")").toString();
 		
-		LOGGER.log(Level.FINE, "updatePath says: new Uri = " + uri);
+		LOGGER.log(Level.FINE, String.format("updatePath says: new Uri = %s", uri));
 
 		
 		return Paths.get(uri);
 		
 	}
 	
-	private RequestDispatcher routeRequest(HttpServletRequest request, HttpServletResponse response, DataSource ds, int productID) {
+	private RequestDispatcher routeRequest(HttpServletRequest request, DataSource ds, int productID) {
 		
 		RequestDispatcher reqDisp = null;
 		if (request.getRequestURI().contains("productCreate")) {

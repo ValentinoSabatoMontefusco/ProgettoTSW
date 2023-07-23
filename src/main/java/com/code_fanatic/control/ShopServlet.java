@@ -14,13 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-import com.code_fanatic.control.admin.OrdersRecapServlet;
-import com.code_fanatic.model.bean.CourseBean;
-import com.code_fanatic.model.bean.MerchBean;
+
 import com.code_fanatic.model.bean.ProductBean;
-import com.code_fanatic.model.dao.CourseDAO;
-import com.code_fanatic.model.dao.IGenericDAO;
-import com.code_fanatic.model.dao.MerchDAO;
+
 import com.code_fanatic.model.dao.ProductDAO;
 
 @WebServlet(urlPatterns = {"/shop", "/admin/productManagement"})
@@ -51,8 +47,9 @@ public class ShopServlet extends HttpServlet {
 		}
 		
 		if (!request.getRequestURI().contains("admin")) {
+			@SuppressWarnings("unchecked")
 			Collection<Integer> productsOwned = (Collection<Integer>) request.getSession().getAttribute("productsOwned");
-			if (productsOwned != null && productsOwned.size() > 0) {
+			if (productsOwned != null && !productsOwned.isEmpty()) {
 				
 				products.removeIf( p -> productsOwned.contains(p.getId()));
 	

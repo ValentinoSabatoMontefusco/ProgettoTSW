@@ -1,8 +1,6 @@
 $(document).ready(function() {
 	
 	
-	//retrieveOrders(null, "user_username")
-	
 	
 });
 

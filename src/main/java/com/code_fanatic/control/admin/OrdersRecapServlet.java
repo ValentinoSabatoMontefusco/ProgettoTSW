@@ -59,17 +59,17 @@ public class OrdersRecapServlet extends HttpServlet {
 			
 		}
 		
-		String order_by = request.getParameter("order_by");
-		String sort_order = request.getParameter("sorting_order");
+		String orderBy = request.getParameter("order_by");
+		String sortOrder = request.getParameter("sorting_order");
 		
 		String sort;
 		
-		if (order_by != null && order_by.equals("users"))
+		if (orderBy != null && orderBy.equals("users"))
 			sort = "user_username";
 		else
 			sort = "order_date";
 		
-		if(sort_order != null && sort_order.equals("asc"))
+		if(sortOrder != null && sortOrder.equals("asc"))
 			sort = sort.concat(" ASC");
 		else 
 			sort = sort.concat(" DESC");

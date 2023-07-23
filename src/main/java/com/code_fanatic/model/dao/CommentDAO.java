@@ -14,9 +14,7 @@ import javax.sql.DataSource;
 
 import com.code_fanatic.control.utils.SecurityUtils;
 import com.code_fanatic.model.bean.CommentBean;
-import com.code_fanatic.model.bean.OrderBean;
-import com.code_fanatic.model.bean.ProductBean;
-import com.mysql.cj.exceptions.RSAException;
+
 
 public class CommentDAO implements IExtendedDAO<CommentBean, Integer> {
 	
@@ -177,7 +175,7 @@ public class CommentDAO implements IExtendedDAO<CommentBean, Integer> {
 		
 		ResultSet rs = prepStmt.executeQuery();
 		
-		comments = new ArrayList<CommentBean>();
+		comments = new ArrayList<>();
 		CommentBean currentComment;
 		
 		while(rs.next()) {
@@ -224,7 +222,7 @@ public Collection<CommentBean> doRetrieveAllByUser(String username) throws SQLEx
 		
 		ResultSet rs = prepStmt.executeQuery();
 		
-		comments = new ArrayList<CommentBean>();
+		comments = new ArrayList<>();
 		CommentBean currentComment;
 		
 		while(rs.next()) {
@@ -269,8 +267,8 @@ public Collection<CommentBean> doRetrieveAllByUser(String username) throws SQLEx
 			prepStmt.setInt(1, id);
 			
 			ResultSet rs = prepStmt.executeQuery();
-			comments = new ArrayList<CommentBean>();
-			comments = new ArrayList<CommentBean>();
+			comments = new ArrayList<>();
+			comments = new ArrayList<>();
 			CommentBean currentComment;
 			
 			while(rs.next()) {
@@ -325,7 +323,7 @@ public synchronized Collection<CommentBean> doRetrieveAll(Timestamp fromDate, Ti
 		ResultSet rs = prepStmt.executeQuery();
 		
 		CommentBean currentComment = null;
-		comments = new ArrayList<CommentBean>();
+		comments = new ArrayList<>();
 		while(rs.next()) {
 			
 			currentComment = buildComment(rs);

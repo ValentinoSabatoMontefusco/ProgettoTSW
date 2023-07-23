@@ -35,10 +35,8 @@ public class MainContext implements ServletContextListener  {
 			
 			context.setAttribute("courses", new CourseDAO(dataSource).doRetrieveAll("name"));
 			
-		} catch (NamingException e) {
+		} catch (Exception e) {
 			LOGGER.log(Level.SEVERE,  e.getMessage());
-		}	catch (SQLException e) {
-			LOGGER.log(Level.SEVERE, e.getMessage());
 		}
 		
 		context.setAttribute(DS_STRING, dataSource);

@@ -1,7 +1,6 @@
 package com.code_fanatic.model.bean;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map.Entry;
 

@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-import com.code_fanatic.control.admin.OrdersRecapServlet;
+
 import com.code_fanatic.model.bean.CourseBean;
 import com.code_fanatic.model.dao.CourseDAO;
 import com.code_fanatic.model.dao.IGenericDAO;
@@ -35,7 +35,7 @@ public class MyCoursesServlet extends HttpServlet {
 	
 		@SuppressWarnings("unchecked")
 		Collection<Integer> productsOwned = (Collection<Integer>) request.getSession().getAttribute("productsOwned");
-		Collection<CourseBean> courses = new ArrayList<CourseBean>();
+		Collection<CourseBean> courses = new ArrayList<>();
 		
 		if (productsOwned != null) {
 			

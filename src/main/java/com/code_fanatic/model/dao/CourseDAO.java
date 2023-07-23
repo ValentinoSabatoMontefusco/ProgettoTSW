@@ -12,10 +12,7 @@ import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
-import org.apache.naming.java.javaURLContextFactory;
-import org.eclipse.jdt.internal.compiler.ast.TrueLiteral;
 
-import com.code_fanatic.control.admin.OrdersRecapServlet;
 import com.code_fanatic.control.utils.SecurityUtils;
 import com.code_fanatic.model.bean.CourseBean;
 import com.code_fanatic.model.bean.LessonBean;
@@ -159,7 +156,7 @@ public class CourseDAO implements IGenericDAO<CourseBean, Integer> {
 
 		Connection connection = null;
 		PreparedStatement prepStmt = null;
-		Collection<CourseBean> courses = new ArrayList<CourseBean>();
+		Collection<CourseBean> courses = new ArrayList<>();
 
 		try {
 			connection = dataSource.getConnection();
@@ -196,7 +193,7 @@ public class CourseDAO implements IGenericDAO<CourseBean, Integer> {
 		course.setLesson_count(rs.getInt("lesson_count"));
 		course.setType(rs.getString("type"));
 
-		ArrayList<LessonBean> lessons = new ArrayList<LessonBean>();
+		ArrayList<LessonBean> lessons = new ArrayList<>();
 		PreparedStatement prepStmt = null;
 		try {
 			

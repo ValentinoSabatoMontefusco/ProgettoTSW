@@ -5,15 +5,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
-import java.util.HashMap;
+
 import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.Set;
+
 
 import javax.sql.DataSource;
 
-import com.code_fanatic.control.admin.OrdersRecapServlet;
+
 import com.code_fanatic.model.bean.Cartesio;
 
 public class CartDAO implements ICartDAO {
@@ -22,8 +22,7 @@ public class CartDAO implements ICartDAO {
 	DataSource dataSource = null;
 	private static final String TABLE_NAME = "cart"; //carts?
 	
-	private Connection connection = null;
-	private PreparedStatement prepStmt = null;
+
 	
 	public CartDAO(DataSource dataSource) {
 		

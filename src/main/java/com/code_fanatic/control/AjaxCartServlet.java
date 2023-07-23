@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-import com.code_fanatic.control.admin.OrdersRecapServlet;
+
 import com.code_fanatic.model.bean.Cartesio;
 import com.code_fanatic.model.bean.OrderBean;
 import com.code_fanatic.model.bean.UserBean;
@@ -45,9 +45,9 @@ public class AjaxCartServlet extends HttpServlet {
 		int ProductID = Integer.parseInt(request.getParameter("prodID"));
 		String username = (String) request.getSession().getAttribute("username");		// Superflous
 		
-		UserBean user = null;
+
 		DataSource ds = null;
-		IGenericDAO<UserBean, String> userDao = null;
+
 		IGenericDAO<OrderBean, Integer> orderDao = null;
 		ICartDAO cartDAO = null;
 		
@@ -58,8 +58,6 @@ public class AjaxCartServlet extends HttpServlet {
 		
 		if (username != null) {
 			ds = (DataSource) getServletContext().getAttribute("DataSource"); 
-			userDao = new UserDAO(ds);
-			user = buildUser(username, (UserDAO) userDao);
 			cartDAO = new CartDAO(ds);
 			
 		}
@@ -114,15 +112,15 @@ public class AjaxCartServlet extends HttpServlet {
 							
 			case "Checkout":	if (username == null) {
 									response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-									response.getWriter().write("You're currently not logged in");
-									LOGGER.log(Level.WARNING, "Can't checkout if not logged");
+									response.getWriter().write("You\'re currently not logged in");
+									LOGGER.log(Level.WARNING, "Can\'t checkout if not logged");
 									return;
 									
 								
 								}
 								
 								if (cart.getTotalQuantity() <= 0) {
-									LOGGER.log(Level.WARNING, "Can't order if cart empty");
+									LOGGER.log(Level.WARNING, "Can\'t order if cart empty");
 									response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 									response.getWriter().write("Tried purchase with empty cart");
 									return;
@@ -165,10 +163,10 @@ public class AjaxCartServlet extends HttpServlet {
 		// Packing the response up with JSON
 		response.setContentType("application/json");
 		
-		cartResponse cartResp = new cartResponse(cart.getTotalQuantity(),
+		CartResponse cartResp = new CartResponse(cart.getTotalQuantity(),
 				ProductID == 0 ? 0 : cart.getProductQuantity(ProductID));
-		String JcartResp = new Gson().toJson(cartResp);
-		response.getWriter().write(JcartResp);
+		String jCartResp = new Gson().toJson(cartResp);
+		response.getWriter().write(jCartResp);
 		
 		
 		
@@ -196,20 +194,22 @@ public class AjaxCartServlet extends HttpServlet {
 		return user;
 	}
 	
-	private static class cartResponse {
+	private static class CartResponse {
 		
 		private int cartQuantity;
 		private int productQuantity;
 		
-		public cartResponse(int cartQuantity, int productQuantity) {
+		public CartResponse(int cartQuantity, int productQuantity) {
 			this.cartQuantity = cartQuantity;
 			this.productQuantity = productQuantity;
 		}
 
+		@SuppressWarnings("unused")
 		public int getCartQuantity() {
 			return cartQuantity;
 		}
 
+		@SuppressWarnings("unused")
 		public int getProductQuantity() {
 			return productQuantity;
 		}

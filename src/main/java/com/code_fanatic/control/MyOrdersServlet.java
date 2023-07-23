@@ -13,10 +13,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-import com.code_fanatic.control.admin.OrdersRecapServlet;
+
 import com.code_fanatic.model.bean.OrderBean;
 import com.code_fanatic.model.dao.IExtendedDAO;
-import com.code_fanatic.model.dao.IOrderDAO;
+
 import com.code_fanatic.model.dao.OrderDAO;
 
 

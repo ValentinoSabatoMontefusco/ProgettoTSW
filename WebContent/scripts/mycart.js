@@ -12,7 +12,7 @@ $(document).ready(function() {
 	let quantityBlock;
 
 	
-	//for (let i = 0; i < productBlocks.length; i++) {
+
 	for (const productBlock of productBlocks) {
 		
 		quantity = parseInt(productBlock.querySelector(".quantity").textContent);

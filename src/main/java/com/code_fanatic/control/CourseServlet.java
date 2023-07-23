@@ -44,7 +44,7 @@ public class CourseServlet extends HttpServlet {
 			
 			if (request.getAttribute(COURSE_STRING) == null) {
 				
-				Collection<CourseBean> courses = new ArrayList<CourseBean>();
+				Collection<CourseBean> courses = new ArrayList<>();
 				
 				try {
 					courses = courseDao.doRetrieveAll("name");		
@@ -82,6 +82,7 @@ public class CourseServlet extends HttpServlet {
 			
 			if (role != null) {
 				
+				@SuppressWarnings("unchecked")
 				Collection<Integer> productsOwned = (Collection<Integer>) request.getSession().getAttribute("productsOwned");
 				if (productsOwned != null && productsOwned.contains(course.getId()))
 						isOwned = true;

@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Collection;
 
-import com.code_fanatic.model.bean.CommentBean;
+
 
 public interface IExtendedDAO<T, K> extends IGenericDAO<T, K> {
 

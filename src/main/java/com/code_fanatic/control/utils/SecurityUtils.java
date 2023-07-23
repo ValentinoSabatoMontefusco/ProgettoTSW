@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,15 +33,9 @@ public class SecurityUtils {
 												"order_date ASC", "order_date DESC", "name ASC", "name DESC",
 												"product_id ASC", "product_id DESC", "create_time ASC", "create_time DESC"));
 	
-	private static final Logger LOGGER = Logger.getLogger(OrdersRecapServlet.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(SecurityUtils.class.getName());
 	
-	public SecurityUtils() {
-//		validInputs.add("user_username ASC");
-//		validInputs.add("user_username DESC");
-//		validInputs.add("order_date ASC");
-//		validInputs.add("order_date DESC");
-		
-	}
+
 	public static String toHash(String string) {
 		
 		MessageDigest digest;
@@ -86,10 +81,10 @@ public class SecurityUtils {
 		return "id ASC";
 	}
 	
-	public static ArrayList<String> addError(ArrayList<String> errors, String error) {
+	public static List<String> addError(ArrayList<String> errors, String error) {
 		
 		if (errors == null)
-			errors = new ArrayList<String>();
+			errors = new ArrayList<>();
 		errors.add(error);
 		
 		return errors;

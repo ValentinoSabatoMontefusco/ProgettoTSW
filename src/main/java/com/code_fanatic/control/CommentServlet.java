@@ -15,13 +15,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-import org.apache.jasper.tagplugins.jstl.core.If;
 
-import com.code_fanatic.control.admin.OrdersRecapServlet;
 import com.code_fanatic.control.utils.SecurityUtils;
 import com.code_fanatic.model.bean.CommentBean;
-import com.code_fanatic.model.bean.IUserSpecific;
-import com.code_fanatic.model.bean.OrderBean;
+
 import com.code_fanatic.model.dao.CommentDAO;
 import com.code_fanatic.model.dao.IExtendedDAO;
 
@@ -48,8 +45,6 @@ public class CommentServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		String type = request.getParameter("type");
-		
-		LOGGER.log(Level.FINE, "Comment Servlet avviata con type = " + type);
 
 		
 		DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
@@ -76,9 +71,9 @@ public class CommentServlet extends HttpServlet {
 						
 						return;
 			
-			case "Delete": int comment_id = Integer.parseInt(request.getParameter("comment_id"));
+			case "Delete": int commentId = Integer.parseInt(request.getParameter("comment_id"));
 			
-							if (comment_id == 0) {
+							if (commentId == 0) {
 								LOGGER.log(Level.SEVERE, "Comment_id non valido");
 								SecurityUtils.addError(errors, "Commento non valido");
 								response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -88,7 +83,7 @@ public class CommentServlet extends HttpServlet {
 							
 							String role = (String) request.getSession().getAttribute("role");
 							String username = (String) request.getSession().getAttribute("username");
-							Boolean authorized = false;
+	
 							
 							if (role == null || username == null) {
 								LOGGER.log(Level.SEVERE, "Utente non autenticato");
@@ -99,7 +94,7 @@ public class CommentServlet extends HttpServlet {
 							
 							try {
 	
-								commentDeletion(role, username, comment_id, commentDAO);
+								commentDeletion(role, username, commentId, commentDAO);
 								
 								
 							} catch (SQLException e) {
@@ -125,7 +120,7 @@ public class CommentServlet extends HttpServlet {
 
 	private void commentDeletion(String role, String username, int comment_id, IExtendedDAO<CommentBean, Integer> commentDAO) throws SQLException {
 		
-		Boolean authorized = false;
+		boolean authorized = false;
 		if (role.equals("user")) {
 			
 			if (username.equals(commentDAO.doRetrieveByKey(comment_id).getUser_username()))
@@ -146,9 +141,10 @@ public class CommentServlet extends HttpServlet {
 		}
 	}
 	
-	public synchronized Collection<CommentBean> sortRoutine(IExtendedDAO<CommentBean, Integer> ExtendedDAO, HttpServletRequest request, HttpServletResponse response) {
+	public synchronized Collection<CommentBean> sortRoutine(IExtendedDAO<CommentBean, Integer> extendedDAO, HttpServletRequest request, HttpServletResponse response) {
 		
-		String fromDate = null, toDate = null;
+		String fromDate = null;
+		String toDate = null;
 		String allItems = request.getParameter("all_items");
 		if (allItems == null) {
 			
@@ -157,17 +153,17 @@ public class CommentServlet extends HttpServlet {
 			
 		}
 		
-		String order_by = request.getParameter("order_by");
-		String sort_order = request.getParameter("sorting_order");
+		String orderBy = request.getParameter("order_by");
+		String sortOrder = request.getParameter("sorting_order");
 		
 		String sort;
 		
-		if (order_by != null && order_by.equals("users"))
+		if (orderBy != null && orderBy.equals("users"))
 			sort = "user_username";
 		else
 			sort = "create_time";
 		
-		if(sort_order != null && sort_order.equals("asc"))
+		if(sortOrder != null && sortOrder.equals("asc"))
 			sort = sort.concat(" ASC");
 		else 
 			sort = sort.concat(" DESC");
@@ -175,13 +171,13 @@ public class CommentServlet extends HttpServlet {
 		Collection<CommentBean> items = null;
 		try {
 			if (fromDate == null || toDate == null) {
-				items = ExtendedDAO.doRetrieveAll(sort);
+				items = extendedDAO.doRetrieveAll(sort);
 				
 			
 			} else {
 				Timestamp fromD = Timestamp.valueOf(fromDate.replace("T", " "));
 				Timestamp toD = Timestamp.valueOf(toDate.replace("T", " "));
-				items = ExtendedDAO.doRetrieveAll(fromD, toD, sort);
+				items = extendedDAO.doRetrieveAll(fromD, toD, sort);
 			}
 		} catch (SQLException e) {
 

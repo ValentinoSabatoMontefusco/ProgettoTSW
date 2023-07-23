@@ -177,7 +177,7 @@ public class MerchDAO implements IGenericDAO<MerchBean, Integer> {
 		prepStmt = connection.prepareStatement("SELECT * FROM " + TABLE_NAME);
 		
 		ResultSet rs = prepStmt.executeQuery();
-		merchs = new ArrayList<MerchBean>();
+		merchs = new ArrayList<>();
 		MerchBean currentMerch;
 		
 		

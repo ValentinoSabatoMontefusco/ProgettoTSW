@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-import com.code_fanatic.control.admin.OrdersRecapServlet;
+
 import com.code_fanatic.control.utils.SecurityUtils;
 import com.code_fanatic.model.bean.Cartesio;
 import com.code_fanatic.model.bean.UserBean;
@@ -95,7 +94,6 @@ public class AccessServlet extends HttpServlet {
 			
 			request.setAttribute(ERROR_STRING,  errors);
 			request.getRequestDispatcher("access.jsp?type=register").forward(request, response);
-			return;
 			
 			
 		} catch (SQLException e) {
@@ -136,20 +134,16 @@ public class AccessServlet extends HttpServlet {
 			// Handling guest Cart; following GPT hint of destroying guest cart 
 			
 			Cartesio cart = null;
-			try {
 				cart = (new CartDAO(ds).doRetrieveByKey(newUser.getUsername()));
 				
 				
-				if (cart.getTotalQuantity() == 0) { 
-					cart = (Cartesio) request.getSession().getAttribute("cart");
-					if (cart != null) {
-						new CartDAO(ds).doSave(cart, newUser.getUsername());
-					}
+			if (cart.getTotalQuantity() == 0) { 
+				cart = (Cartesio) request.getSession().getAttribute("cart");
+				if (cart != null) {
+					new CartDAO(ds).doSave(cart, newUser.getUsername());
 				}
-			} catch (SQLException e) {
-			
-				LOGGER.log(Level.SEVERE, e.getMessage());
 			}
+
 			if (cart == null)
 				cart = new Cartesio();
 			

@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-import com.code_fanatic.control.admin.OrdersRecapServlet;
+
 import com.code_fanatic.model.bean.Cartesio;
 import com.code_fanatic.model.bean.ProductBean;
 import com.code_fanatic.model.dao.MerchDAO;
@@ -44,7 +44,7 @@ public class MyCartServlet extends HttpServlet {
 		
 		if (cart != null && cart.getTotalQuantity() != 0) {
 			
-			Collection<Entry<ProductBean, Integer>> products = new ArrayList<Entry<ProductBean,Integer>>();
+			Collection<Entry<ProductBean, Integer>> products = new ArrayList<>();
 			DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
 			ProductBean currentProduct;
 			int currentQuantity;

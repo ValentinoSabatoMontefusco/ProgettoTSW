@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
+
 import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.logging.Level;
@@ -17,14 +17,14 @@ import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
-import org.apache.jasper.tagplugins.jstl.core.If;
+
 
 import com.code_fanatic.control.utils.SecurityUtils;
-import com.code_fanatic.model.bean.Cartesio;
+
 import com.code_fanatic.model.bean.MerchBean;
 import com.code_fanatic.model.bean.OrderBean;
 import com.code_fanatic.model.bean.ProductBean;
-import com.mysql.cj.util.StringUtils;
+
 
 
 public class OrderDAO implements IExtendedDAO<OrderBean, Integer> {
@@ -172,7 +172,7 @@ public class OrderDAO implements IExtendedDAO<OrderBean, Integer> {
 
 	public synchronized Collection<OrderBean> doRetrieveAll(String order) throws SQLException {
 
-			Collection<OrderBean> orders = new ArrayList<OrderBean>();
+			Collection<OrderBean> orders = new ArrayList<>();
 			
 			Connection connection = null;
 			PreparedStatement prepStmt = null;
@@ -213,7 +213,7 @@ public class OrderDAO implements IExtendedDAO<OrderBean, Integer> {
 	
 	public synchronized Collection<OrderBean> doRetrieveAll(Timestamp fromDate, Timestamp toDate, String order) throws SQLException {
 		
-		Collection<OrderBean> orders = new ArrayList<OrderBean>();
+		Collection<OrderBean> orders = new ArrayList<>();
 		
 		Connection connection = null;
 		PreparedStatement prepStmt = null;
@@ -262,7 +262,7 @@ public class OrderDAO implements IExtendedDAO<OrderBean, Integer> {
 	
 	public Collection<OrderBean> doRetrieveAllByUser(String value) throws SQLException {
 
-		Collection<OrderBean> orders = new ArrayList<OrderBean>();
+		Collection<OrderBean> orders = new ArrayList<>();
 		
 		Connection connection = null;
 		PreparedStatement prepStmt = null;
