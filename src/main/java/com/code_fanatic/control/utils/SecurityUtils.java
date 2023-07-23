@@ -3,6 +3,7 @@ package com.code_fanatic.control.utils;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -74,5 +75,14 @@ public class SecurityUtils {
 		if (validInputs.contains(input))
 			return input;
 		return "id ASC";
+	}
+	
+	public static ArrayList<String> addError(ArrayList<String> errors, String error) {
+		
+		if (errors == null)
+			errors = new ArrayList<String>();
+		errors.add(error);
+		
+		return errors;
 	}
 }

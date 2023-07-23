@@ -3,6 +3,7 @@ package com.code_fanatic.control;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,6 +18,7 @@ import javax.sql.DataSource;
 import org.apache.jasper.tagplugins.jstl.core.If;
 
 import com.code_fanatic.control.admin.OrdersRecapServlet;
+import com.code_fanatic.control.utils.SecurityUtils;
 import com.code_fanatic.model.bean.CommentBean;
 import com.code_fanatic.model.bean.OrderBean;
 import com.code_fanatic.model.dao.CommentDAO;
@@ -49,6 +51,7 @@ public class CommentServlet extends HttpServlet {
 		System.out.println("Comment Servlet avviata con type = " + type);
 		
 		DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
+		ArrayList<String> errors = null;
 		
 		ICommentDAO commentDAO = new CommentDAO(ds);
 		
@@ -73,40 +76,35 @@ public class CommentServlet extends HttpServlet {
 						return;
 			
 			case "Delete": int comment_id = Integer.parseInt(request.getParameter("comment_id"));
-							if (comment_id != 0) {
+			
+							if (comment_id == 0) {
+								LOGGER.log(Level.SEVERE, "Comment_id non valido");
+								SecurityUtils.addError(errors, "Commento non valido");
+								response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+								return;
+							}
+						
+							
+							String role = (String) request.getSession().getAttribute("role");
+							String username = (String) request.getSession().getAttribute("username");
+							Boolean authorized = false;
+							
+							if (role == null || username == null) {
+								LOGGER.log(Level.SEVERE, "Utente non autenticato");
+								SecurityUtils.addError(errors, "Utente non autenticato");
+								response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 								
-								String role = (String) request.getSession().getAttribute("role");
-								Boolean authorized = false;
+							}
+							
 							try {
-								if (role != null) {
-									
-									if (role.equals("user")) {
-										
-										String username = (String) request.getSession().getAttribute("username");
-										if (username != null)
-											if (username.equals(commentDAO.doRetrieveByKey(comment_id).getUser_username()))
-												authorized = true;
-									} else if (role.equals("admin"))
-										authorized = true;
-									
-									if (authorized) {
-										
-										if (commentDAO.doDelete(comment_id)) {
-											
-											System.out.println("Rimozione avvenuta con successo");
-										} else {
-											System.out.println("Rimozione fallimentare");
-										}
-									
-									}
-								}
+	
+								commentDeletion(role, username, comment_id, commentDAO);
+								
+								
 							} catch (SQLException e) {
 								LOGGER.log(Level.SEVERE, e.getMessage());
 							}
-							} else {
-								
-								System.err.println("Comment_id non valido");
-							}
+	
 							
 							return;
 							
@@ -172,4 +170,25 @@ public class CommentServlet extends HttpServlet {
 		
 	}
 
+	private void commentDeletion(String role, String username, int comment_id, ICommentDAO commentDAO) throws SQLException {
+		
+		Boolean authorized = false;
+		if (role.equals("user")) {
+			
+			if (username.equals(commentDAO.doRetrieveByKey(comment_id).getUser_username()))
+				authorized = true;
+		} else if (role.equals("admin"))
+			authorized = true;
+		
+		if (authorized) {
+			
+			if (commentDAO.doDelete(comment_id)) {
+				
+				System.out.println("Rimozione avvenuta con successo");
+			} else {
+				System.out.println("Rimozione fallimentare");
+			}
+		
+		}
+	}
 }

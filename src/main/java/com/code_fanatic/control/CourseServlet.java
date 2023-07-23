@@ -55,40 +55,42 @@ public class CourseServlet extends HttpServlet {
 				}
 			}
 //			
-			if (request.getParameter("name") != null) {
-				
-				String courseName = request.getParameter("name");
-				CourseBean course = null;
-				
-				@SuppressWarnings("unchecked")
-				Iterator<CourseBean> it = ((Collection<CourseBean>) getServletContext().getAttribute("courses")).iterator();
-				while (it.hasNext()) {
-					
-					course = it.next();
-					if (courseName.equals(course.getName()))
-						break;
-					course = null;					
-				}
-				
-				request.setAttribute("course", course);
-				
-				String role = (String) request.getSession().getAttribute("role");
-				Boolean isOwned = false;
-				
-				if (role != null) {
-					
-					Collection<Integer> productsOwned = (Collection<Integer>) request.getSession().getAttribute("productsOwned");
-					if (productsOwned != null)
-						
-						if (productsOwned.contains(course.getId()))
-							
-							isOwned = true;
-								
-				}
-				
-				request.setAttribute("isOwned", isOwned);
-			
+			if (request.getParameter("name") == null) {
+				// Additional error handling?)
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				return;
 			}
+
+			
+			String courseName = request.getParameter("name");
+			CourseBean course = null;
+			
+			@SuppressWarnings("unchecked")
+			Iterator<CourseBean> it = ((Collection<CourseBean>) getServletContext().getAttribute("courses")).iterator();
+			while (it.hasNext()) {
+				
+				course = it.next();
+				if (courseName.equals(course.getName()))
+					break;
+				course = null;					
+			}
+			
+			request.setAttribute("course", course);
+			
+			String role = (String) request.getSession().getAttribute("role");
+			Boolean isOwned = false;
+			
+			if (role != null) {
+				
+				Collection<Integer> productsOwned = (Collection<Integer>) request.getSession().getAttribute("productsOwned");
+				if (productsOwned != null && productsOwned.contains(course.getId()))
+						isOwned = true;
+							
+			}
+			
+			request.setAttribute("isOwned", isOwned);
+		
+		
 
 			
 

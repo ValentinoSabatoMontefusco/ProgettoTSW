@@ -84,6 +84,8 @@ public class AjaxCartServlet extends HttpServlet {
 						break;
 						
 			case "Sub": cart.subtractProduct(ProductID, 1);
+			
+
 						if (username!= null)
 							try {
 								
@@ -98,17 +100,25 @@ public class AjaxCartServlet extends HttpServlet {
 						break;
 						
 			case "Clear":	cart.clear();
-							if (username!=null) 
-								try {
-									
-									cartDAO.doDelete(username);
-								} catch (SQLException e) {
-									LOGGER.log(Level.SEVERE, e.getMessage());
-								}
+							if (username == null)
+								break;
+							try {
+								cartDAO.doDelete(username);
+							} catch (SQLException e) {
+								LOGGER.log(Level.SEVERE, e.getMessage());
+							}
 							
 							break;
 							
-			case "Checkout": if (username!= null) {
+			case "Checkout":	if (username == null) {
+									response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+									response.getWriter().write("You're currently not logged in");
+									System.err.println("Can't checkout if not logged");
+									return;
+									
+								
+								}
+								
 								if (cart.getTotalQuantity() > 0) {
 									orderDao = new OrderDAO(ds);
 									OrderBean newOrder = new OrderBean();
@@ -140,14 +150,7 @@ public class AjaxCartServlet extends HttpServlet {
 									
 								}
 			
-							} else {
-								
-								response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-								response.getWriter().write("You're currently not logged in");
-								System.err.println("Can't checkout if not logged");
-								return;
-								
-							}
+							
 														
 			default: System.out.println("Ajax call failed");
 					break;

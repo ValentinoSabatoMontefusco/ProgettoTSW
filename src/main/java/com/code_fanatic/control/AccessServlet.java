@@ -110,9 +110,17 @@ public class AccessServlet extends HttpServlet {
 		
 		try {
 			
-			if ((newUser = userDAO.doRetrieveByKey(newUser.getUsername())) != null) {
+			if ((newUser = userDAO.doRetrieveByKey(newUser.getUsername())) == null) {
+					
+					errors.add("L'username inserito non esiste");
+					request.setAttribute(ERROR_STRING,  errors);
+					request.getRequestDispatcher("access.jsp?type=login").forward(request, response);
+					return;
+					
+					// GESTIRE ERRORE
+			}
 			
-				if (newUser.getPassword().equals(password)){
+			if (newUser.getPassword().equals(password)){
 					
 					//request.getSession(true).removeAttribute("user");
 					request.getSession(true).setAttribute("username", newUser.getUsername());
@@ -150,14 +158,6 @@ public class AccessServlet extends HttpServlet {
 					request.setAttribute(ERROR_STRING,  errors);
 					request.getRequestDispatcher("access.jsp?type=login").forward(request, response);
 					return;
-			}} else {
-				
-				errors.add("L'username inserito non esiste");
-				request.setAttribute(ERROR_STRING,  errors);
-				request.getRequestDispatcher("access.jsp?type=login").forward(request, response);
-				return;
-				
-				// GESTIRE ERRORE
 			}
 		} catch (SQLException e) {
 			
