@@ -349,8 +349,8 @@ public class OrderDAO implements IExtendedDAO<OrderBean, Integer> {
 	public Collection<OrderBean> doRetrieveAllByProduct(int id) throws SQLException {
 
 		// TEMP STUFF
-		ArrayList<OrderBean> orders = new ArrayList<>();
-		return orders;
+		return new ArrayList<>();
+
 	}
 
 	

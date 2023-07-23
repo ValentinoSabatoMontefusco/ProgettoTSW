@@ -1,7 +1,6 @@
 package com.code_fanatic.model.bean;
 
 import java.sql.Timestamp;
-import java.util.HashSet;
 import java.util.Set;
 
 public class UserBean {

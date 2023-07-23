@@ -1,12 +1,12 @@
 package com.code_fanatic.model.bean;
 
-import java.util.ArrayList;
+import java.util.List;
 
 
 public class CourseBean extends ProductBean {
 
 	private int lesson_count;
-	private ArrayList<LessonBean> lessons;
+	private List<LessonBean> lessons;
 		
 	
 	public CourseBean() {
@@ -24,11 +24,11 @@ public class CourseBean extends ProductBean {
 		
 	}
 	
-	public ArrayList<LessonBean> getLessons() {
+	public List<LessonBean> getLessons() {
 		return lessons;
 	}
 
-	public void setLessons(ArrayList<LessonBean> lessons) {
+	public void setLessons(List<LessonBean> lessons) {
 		this.lessons = lessons;
 	}
 

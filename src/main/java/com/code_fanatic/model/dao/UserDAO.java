@@ -139,17 +139,15 @@ public class UserDAO implements IGenericDAO<UserBean, String> {
 
 	public Collection<UserBean> doRetrieveAll(String order) throws SQLException {
 		
-
-		ArrayList<UserBean> users = new ArrayList<>();
+		return new ArrayList<>();
 		
-		return users;
+
 	}
 	
 	public boolean doAddToCart(String username, int productID) throws SQLException {
 		
 		Connection connection = null;
 		PreparedStatement prepStmt = null;
-		UserBean currentUser = null;
 		Boolean success = false;
 		
 		try {

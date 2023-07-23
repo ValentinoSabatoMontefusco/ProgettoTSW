@@ -10,9 +10,7 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebListener;
 import javax.sql.*;
 
-import org.apache.jasper.compiler.NewlineReductionServletWriter;
 
-import com.code_fanatic.control.admin.OrdersRecapServlet;
 import com.code_fanatic.model.dao.CourseDAO;
 
 
