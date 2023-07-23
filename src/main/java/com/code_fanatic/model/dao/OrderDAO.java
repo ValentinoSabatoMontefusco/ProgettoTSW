@@ -12,8 +12,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
+import java.util.logging.Logger;
 
 import javax.sql.DataSource;
+
+import org.apache.jasper.tagplugins.jstl.core.If;
 
 import com.code_fanatic.control.utils.SecurityUtils;
 import com.code_fanatic.model.bean.Cartesio;
@@ -23,7 +26,7 @@ import com.code_fanatic.model.bean.ProductBean;
 import com.mysql.cj.util.StringUtils;
 
 
-public class OrderDAO implements IOrderDAO<OrderBean, Integer> {
+public class OrderDAO implements IExtendedDAO<OrderBean, Integer> {
 
 	DataSource dataSource = null;
 	private static final String TABLE_NAME = "orders";
@@ -47,69 +50,67 @@ public class OrderDAO implements IOrderDAO<OrderBean, Integer> {
 		
 		PreparedStatement consumeMerch = connection.prepareStatement("UPDATE merchandise SET amount = amount - ? WHERE product_id = ?;");
 		
-		prepStmt.setString(1, bean.getUsername());
+		prepStmt.setString(1, bean.getUser_username());
 		prepStmt.setTimestamp(2,  bean.getOrder_date());
 		
 		
+		if (prepStmt.executeUpdate() == 0) {
+			System.err.println("Qualocsa è andato storto");
+			return;
+		}
 		
-		if (prepStmt.executeUpdate() > 0) {
 			
-			ResultSet rs = prepStmt.getGeneratedKeys();
-			if (rs.next()) {
+		ResultSet rs = prepStmt.getGeneratedKeys();
+		if (rs.next()) {
+			
+			int orderID = rs.getInt(1);
+			System.out.println(String.format("orderID = %d", orderID));
+			prepStmt.close();
+			prepStmt = connection.prepareStatement("INSERT INTO " + TABLE_NAME2 + " (order_id, product_id, product_name, product_type, "
+					+ "product_price, quantity)"
+					+ " VALUES (?, ?, ?, ?, ?, ?)");
+			
+			ProductDAO productDAO = new ProductDAO(dataSource);
+			
+			
+			for (Entry<Integer, Integer> entry : bean.getCart().getProducts()) {
 				
-				int orderID = rs.getInt(1);
-				int count = 0;
-				System.out.println(String.format("orderID = %d", orderID));
-				prepStmt = connection.prepareStatement("INSERT INTO " + TABLE_NAME2 + " (order_id, product_id, product_name, product_type, "
-						+ "product_price, quantity)"
-						+ " VALUES (?, ?, ?, ?, ?, ?)");
-				
-				ProductDAO productDAO = new ProductDAO(dataSource);
-				
-				
-				for (Entry<Integer, Integer> entry : bean.getCart().getProducts()) {
-					
 
-					ProductBean currentProduct = productDAO.doRetrieveByKey(entry.getKey());
-					
-					if (currentProduct != null)  {
-						
-						prepStmt.setInt(1, orderID);
-						prepStmt.setInt(2, entry.getKey());
-						prepStmt.setString(3, currentProduct.getName());
-						prepStmt.setString(4, currentProduct.getType());
-						prepStmt.setFloat(5, currentProduct.getPrice());
-						prepStmt.setInt(6, entry.getValue());
-						prepStmt.addBatch();
-						count++;
-						
-						if (currentProduct.getType().equals("Merchandise")) {
-							
-							MerchBean tempMerch = new MerchDAO(dataSource).doRetrieveByKey(entry.getKey());
-							consumeMerch.setInt(1, entry.getValue());
-							consumeMerch.setInt(2, tempMerch.getId());
-							consumeMerch.addBatch();
-						}
-					} else {
-						System.err.println("Nessuna corrispondenza trovata in Products per un articolo nell'ordine");
-					}
-					
+				ProductBean currentProduct = productDAO.doRetrieveByKey(entry.getKey());
 				
+				if (currentProduct == null) {
+					System.err.println("Nessuna corrispondenza trovata in Products per un articolo nell'ordine");
+					break;
 				}
-				consumeMerch.executeBatch();
-				if (count == prepStmt.executeBatch().length) {
+				
 					
-					System.err.println("Salvataggio ordine apparentemente a buon fine");
-				} else {
+				prepStmt.setInt(1, orderID);
+				prepStmt.setInt(2, entry.getKey());
+				prepStmt.setString(3, currentProduct.getName());
+				prepStmt.setString(4, currentProduct.getType());
+				prepStmt.setFloat(5, currentProduct.getPrice());
+				prepStmt.setInt(6, entry.getValue());
+				prepStmt.addBatch();
+				
+				if (currentProduct.getType().equals("Merchandise")) {
 					
-					System.err.println("Potenziali problemi col salvataggio ordine");
+					MerchBean tempMerch = new MerchDAO(dataSource).doRetrieveByKey(entry.getKey());
+					consumeMerch.setInt(1, entry.getValue());
+					consumeMerch.setInt(2, tempMerch.getId());
+					consumeMerch.addBatch();
 				}
+			
+				
+			
 			}
-			
-			
+			consumeMerch.executeBatch();
+	
+		}
+		
+		
 		
 			
-		}} finally {
+		} finally {
 			try {
 				if (prepStmt != null)
 					prepStmt.close();
@@ -259,7 +260,7 @@ public class OrderDAO implements IOrderDAO<OrderBean, Integer> {
 	
 	}
 	
-	public Collection<OrderBean> doRetrieveAllByUsername(String value) throws SQLException {
+	public Collection<OrderBean> doRetrieveAllByUser(String value) throws SQLException {
 
 		Collection<OrderBean> orders = new ArrayList<OrderBean>();
 		
@@ -309,7 +310,7 @@ public class OrderDAO implements IOrderDAO<OrderBean, Integer> {
 		order = new OrderBean();
 		
 		order.setId(rs.getInt("id"));
-		order.setUsername(rs.getString("user_username"));
+		order.setUser_username(rs.getString("user_username"));
 		order.setOrder_date(rs.getTimestamp("order_date"));
 		try {
 			
@@ -341,6 +342,13 @@ public class OrderDAO implements IOrderDAO<OrderBean, Integer> {
 			
 		}
 		return order;
+	}
+
+
+	@Override
+	public Collection<OrderBean> doRetrieveAllByProduct(int id) throws SQLException {
+
+		return null;
 	}
 
 	

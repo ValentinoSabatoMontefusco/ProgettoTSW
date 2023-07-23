@@ -30,4 +30,15 @@ table tr:hover {
 	font-weight: bolder;
 	font-size: 110%;
 	text-align: right;
+	background-color: #E3671E !important;
+}
+
+caption {
+	
+	font-style: italic;
+}
+
+.caption_owner {
+	
+	font-weight: bold;
 }

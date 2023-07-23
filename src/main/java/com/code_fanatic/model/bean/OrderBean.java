@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map.Entry;
 
-public class OrderBean {
+public class OrderBean implements IUserSpecific {
 
 	private int id;
-	private String username;
+	private String user_username;
 	private Cartesio cart;
 	private Collection<Entry<ProductBean, Integer>> products;
 	private Timestamp order_date;
@@ -26,12 +26,12 @@ public class OrderBean {
 		this.id = id;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getUser_username() {
+		return user_username;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUser_username(String username) {
+		this.user_username = username;
 	}
 
 	public Collection<Entry<ProductBean, Integer>> getProducts() {

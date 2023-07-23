@@ -2,7 +2,7 @@ package com.code_fanatic.model.bean;
 
 import java.sql.Timestamp;
 
-public class CommentBean {
+public class CommentBean implements IUserSpecific {
 
 	
 	private String user_username;

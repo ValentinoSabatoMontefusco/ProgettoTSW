@@ -16,7 +16,7 @@ import com.code_fanatic.model.bean.OrderBean;
 import com.code_fanatic.model.bean.ProductBean;
 import com.mysql.cj.exceptions.RSAException;
 
-public class CommentDAO implements ICommentDAO {
+public class CommentDAO implements IExtendedDAO<CommentBean, Integer> {
 	
 	DataSource ds = null;
 	private static final String TABLE_NAME = "comments";

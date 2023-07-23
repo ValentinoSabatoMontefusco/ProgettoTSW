@@ -20,9 +20,10 @@ import org.apache.jasper.tagplugins.jstl.core.If;
 import com.code_fanatic.control.admin.OrdersRecapServlet;
 import com.code_fanatic.control.utils.SecurityUtils;
 import com.code_fanatic.model.bean.CommentBean;
+import com.code_fanatic.model.bean.IUserSpecific;
 import com.code_fanatic.model.bean.OrderBean;
 import com.code_fanatic.model.dao.CommentDAO;
-import com.code_fanatic.model.dao.ICommentDAO;
+import com.code_fanatic.model.dao.IExtendedDAO;
 
 /**
  * Servlet implementation class CommentServlet
@@ -53,7 +54,7 @@ public class CommentServlet extends HttpServlet {
 		DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
 		ArrayList<String> errors = null;
 		
-		ICommentDAO commentDAO = new CommentDAO(ds);
+		IExtendedDAO<CommentBean, Integer> commentDAO = new CommentDAO(ds);
 		
 		if (type == null)
 			type = "Sort";
@@ -109,50 +110,10 @@ public class CommentServlet extends HttpServlet {
 							return;
 							
 				
-			case "Sort": 	String fromDate = null, toDate = null;
-							String allComments = request.getParameter("all_items");
-							if (allComments == null) {
-								
-								fromDate = request.getParameter("from_date");
-								toDate = request.getParameter("to_date");
-								
-							}
-							
-							String order_by = request.getParameter("order_by");
-							String sort_order = request.getParameter("sorting_order");
-							
-							String sort;
-							
-							if (order_by != null && order_by.equals("users"))
-								sort = "user_username";
-							else
-								sort = "create_time";
-							
-							if(sort_order != null && sort_order.equals("asc"))
-								sort = sort.concat(" ASC");
-							else 
-								sort = sort.concat(" DESC");
-							
-							Collection<CommentBean> comments = null;
-							try {
-								if (fromDate == null || toDate == null) {
-									comments = commentDAO.doRetrieveAll(sort);
-									
-									System.err.println(String.format("Calling doRetrieveAll with %s", sort));
-								} else {
-									Timestamp fromD = Timestamp.valueOf(fromDate.replace("T", " "));
-									Timestamp toD = Timestamp.valueOf(toDate.replace("T", " "));
-									comments = commentDAO.doRetrieveAll(fromD, toD, sort);
-								}
-							} catch (SQLException e) {
-
-								LOGGER.log(Level.SEVERE, e.getMessage());
-							} 
-							
-							request.setAttribute("comments", comments);
-							request.getRequestDispatcher("moderation.jsp").forward(request, response);
-							return;
-
+			case "Sort": Collection<CommentBean> comments = sortRoutine(commentDAO, request, response);
+			
+						request.setAttribute("comments", comments);
+						request.getRequestDispatcher("moderation.jsp").forward(request, response);
 			
 						default: break;
 		}
@@ -170,7 +131,7 @@ public class CommentServlet extends HttpServlet {
 		
 	}
 
-	private void commentDeletion(String role, String username, int comment_id, ICommentDAO commentDAO) throws SQLException {
+	private void commentDeletion(String role, String username, int comment_id, IExtendedDAO<CommentBean, Integer> commentDAO) throws SQLException {
 		
 		Boolean authorized = false;
 		if (role.equals("user")) {
@@ -190,5 +151,52 @@ public class CommentServlet extends HttpServlet {
 			}
 		
 		}
+	}
+	
+	public synchronized Collection<CommentBean> sortRoutine(IExtendedDAO<CommentBean, Integer> ExtendedDAO, HttpServletRequest request, HttpServletResponse response) {
+		
+		String fromDate = null, toDate = null;
+		String allItems = request.getParameter("all_items");
+		if (allItems == null) {
+			
+			fromDate = request.getParameter("from_date");
+			toDate = request.getParameter("to_date");
+			
+		}
+		
+		String order_by = request.getParameter("order_by");
+		String sort_order = request.getParameter("sorting_order");
+		
+		String sort;
+		
+		if (order_by != null && order_by.equals("users"))
+			sort = "user_username";
+		else
+			sort = "create_time";
+		
+		if(sort_order != null && sort_order.equals("asc"))
+			sort = sort.concat(" ASC");
+		else 
+			sort = sort.concat(" DESC");
+		
+		Collection<CommentBean> items = null;
+		try {
+			if (fromDate == null || toDate == null) {
+				items = ExtendedDAO.doRetrieveAll(sort);
+				
+				System.err.println(String.format("Calling doRetrieveAll with %s", sort));
+			} else {
+				Timestamp fromD = Timestamp.valueOf(fromDate.replace("T", " "));
+				Timestamp toD = Timestamp.valueOf(toDate.replace("T", " "));
+				items = ExtendedDAO.doRetrieveAll(fromD, toD, sort);
+			}
+		} catch (SQLException e) {
+
+			LOGGER.log(Level.SEVERE, e.getMessage());
+		} 
+		
+//		request.setAttribute("comments", items);
+//		request.getRequestDispatcher("moderation.jsp").forward(request, response);
+		return items;
 	}
 }

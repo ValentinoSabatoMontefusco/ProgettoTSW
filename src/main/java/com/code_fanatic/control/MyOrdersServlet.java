@@ -15,6 +15,7 @@ import javax.sql.DataSource;
 
 import com.code_fanatic.control.admin.OrdersRecapServlet;
 import com.code_fanatic.model.bean.OrderBean;
+import com.code_fanatic.model.dao.IExtendedDAO;
 import com.code_fanatic.model.dao.IOrderDAO;
 import com.code_fanatic.model.dao.OrderDAO;
 
@@ -42,10 +43,10 @@ public class MyOrdersServlet extends HttpServlet {
 			System.err.println("SessionToken assente in pagina illegale");
 		else {
 			
-			IOrderDAO<OrderBean, Integer> orderDAO = new OrderDAO((DataSource) request.getServletContext().getAttribute("DataSource"));
+			IExtendedDAO<OrderBean, Integer> orderDAO = new OrderDAO((DataSource) request.getServletContext().getAttribute("DataSource"));
 			
 			try {
-				orders = orderDAO.doRetrieveAllByUsername(username);
+				orders = orderDAO.doRetrieveAllByUser(username);
 			} catch (SQLException e) {
 				
 				LOGGER.log(Level.SEVERE, e.getMessage());

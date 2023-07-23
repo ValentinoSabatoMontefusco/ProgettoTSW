@@ -32,7 +32,7 @@ import com.code_fanatic.model.bean.MerchBean;
 import com.code_fanatic.model.bean.ProductBean;
 import com.code_fanatic.model.dao.CommentDAO;
 import com.code_fanatic.model.dao.CourseDAO;
-import com.code_fanatic.model.dao.ICommentDAO;
+import com.code_fanatic.model.dao.IExtendedDAO;
 import com.code_fanatic.model.dao.IGenericDAO;
 import com.code_fanatic.model.dao.MerchDAO;
 import com.code_fanatic.model.dao.ProductDAO;
@@ -47,6 +47,8 @@ public class ProductControlServlet extends HttpServlet {
     private static final String TCOURSE_STRING = "Course";
     private static final String TMERC_STRING = "Merchandise";
     private static final String INTEGRITY_ERROR = "Hai provato a inserire un prodotto già presente in catalogo";
+    private static final String HOME_PATH = "../home.jsp";
+    
     public ProductControlServlet() {
         super();
 
@@ -106,33 +108,8 @@ public class ProductControlServlet extends HttpServlet {
 			
 			
 			request.setAttribute("product", product);
-			
-			if (request.getRequestURI().contains("productCreate")) {
 				
-				request.setAttribute("isEdit", false);
-				reqDisp = request.getRequestDispatcher("productEdit.jsp");
-				
-			} else if (request.getRequestURI().contains("productEdit")) {
-				request.setAttribute("isEdit", true);
-				reqDisp = request.getRequestDispatcher("productEdit.jsp");
-			}	else {
-				
-				// RECUPERO COMMENTI
-				
-				ICommentDAO commentDAO = new CommentDAO(ds);
-				Collection<CommentBean> comments = null;
-				try {
-					 comments = commentDAO.doRetrieveAllByProduct(productID);
-				} catch (SQLException e) {
-					LOGGER.log(Level.SEVERE, e.getMessage());
-				} 
-				
-				request.setAttribute("comments", comments);
-				
-				reqDisp = request.getRequestDispatcher("product.jsp");
-				
-			}
-				
+			reqDisp = routeRequest(request, response, reqDisp, ds, productID);
 			
 			break;
 			
@@ -199,7 +176,7 @@ public class ProductControlServlet extends HttpServlet {
 	
 			//System.out.println("Request URI: " + request.getRequestURI());
 			MainContext.updateAttributes(getServletContext());
-			reqDisp = request.getRequestDispatcher("../home.jsp");
+			reqDisp = request.getRequestDispatcher(HOME_PATH);
 			
 			break;
 			
@@ -255,7 +232,7 @@ public class ProductControlServlet extends HttpServlet {
 				}
 				
 				MainContext.updateAttributes(getServletContext());
-				reqDisp = request.getRequestDispatcher("../home.jsp");
+				reqDisp = request.getRequestDispatcher(HOME_PATH);
 				
 				break;
 			
@@ -274,7 +251,7 @@ public class ProductControlServlet extends HttpServlet {
 			// NOTIFY CONTEXT ATTRIBUTE
 			
 			MainContext.updateAttributes(getServletContext());
-			reqDisp = request.getRequestDispatcher("../home.jsp");
+			reqDisp = request.getRequestDispatcher(HOME_PATH);
 			
 			
 			break;
@@ -297,54 +274,60 @@ public class ProductControlServlet extends HttpServlet {
 		File fileSaveDir = new File(save_path);
 		if (!fileSaveDir.exists())
 			fileSaveDir.mkdir();
+		
+		
 		try {
 			Part part = request.getPart("logo_input");
 			
 			if (part != null && part.getSize() > 0) {
 					
 					
-					filename = filename.toLowerCase().replaceAll("\\s",  "") + ".png";//part.getSubmittedFileName();
-					Path path = Paths.get(save_path + File.separator + filename);
-					
-					if (filename != null && !filename.equals("")) {
-						
-						int i = 0;
-						Path newPath = path;
-						while(Files.exists(newPath)) {
-							i++;
-							newPath = updatePath(path, i);
-						}
-						
-						if (i != 0)
-							Files.move(path, newPath, StandardCopyOption.REPLACE_EXISTING);
-							
-						part.write(save_path + File.separator + filename);
-						
-						System.out.println("Dovrebbesi aver salvato in: " + save_path + File.separator + filename);
-						
-						
-					}
-				} else if (oldname != null) {
-					
-					File oldFile = new File(save_path + oldname);
-					
-					if (oldFile.exists()) {
-						if(oldFile.renameTo(new File(save_path + filename)))
-							System.out.println("Manipolazione immagine avvenuta con successo");
-						else {
-							System.err.println("Manipolazione immagine fallita");
-						}
-					}
+					bindImageFile(filename, save_path, part);
 						
 					
+					
+			}  else if (oldname != null) {
+				
+				File oldFile = new File(save_path + oldname);
+				
+				if (oldFile.exists()) 
+					oldFile.renameTo(new File(save_path + filename));
 					
 				}
+			
 		} catch (IOException e) {
 			LOGGER.log(Level.SEVERE, e.getMessage());
 		} catch (ServletException e) {
 			LOGGER.log(Level.SEVERE, e.getMessage());
 		}
+	}
+	
+	private void bindImageFile(String filename, String save_path, Part part) throws IOException {
+		
+		filename = filename.toLowerCase().replaceAll("\\s",  "") + ".png";//part.getSubmittedFileName();
+		Path path = Paths.get(save_path + File.separator + filename);
+		
+		if (filename != null && !filename.equals("")) {
+			
+			int i = 0;
+			Path newPath = path;
+			while(Files.exists(newPath)) {
+				i++;
+				newPath = updatePath(path, i);
+			}
+			
+			if (i != 0)
+				Files.move(path, newPath, StandardCopyOption.REPLACE_EXISTING);
+				
+			part.write(save_path + filename);
+			
+			System.out.println("Dovrebbesi aver salvato in: " + save_path + filename);
+			
+			
 		}
+	}
+	
+	
 	public Path updatePath(Path oldPath, int counter) {
 		
 		String uri = oldPath.toString();
@@ -358,5 +341,37 @@ public class ProductControlServlet extends HttpServlet {
 		
 	}
 	
+	private RequestDispatcher routeRequest(HttpServletRequest request, HttpServletResponse response, RequestDispatcher reqDisp, DataSource ds, int productID) {
+		
+		if (request.getRequestURI().contains("productCreate")) {
+			
+			request.setAttribute("isEdit", false);
+			reqDisp = request.getRequestDispatcher("productEdit.jsp");
+			
+		} else if (request.getRequestURI().contains("productEdit")) {
+			request.setAttribute("isEdit", true);
+			reqDisp = request.getRequestDispatcher("productEdit.jsp");
+		}	else {
+			
+			// RECUPERO COMMENTI
+			
+			IExtendedDAO<CommentBean, Integer> commentDAO = new CommentDAO(ds);
+			Collection<CommentBean> comments = null;
+			try {
+				 comments = commentDAO.doRetrieveAllByProduct(productID);
+			} catch (SQLException e) {
+				LOGGER.log(Level.SEVERE, e.getMessage());
+			} 
+			
+			request.setAttribute("comments", comments);
+			
+			reqDisp = request.getRequestDispatcher("product.jsp");
+			
+		}
+		
+		return reqDisp;
 	}
+}
+	
+
 

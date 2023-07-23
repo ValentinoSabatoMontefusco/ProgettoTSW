@@ -3,16 +3,25 @@ package com.code_fanatic.control.utils;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.eclipse.jdt.core.compiler.InvalidInputException;
 
 import com.code_fanatic.control.admin.OrdersRecapServlet;
+import com.code_fanatic.model.bean.CommentBean;
+import com.code_fanatic.model.bean.IUserSpecific;
+import com.code_fanatic.model.dao.IExtendedDAO;
 import com.mysql.cj.xdevapi.Schema.Validation;
 
 
@@ -84,5 +93,52 @@ public class SecurityUtils {
 		errors.add(error);
 		
 		return errors;
+	}
+	
+	public static Collection<IUserSpecific> sortRoutine(IExtendedDAO<IUserSpecific, Integer> ExtendedDAO, HttpServletRequest request, HttpServletResponse response) {
+		
+		String fromDate = null, toDate = null;
+		String allItems = request.getParameter("all_items");
+		if (allItems == null) {
+			
+			fromDate = request.getParameter("from_date");
+			toDate = request.getParameter("to_date");
+			
+		}
+		
+		String order_by = request.getParameter("order_by");
+		String sort_order = request.getParameter("sorting_order");
+		
+		String sort;
+		
+		if (order_by != null && order_by.equals("users"))
+			sort = "user_username";
+		else
+			sort = "create_time";
+		
+		if(sort_order != null && sort_order.equals("asc"))
+			sort = sort.concat(" ASC");
+		else 
+			sort = sort.concat(" DESC");
+		
+		Collection<IUserSpecific> items = null;
+		try {
+			if (fromDate == null || toDate == null) {
+				items = ExtendedDAO.doRetrieveAll(sort);
+				
+				System.err.println(String.format("Calling doRetrieveAll with %s", sort));
+			} else {
+				Timestamp fromD = Timestamp.valueOf(fromDate.replace("T", " "));
+				Timestamp toD = Timestamp.valueOf(toDate.replace("T", " "));
+				items = ExtendedDAO.doRetrieveAll(fromD, toD, sort);
+			}
+		} catch (SQLException e) {
+
+			LOGGER.log(Level.SEVERE, e.getMessage());
+		} 
+		
+//		request.setAttribute("comments", items);
+//		request.getRequestDispatcher("moderation.jsp").forward(request, response);
+		return items;
 	}
 }

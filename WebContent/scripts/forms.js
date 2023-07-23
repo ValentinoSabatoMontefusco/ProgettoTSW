@@ -1,7 +1,7 @@
 // Regular expressions for username, email, and password validation
 
 const usernameRegex = /^[a-zA-Z0-9._]+$/;
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+//const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const passwordRegex = /^[a-zA-Z0-9._]+$/;
 
 $(document).ready(function() {

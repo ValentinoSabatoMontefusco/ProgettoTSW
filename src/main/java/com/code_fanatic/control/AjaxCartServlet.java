@@ -73,29 +73,33 @@ public class AjaxCartServlet extends HttpServlet {
 		
 		
 			case "Add":	cart.addProduct(ProductID, 1);
-						if (username != null)
-							try {
-								cartDAO.doUpdateAddProduct(username, ProductID);
-							} catch (SQLException e) {
-								LOGGER.log(Level.SEVERE, e.getMessage());
-							}
-						
+			
+						if (username == null)
+							break;
+
+						try {
+							cartDAO.doUpdateAddProduct(username, ProductID);
+						} catch (SQLException e) {
+							LOGGER.log(Level.SEVERE, e.getMessage());
+						}
+					
 			
 						break;
 						
 			case "Sub": cart.subtractProduct(ProductID, 1);
 			
-
-						if (username!= null)
-							try {
-								
-								if (cart.getProductQuantity(ProductID) <= 0)
-									cartDAO.doUpdateRemoveProduct(username, ProductID);
-								else 
-									cartDAO.doUpdateSubtractProduct(username, ProductID);
-							} catch (SQLException e) {
-								LOGGER.log(Level.SEVERE, e.getMessage());
-							}
+						if (username == null)
+							break;
+						
+						try {
+							
+							if (cart.getProductQuantity(ProductID) <= 0)
+								cartDAO.doUpdateRemoveProduct(username, ProductID);
+							else 
+								cartDAO.doUpdateSubtractProduct(username, ProductID);
+						} catch (SQLException e) {
+							LOGGER.log(Level.SEVERE, e.getMessage());
+						}
 						
 						break;
 						
@@ -119,37 +123,38 @@ public class AjaxCartServlet extends HttpServlet {
 								
 								}
 								
-								if (cart.getTotalQuantity() > 0) {
-									orderDao = new OrderDAO(ds);
-									OrderBean newOrder = new OrderBean();
-									newOrder.setUsername(username);
-									newOrder.setCart(cart);
-									newOrder.setOrder_date(new Timestamp(System.currentTimeMillis()));
-									
-									Collection<Integer> newProductsOwned = null;
-									
-									try {
-										orderDao.doSave(newOrder);
-										cart.clear();
-										cartDAO.doDelete(username);
-										newProductsOwned = new UserDAO(ds).doRetrieveByKey(username).getOwnedProducts();
-									} catch (SQLException e) {
-										LOGGER.log(Level.SEVERE, e.getMessage());
-									}
-									
-									request.getSession().setAttribute("productsOwned", newProductsOwned);
-									
-									
-									
-									break;
-								} else {
+								if (cart.getTotalQuantity() <= 0) {
 									System.err.println("Can't order if cart empty");
 									response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 									response.getWriter().write("Tried purchase with empty cart");
 									return;
 									
 								}
-			
+		
+				
+								orderDao = new OrderDAO(ds);
+								OrderBean newOrder = new OrderBean();
+								newOrder.setUser_username(username);
+								newOrder.setCart(cart);
+								newOrder.setOrder_date(new Timestamp(System.currentTimeMillis()));
+								
+								Collection<Integer> newProductsOwned = null;
+								
+								try {
+									orderDao.doSave(newOrder);
+									cart.clear();
+									cartDAO.doDelete(username);
+									newProductsOwned = new UserDAO(ds).doRetrieveByKey(username).getOwnedProducts();
+								} catch (SQLException e) {
+									LOGGER.log(Level.SEVERE, e.getMessage());
+								}
+								
+								request.getSession().setAttribute("productsOwned", newProductsOwned);
+								
+								
+								
+								break;
+								
 							
 														
 			default: System.out.println("Ajax call failed");

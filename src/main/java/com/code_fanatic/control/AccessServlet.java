@@ -119,46 +119,46 @@ public class AccessServlet extends HttpServlet {
 					
 					// GESTIRE ERRORE
 			}
-			
-			if (newUser.getPassword().equals(password)){
-					
-					//request.getSession(true).removeAttribute("user");
-					request.getSession(true).setAttribute("username", newUser.getUsername());
-					request.getSession(true).setAttribute("role", newUser.getRole());
-					request.getSession(true).setAttribute("productsOwned", newUser.getOwnedProducts());
-					
-					// Handling guest Cart; following GPT hint of destroying guest cart 
-					
-					Cartesio cart = null;
-					try {
-						cart = (new CartDAO(ds).doRetrieveByKey(newUser.getUsername()));
-						if (cart.getTotalQuantity() > 0)
-							System.out.println("Il carrello dell'utente " + newUser.getUsername() + " ha stato riconosciuto e contiene " + cart.getTotalQuantity() + " articoli");
-						else { 
-							cart = (Cartesio) request.getSession().getAttribute("cart");
-							if (cart != null) {
-								new CartDAO(ds).doSave(cart, newUser.getUsername());
-							}
-						}
-					} catch (SQLException e) {
-					
-						LOGGER.log(Level.SEVERE, e.getMessage());
-					}
-					if (cart == null)
-						cart = new Cartesio();
-					
-					
-					request.getSession().setAttribute("cart", cart);
-						
+			if (!newUser.getPassword().equals(password)) {
+				errors.add("La password inserita non è corretta");
 				
-					System.out.print("Corrispondenza trovata");
-				} else {
-					errors.add("La password inserita non è corretta");
-				
-					request.setAttribute(ERROR_STRING,  errors);
-					request.getRequestDispatcher("access.jsp?type=login").forward(request, response);
-					return;
+				request.setAttribute(ERROR_STRING,  errors);
+				request.getRequestDispatcher("access.jsp?type=login").forward(request, response);
+				return;
 			}
+			
+		
+			//request.getSession(true).removeAttribute("user");
+			request.getSession(true).setAttribute("username", newUser.getUsername());
+			request.getSession(true).setAttribute("role", newUser.getRole());
+			request.getSession(true).setAttribute("productsOwned", newUser.getOwnedProducts());
+			
+			// Handling guest Cart; following GPT hint of destroying guest cart 
+			
+			Cartesio cart = null;
+			try {
+				cart = (new CartDAO(ds).doRetrieveByKey(newUser.getUsername()));
+				if (cart.getTotalQuantity() > 0)
+					System.out.println("Il carrello dell'utente " + newUser.getUsername() + " ha stato riconosciuto e contiene " + cart.getTotalQuantity() + " articoli");
+				else { 
+					cart = (Cartesio) request.getSession().getAttribute("cart");
+					if (cart != null) {
+						new CartDAO(ds).doSave(cart, newUser.getUsername());
+					}
+				}
+			} catch (SQLException e) {
+			
+				LOGGER.log(Level.SEVERE, e.getMessage());
+			}
+			if (cart == null)
+				cart = new Cartesio();
+			
+			
+			request.getSession().setAttribute("cart", cart);
+				
+		
+			System.out.print("Corrispondenza trovata");
+		
 		} catch (SQLException e) {
 			
 			LOGGER.log(Level.SEVERE, e.getMessage());

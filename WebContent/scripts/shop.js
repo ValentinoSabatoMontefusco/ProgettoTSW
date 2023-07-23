@@ -17,9 +17,6 @@ function createProductBlock(JSONProduct, type, admin, inCart) {
 	
 	const product = JSON.parse(JSONProduct);
 	
-	if (testCounter++ == 0)
-		console.log(JSONProduct);
-	
 	
 	let productLogo = document.createElement("a");
 	productLogo.href = contextPath + "/product?name=" + product.name;

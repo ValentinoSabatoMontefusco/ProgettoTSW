@@ -24,10 +24,10 @@
 		   		total = 0f;
 			   
 		   		%>
-		   <div class="order_presentation">Order made in date: <%= order.getOrder_date() %>
-		   		<%if ("recap".equals(view)) { %> by <%= order.getUsername() %> <% } %></div>
+		   
 		   <table>
-		   <caption><%= order.getUsername() %> Order</caption>
+		   <caption>Order made in date: <%= order.getOrder_date() %>
+		   		<span class="caption_owner"><%if ("recap".equals(view)) { %> by <%= order.getUser_username() %> <% } %></span></caption>
 		   	<tr>
 		   		<th>Product</th>
 		   		<th>Name</th>

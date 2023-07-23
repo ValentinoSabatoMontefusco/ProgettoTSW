@@ -66,7 +66,7 @@ public class CourseServlet extends HttpServlet {
 			CourseBean course = null;
 			
 			@SuppressWarnings("unchecked")
-			Iterator<CourseBean> it = ((Collection<CourseBean>) getServletContext().getAttribute("courses")).iterator();
+			Iterator<CourseBean> it = ((Collection<CourseBean>) getServletContext().getAttribute(COURSE_STRING)).iterator();
 			while (it.hasNext()) {
 				
 				course = it.next();

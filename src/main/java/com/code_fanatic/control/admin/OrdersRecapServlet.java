@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 import com.code_fanatic.model.bean.OrderBean;
+import com.code_fanatic.model.dao.IExtendedDAO;
 import com.code_fanatic.model.dao.IOrderDAO;
 import com.code_fanatic.model.dao.OrderDAO;
 import com.google.gson.Gson;
@@ -50,7 +51,7 @@ public class OrdersRecapServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
 		DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
-		IOrderDAO<OrderBean, Integer> orderDAO = new OrderDAO(ds);
+		IExtendedDAO<OrderBean, Integer> orderDAO = new OrderDAO(ds);
 		
 		//String sort = (String) request.getParameter("sort");
 		

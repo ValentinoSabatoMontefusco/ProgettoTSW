@@ -50,6 +50,7 @@
 			<label for="name_input"><%= isEdit ? "Edit" : "Insert new" %> Product Name</label>
 			<input type="text" id="name_input" name = "name_input" value="${product.name}" 
 			pattern="^[a-zA-Z._\s]+$" required>
+			<input type="hidden" id="oldname_input" name="oldname_input" value="${product.name}">
 			
 			<label for="description_input"><%= isEdit ? "Edit" : "Insert new" %> Product Description:</label>
 			<textarea id="description_input" name ="description_input" required>${product.description}</textarea >
