@@ -33,14 +33,14 @@ public class MyOrdersServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		System.out.println("Order Servlet avviata");
+
 		Collection<OrderBean> orders = null;
 		
 		String username = (String) request.getSession().getAttribute("username");
 		
 		if (username == null) 
-			
-			System.err.println("SessionToken assente in pagina illegale");
+			LOGGER.log(Level.SEVERE, "SessionToken assete in pagina illegale");
+
 		else {
 			
 			IExtendedDAO<OrderBean, Integer> orderDAO = new OrderDAO((DataSource) request.getServletContext().getAttribute("DataSource"));

@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
@@ -20,6 +22,7 @@ public class CommentDAO implements IExtendedDAO<CommentBean, Integer> {
 	
 	DataSource ds = null;
 	private static final String TABLE_NAME = "comments";
+	private static final Logger LOGGER = Logger.getLogger(CommentDAO.class.getName());
 	
 	public CommentDAO(DataSource ds) {
 		
@@ -53,9 +56,9 @@ public class CommentDAO implements IExtendedDAO<CommentBean, Integer> {
 			int outcome = prepStmt.executeUpdate();
 			
 			if (outcome > 0) {
-				System.out.println("Commento inserito con successo");
+				LOGGER.log(Level.INFO, "Commento inserito con successo");
 			} else {
-				System.out.println("Inserimento commento fallito");
+				LOGGER.log(Level.SEVERE, "Inserimento commento fallita");
 			}
 		
 		// MODIFICA COMMENTO
@@ -71,9 +74,9 @@ public class CommentDAO implements IExtendedDAO<CommentBean, Integer> {
 			int outcome = prepStmt.executeUpdate();
 			
 			if (outcome > 0) {
-				System.out.println("Commento modificato con successo");
+				LOGGER.log(Level.INFO, "Commento modificato con successo");
 			} else {
-				System.out.println("Modifca commento fallita");
+				LOGGER.log(Level.SEVERE, "Modifica commento fallita");
 			}
 		}
 		
@@ -199,7 +202,7 @@ public class CommentDAO implements IExtendedDAO<CommentBean, Integer> {
 		}
 	
 		if (comments != null && comments.size() == 0)
-			System.err.println("Nessun commento trovato");
+			LOGGER.log(Level.WARNING, "Nessun commento trovato");
 		
 		return comments;
 	}
@@ -246,7 +249,7 @@ public Collection<CommentBean> doRetrieveAllByUser(String username) throws SQLEx
 		}
 		}
 		if (comments != null && comments.size() == 0)
-			System.err.println("Nessun commento trovato per questo utente");
+			LOGGER.log(Level.WARNING, "Nessun commento trovato per questo utente");
 		
 		return comments;
 	}
@@ -292,7 +295,8 @@ public Collection<CommentBean> doRetrieveAllByUser(String username) throws SQLEx
 			}
 		}
 		if (comments == null || comments.size() == 0)
-			System.err.println("Nessun commento trovato per questo utente");
+			LOGGER.log(Level.WARNING, "Nessun commento trovato per questo utente");
+
 			
 		return comments;
 	}
@@ -343,7 +347,7 @@ public synchronized Collection<CommentBean> doRetrieveAll(Timestamp fromDate, Ti
 		}
 	
 		if (comments == null || comments.size() == 0)
-			System.err.println("Nessun commento trovato");
+			LOGGER.log(Level.WARNING, "Nessun commento trovato");
 			
 		
 		

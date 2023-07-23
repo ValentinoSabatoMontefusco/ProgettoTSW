@@ -44,7 +44,7 @@ public class UserDAO implements IGenericDAO<UserBean, String> {
 			
 
 			if (prepStmt.executeUpdate() == 1) {
-				System.out.print("Boh, pare andata bene, controll");
+				LOGGER.log(Level.INFO, "Boh, pare andata bene, controll");
 			}
 			
 		} finally {
@@ -119,7 +119,7 @@ public class UserDAO implements IGenericDAO<UserBean, String> {
 				
 			} else {
 				
-				System.out.print("Utente non trovato");
+				LOGGER.log(Level.INFO, "Utente non trovato");
 			}
 		} catch (SQLException e) {
 			LOGGER.log(Level.SEVERE, e.getMessage());
@@ -159,7 +159,7 @@ public class UserDAO implements IGenericDAO<UserBean, String> {
 			
 			if (prepStmt.executeUpdate() != 0) {
 				success = true;
-				System.out.print("Articolo inserito nel carrello");
+				LOGGER.log(Level.INFO, "Articolo inserito nel carrello");
 			}
 			
 			

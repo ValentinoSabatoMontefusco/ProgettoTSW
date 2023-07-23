@@ -15,14 +15,7 @@ public class ProductBean {
 	
 	}
 	
-//	public ProductBean (int id, String name, String description, float price) {
-//		
-//		this.id = id;
-//		this.name = name;
-//		this.description = description;
-//		this.price = price;
-//		
-//	}
+
 	
 	public int getId() {
 		return id;

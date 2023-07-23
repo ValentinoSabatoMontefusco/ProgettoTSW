@@ -1,6 +1,9 @@
 package com.code_fanatic.control;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/logout")
 public class LogoutServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+       private static final Logger LOGGER = Logger.getLogger(LogoutServlet.class.getName());
 
     public LogoutServlet() {
         super();
@@ -24,9 +27,10 @@ public class LogoutServlet extends HttpServlet {
 
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		request.getSession().invalidate();
-		System.out.println("Sessione invalidata con successo");
+		LOGGER.log(Level.INFO, "Sessione invalidata con successo");
+	
 		
-	request.getRequestDispatcher(/*getServletContext().getContextPath()+*/"home.jsp").forward(request, response);
+	request.getRequestDispatcher("home.jsp").forward(request, response);
 	}
 
 

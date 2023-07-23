@@ -40,9 +40,7 @@ public class AjaxCartServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		
-		System.out.println("Cartservlet avviata?"); 
-		
+				
 		String type = request.getParameter("type");
 		int ProductID = Integer.parseInt(request.getParameter("prodID"));
 		String username = (String) request.getSession().getAttribute("username");		// Superflous
@@ -117,14 +115,14 @@ public class AjaxCartServlet extends HttpServlet {
 			case "Checkout":	if (username == null) {
 									response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 									response.getWriter().write("You're currently not logged in");
-									System.err.println("Can't checkout if not logged");
+									LOGGER.log(Level.WARNING, "Can't checkout if not logged");
 									return;
 									
 								
 								}
 								
 								if (cart.getTotalQuantity() <= 0) {
-									System.err.println("Can't order if cart empty");
+									LOGGER.log(Level.WARNING, "Can't order if cart empty");
 									response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 									response.getWriter().write("Tried purchase with empty cart");
 									return;
@@ -157,7 +155,7 @@ public class AjaxCartServlet extends HttpServlet {
 								
 							
 														
-			default: System.out.println("Ajax call failed");
+			default: LOGGER.log(Level.SEVERE, "Ajax call failed");
 					break;
 		
 		}
@@ -169,7 +167,6 @@ public class AjaxCartServlet extends HttpServlet {
 		
 		cartResponse cartResp = new cartResponse(cart.getTotalQuantity(),
 				ProductID == 0 ? 0 : cart.getProductQuantity(ProductID));
-		System.out.println("Expected JS output for cart = " + cartResp.getCartQuantity());
 		String JcartResp = new Gson().toJson(cartResp);
 		response.getWriter().write(JcartResp);
 		

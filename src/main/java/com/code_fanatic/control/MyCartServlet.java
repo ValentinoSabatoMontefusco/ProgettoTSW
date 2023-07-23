@@ -39,7 +39,7 @@ public class MyCartServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		System.out.println("MyCart Servlet avviata");
+
 		Cartesio cart = (Cartesio) request.getSession().getAttribute("cart");
 		
 		if (cart != null && cart.getTotalQuantity() != 0) {

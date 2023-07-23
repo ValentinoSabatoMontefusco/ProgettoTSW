@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
@@ -17,11 +19,11 @@ public class MerchDAO implements IGenericDAO<MerchBean, Integer> {
 	
 	DataSource dataSource;
 	private static final String TABLE_NAME = "merchandise INNER JOIN products ON products.id = merchandise.product_id";
-	
+	private static final Logger LOGGER = Logger.getLogger(MerchDAO.class.getName());
 	public MerchDAO(DataSource dataSource) {
 		
 		this.dataSource = dataSource;
-		System.out.print("DataSource connesso al DAO");
+
 	}
 	
 	
@@ -47,14 +49,7 @@ public class MerchDAO implements IGenericDAO<MerchBean, Integer> {
 				ResultSet rs = prepStmt.executeQuery();
 				
 				if (rs.next()) {
-//					
-//					MerchBean newBean = new MerchBean();
-//					newBean.setId(bean.getId());
-//					newBean.setName(bean.getName());
-//					newBean.setDescription(bean.getDescription());
-//					newBean.setPrice(bean.getPrice());
-//					newBean.setType("Merchandise");
-//					newBean.setAmount(bean.getAmount());
+
 					
 					prepStmt.close();
 					prepStmt = connection.prepareStatement("UPDATE products SET name = ?, description = ?, "
@@ -73,7 +68,8 @@ public class MerchDAO implements IGenericDAO<MerchBean, Integer> {
 					prepStmt.setInt(1,  bean.getAmount());
 					prepStmt.setInt(2, bean.getId());
 					prepStmt.executeUpdate();
-					System.err.println("Merciandisio allegedly modificato");
+					LOGGER.log(Level.INFO, "Merch modificata");
+
 				}} else {
 				
 				prepStmt = connection.prepareStatement("INSERT INTO products (name, description, type, price) "
@@ -96,9 +92,11 @@ public class MerchDAO implements IGenericDAO<MerchBean, Integer> {
 					prepStmt.setInt(2,  bean.getAmount());
 					prepStmt.executeUpdate();
 					
-					System.err.println("Merciandisio allegedly inserito");
+					LOGGER.log(Level.INFO, "Merch inserita");
+
 				} else {
-					System.err.println("Qualcosa andò male");
+					LOGGER.log(Level.SEVERE, "Problemi con inserimento Merch");
+
 				}
 				
 					

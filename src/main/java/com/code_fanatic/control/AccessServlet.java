@@ -47,9 +47,10 @@ public class AccessServlet extends HttpServlet {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		
-		ArrayList<String> errors = new ArrayList<String>();
+		ArrayList<String> errors = null;
 		
-		password = SecurityUtils.toHash(password);	//ad hoc class with static methods to provide Security Management
+		//ad hoc class with static methods to provide Security Management
+		password = SecurityUtils.toHash(password);	
 
 		
 		UserBean newUser = new UserBean();
@@ -72,24 +73,22 @@ public class AccessServlet extends HttpServlet {
 			tryLogUser(newUser, userDAO, errors, request, response, password, ds);
 		}
 		
-
-		System.err.println("Fine access raggiunto");
 		
 		RequestDispatcher view = request.getRequestDispatcher("/home.jsp");
 		view.forward(request, response);
 	}
 	
-	private synchronized void tryRegisterUser(UserBean newUser, IGenericDAO<UserBean, String> userDAO, Collection<String> errors
+	private synchronized void tryRegisterUser(UserBean newUser, IGenericDAO<UserBean, String> userDAO, ArrayList<String> errors
 			, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		try {
 			userDAO.doSave(newUser);
-			System.out.print("Registrazione effettuata, credo");
+			LOGGER.log(Level.FINE, "Registrazione effettuata con successo");
 			
 			
 		} catch (SQLIntegrityConstraintViolationException e) {
 			
-			errors.add("The username '" + newUser.getUsername() + "' is already in use");
+			SecurityUtils.addError(errors, "The username '" + newUser.getUsername() + "' is already in use");
 			
 		
 			LOGGER.log(Level.SEVERE, e.getMessage());
@@ -100,19 +99,20 @@ public class AccessServlet extends HttpServlet {
 			
 			
 		} catch (SQLException e) {
-			//LOGGER.log(Level.SEVERE, e.getMessage());
-			System.out.println(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.getMessage());
+		
 		}
 	}
 	
-	private synchronized void tryLogUser(UserBean newUser, IGenericDAO<UserBean, String> userDAO, Collection<String> errors
+	private synchronized void tryLogUser(UserBean newUser, IGenericDAO<UserBean, String> userDAO, ArrayList<String> errors
 			, HttpServletRequest request, HttpServletResponse response, String password, DataSource ds) {
 		
 		try {
 			
 			if ((newUser = userDAO.doRetrieveByKey(newUser.getUsername())) == null) {
 					
-					errors.add("L'username inserito non esiste");
+					
+					SecurityUtils.addError(errors, "L'username inserito non esiste");
 					request.setAttribute(ERROR_STRING,  errors);
 					request.getRequestDispatcher("access.jsp?type=login").forward(request, response);
 					return;
@@ -120,7 +120,7 @@ public class AccessServlet extends HttpServlet {
 					// GESTIRE ERRORE
 			}
 			if (!newUser.getPassword().equals(password)) {
-				errors.add("La password inserita non è corretta");
+				SecurityUtils.addError(errors, "La password inserita non è corretta");
 				
 				request.setAttribute(ERROR_STRING,  errors);
 				request.getRequestDispatcher("access.jsp?type=login").forward(request, response);
@@ -128,7 +128,7 @@ public class AccessServlet extends HttpServlet {
 			}
 			
 		
-			//request.getSession(true).removeAttribute("user");
+
 			request.getSession(true).setAttribute("username", newUser.getUsername());
 			request.getSession(true).setAttribute("role", newUser.getRole());
 			request.getSession(true).setAttribute("productsOwned", newUser.getOwnedProducts());
@@ -138,9 +138,9 @@ public class AccessServlet extends HttpServlet {
 			Cartesio cart = null;
 			try {
 				cart = (new CartDAO(ds).doRetrieveByKey(newUser.getUsername()));
-				if (cart.getTotalQuantity() > 0)
-					System.out.println("Il carrello dell'utente " + newUser.getUsername() + " ha stato riconosciuto e contiene " + cart.getTotalQuantity() + " articoli");
-				else { 
+				
+				
+				if (cart.getTotalQuantity() == 0) { 
 					cart = (Cartesio) request.getSession().getAttribute("cart");
 					if (cart != null) {
 						new CartDAO(ds).doSave(cart, newUser.getUsername());
@@ -156,9 +156,7 @@ public class AccessServlet extends HttpServlet {
 			
 			request.getSession().setAttribute("cart", cart);
 				
-		
-			System.out.print("Corrispondenza trovata");
-		
+				
 		} catch (SQLException e) {
 			
 			LOGGER.log(Level.SEVERE, e.getMessage());

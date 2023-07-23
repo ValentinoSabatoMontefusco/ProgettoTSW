@@ -23,21 +23,6 @@ public class CourseBean extends ProductBean {
 		setType(pb.getType());
 		
 	}
-
-//	public CourseBean(int id, String name, String description, int price, int lesson_count) {
-//		
-//		super(id, name, description, price);
-//		this.lesson_count = lesson_count;
-//	}
-//	
-//	public CourseBean(int id, String name, String description, float price, int lesson_count,
-//			ArrayList<LessonBean> lessons) {
-//		super(id, name, description, price);
-//		this.lesson_count = lesson_count;
-//		this.lessons = lessons;
-//	}
-
-	
 	
 	public ArrayList<LessonBean> getLessons() {
 		return lessons;

@@ -16,6 +16,8 @@ import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.code_fanatic.control.utils.SecurityUtils;
+
 /**
  * Servlet Filter implementation class AuthenticationFilter
  */
@@ -42,21 +44,21 @@ public class AuthenticationFilter extends HttpFilter implements Filter {
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
 		String reqURI = httpRequest.getRequestURI();
 		String roleToken = (String) httpRequest.getSession().getAttribute("role"); 
-		Collection<String> errors = new ArrayList<String>();
+		ArrayList<String> errors = null;
 		
 		if (roleToken == null) {
-			errors.add("You must log in to access this page");
+			SecurityUtils.addError(errors, "You must log in to access this page");
 			request.setAttribute("errors", errors);
 			RequestDispatcher view = httpRequest.getRequestDispatcher("/access.jsp?type=login");
 			view.forward(httpRequest, httpResponse);
 		} else if (reqURI.contains("admin") && (!roleToken.equals("admin"))) {
 				
-				errors.add("You're unauthorized to see this page");
+				SecurityUtils.addError(errors, "You're unauthorized to see this page");
 				RequestDispatcher view = httpRequest.getRequestDispatcher("/access.jsp?type=login");
 				view.forward(httpRequest, httpResponse);
 				
 		} else {
-			System.out.println("Filter ok");
+			
 			chain.doFilter(request, response);
 		// pass the request along the filter chain
 		}

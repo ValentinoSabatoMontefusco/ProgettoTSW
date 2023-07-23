@@ -24,14 +24,14 @@ public class Cartesio {
 	
 	public void setQuantity(int product, int quantity) {
 		
-		//if (contenutoCarrello.containsKey(product)) {
+
 			
 			if (quantity <= 0) 
 				contenutoCarrello.remove(product);
 			else {
 				contenutoCarrello.put(product, quantity);
 			}
-		//}
+
 	}
 	
 	public void subtractProduct(int product, int quantity) {

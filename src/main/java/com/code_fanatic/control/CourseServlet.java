@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-import com.code_fanatic.control.admin.OrdersRecapServlet;
+
 import com.code_fanatic.model.bean.CourseBean;
 import com.code_fanatic.model.dao.CourseDAO;
 import com.code_fanatic.model.dao.IGenericDAO;
@@ -37,8 +37,8 @@ public class CourseServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		
-			//String lang = tempMethod(request);
-			System.out.println("CourseServlet richiamata");
+	
+
 			DataSource dataSource = (DataSource) getServletContext().getAttribute("DataSource"); 
 			IGenericDAO<CourseBean, Integer> courseDao = new CourseDAO(dataSource);
 			
@@ -51,7 +51,7 @@ public class CourseServlet extends HttpServlet {
 					request.setAttribute(COURSE_STRING, courses);
 				} catch (SQLException e) {
 					LOGGER.log(Level.SEVERE, e.getMessage());
-					System.out.println("Courses exception doublecheck");
+		
 				}
 			}
 //			
@@ -117,21 +117,15 @@ public class CourseServlet extends HttpServlet {
 		
 		String[] pathSegments = request.getRequestURI().split("/");
 		String lang = "";
-		for (String string : pathSegments) 
-		{
-			System.out.println(string);
-		}
+
 		
-		System.out.println(pathSegments.length);
+
 		try {
 			lang = pathSegments[pathSegments.length - 1];
-			System.out.println("Lang = " + lang);
+
 			pathSegments = lang.split("\\.");
-			for (String string : pathSegments) 
-			{
-				System.out.println(string);
-			}
-			lang = pathSegments[0];System.out.println("Lang = " + lang);
+
+			lang = pathSegments[0];
 		} catch (Exception e) {
 			
 			LOGGER.log(Level.SEVERE, e.getMessage());
@@ -143,24 +137,3 @@ public class CourseServlet extends HttpServlet {
 	
 }
 
-/*
- * 
- * 	DatabaseHandler dbHandler = new DatabaseHandler();
-			ResultSet result = dbHandler.executeQuery("SELECT description FROM PRODUCTS WHERE name = '" + lang + "';");
- *		if (result == null) {
-				System.out.print("Errore col DB");
-				dbHandler.closeConnection();
-				return;
-			} else {
-				request.setAttribute("lang",  lang);
-				result.next();
-				String description = result.getNString("description");
-				request.setAttribute("description", description);
-				result = dbHandler.executeQuery("SELECT lesson_count FROM courses INNER JOIN products on products.Id = courses.product_id AND products.name = '" + lang + "';");
-				result.next();
-				request.setAttribute("lesson_count",  result.getInt("lesson_count"));
-				System.out.print("Lesson_Count è " + request.getAttribute("lesson_count"));
-				
-					dbHandler.closeConnection();
- */
-  

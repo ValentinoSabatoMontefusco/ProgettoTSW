@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.sql.DataSource;
@@ -31,6 +32,7 @@ public class OrderDAO implements IExtendedDAO<OrderBean, Integer> {
 	DataSource dataSource = null;
 	private static final String TABLE_NAME = "orders";
 	private static final String TABLE_NAME2 = "order_products";
+	private static final Logger LOGGER = Logger.getLogger(OrderDAO.class.getName());
 	
 	public OrderDAO(DataSource dataSource) {
 		
@@ -55,7 +57,7 @@ public class OrderDAO implements IExtendedDAO<OrderBean, Integer> {
 		
 		
 		if (prepStmt.executeUpdate() == 0) {
-			System.err.println("Qualocsa è andato storto");
+			LOGGER.log(Level.SEVERE, "Qualcosa è andato storto in OrderDAO");
 			return;
 		}
 		
@@ -64,7 +66,6 @@ public class OrderDAO implements IExtendedDAO<OrderBean, Integer> {
 		if (rs.next()) {
 			
 			int orderID = rs.getInt(1);
-			System.out.println(String.format("orderID = %d", orderID));
 			prepStmt.close();
 			prepStmt = connection.prepareStatement("INSERT INTO " + TABLE_NAME2 + " (order_id, product_id, product_name, product_type, "
 					+ "product_price, quantity)"
@@ -79,7 +80,7 @@ public class OrderDAO implements IExtendedDAO<OrderBean, Integer> {
 				ProductBean currentProduct = productDAO.doRetrieveByKey(entry.getKey());
 				
 				if (currentProduct == null) {
-					System.err.println("Nessuna corrispondenza trovata in Products per un articolo nell'ordine");
+					LOGGER.log(Level.WARNING, "Nessuna corrispondenza trovata in Products per un articolo dell'Ordine");
 					break;
 				}
 				
@@ -181,7 +182,6 @@ public class OrderDAO implements IExtendedDAO<OrderBean, Integer> {
 			String sanitizedOrder = SecurityUtils.sanitizeForOrder(order);
 		
 			connection = dataSource.getConnection();
-			System.err.println("sanitizedOrder = " + sanitizedOrder);
 			prepStmt = connection.prepareStatement("SELECT * FROM " + TABLE_NAME + " ORDER BY " + sanitizedOrder+ " ;");
 			
 			ResultSet rs = prepStmt.executeQuery();
@@ -301,7 +301,7 @@ public class OrderDAO implements IExtendedDAO<OrderBean, Integer> {
 		return orders;
 	}
 	
-	public OrderBean buildOrder(ResultSet rs/*, PreparedStatement prepStmt*/, Connection connection) throws SQLException {
+	public OrderBean buildOrder(ResultSet rs, Connection connection) throws SQLException {
 		
 		OrderBean order = null;
 		
@@ -314,8 +314,8 @@ public class OrderDAO implements IExtendedDAO<OrderBean, Integer> {
 		order.setOrder_date(rs.getTimestamp("order_date"));
 		try {
 			
-		prepStmt = connection.prepareStatement("SELECT * FROM " + TABLE_NAME2 + /*" INNER JOIN "
-				+ "products ON product_id = id " +*/  " WHERE order_id = ?;");
+		prepStmt = connection.prepareStatement("SELECT * FROM " + TABLE_NAME2 +
+				 " WHERE order_id = ?;");
 		
 		prepStmt.setInt(1, order.getId());
 		

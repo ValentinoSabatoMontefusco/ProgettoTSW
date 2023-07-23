@@ -40,12 +40,7 @@ public class OrdersRecapServlet extends HttpServlet {
 		doPost(request, response);
 		
 	}
-	
-	// JSON Responsive approach
-//	String jSONOrderResponse = new Gson().toJson(orders.toArray());
-//	System.out.println(jSONOrderResponse);
-//	
-//	response.getWriter().write(jSONOrderResponse);
+
 	
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -53,7 +48,7 @@ public class OrdersRecapServlet extends HttpServlet {
 		DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
 		IExtendedDAO<OrderBean, Integer> orderDAO = new OrderDAO(ds);
 		
-		//String sort = (String) request.getParameter("sort");
+		
 		
 		String fromDate = null, toDate = null;
 		String allOrders = request.getParameter("all_items");
@@ -85,8 +80,6 @@ public class OrdersRecapServlet extends HttpServlet {
 		try {
 			if (fromDate == null || toDate == null) {
 				orders = orderDAO.doRetrieveAll(sort);
-				
-				System.err.println(String.format("Calling doRetrieveAll with %s", sort));
 			} else {
 				Timestamp fromD = Timestamp.valueOf(fromDate.replace("T", " "));
 				Timestamp toD = Timestamp.valueOf(toDate.replace("T", " "));

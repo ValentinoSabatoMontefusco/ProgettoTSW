@@ -36,7 +36,7 @@ public class ShopServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		System.out.println("ShopServlet avviata con request URI: " + request.getRequestURI());
+
 		
 		// Temporary method to verify everything works
 		DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
@@ -54,11 +54,8 @@ public class ShopServlet extends HttpServlet {
 			Collection<Integer> productsOwned = (Collection<Integer>) request.getSession().getAttribute("productsOwned");
 			if (productsOwned != null && productsOwned.size() > 0) {
 				
-				//for (ProductBean product : products) {
-					
-					//if (productsOwned.contains((Integer) product.getId()))
-						products.removeIf( p -> productsOwned.contains(p.getId()));
-				//}
+				products.removeIf( p -> productsOwned.contains(p.getId()));
+	
 			}
 		}
 		

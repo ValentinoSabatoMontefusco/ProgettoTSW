@@ -49,7 +49,8 @@ public class CommentServlet extends HttpServlet {
 
 		String type = request.getParameter("type");
 		
-		System.out.println("Comment Servlet avviata con type = " + type);
+		LOGGER.log(Level.FINE, "Comment Servlet avviata con type = " + type);
+
 		
 		DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
 		ArrayList<String> errors = null;
@@ -73,7 +74,6 @@ public class CommentServlet extends HttpServlet {
 						}
 						
 						
-						//request.getRequestDispatcher("product?type=retrieve").forward(request, response);
 						return;
 			
 			case "Delete": int comment_id = Integer.parseInt(request.getParameter("comment_id"));
@@ -114,20 +114,12 @@ public class CommentServlet extends HttpServlet {
 			
 						request.setAttribute("comments", comments);
 						request.getRequestDispatcher("moderation.jsp").forward(request, response);
-			
+						break;
 						default: break;
 		}
 		
 		
-		// TEMP
-//		StringBuilder originalURL = new StringBuilder(request.getRequestURL());
-//		if (request.getQueryString() != null)
-//			originalURL.append("?").append(request.getQueryString());
-//		
-//		System.out.println("Request URL: " + request.getRequestURL() + ", QueryStringz: " + 
-//		(request.getQueryString() != null ? request.getQueryString() : "none"));
-		
-		
+	
 		
 	}
 
@@ -145,9 +137,10 @@ public class CommentServlet extends HttpServlet {
 			
 			if (commentDAO.doDelete(comment_id)) {
 				
-				System.out.println("Rimozione avvenuta con successo");
+				LOGGER.log(Level.INFO, "Rimozione avvenuta con successo");
 			} else {
-				System.out.println("Rimozione fallimentare");
+				LOGGER.log(Level.SEVERE, "Rimozione commento fallimentare");
+
 			}
 		
 		}
@@ -184,7 +177,7 @@ public class CommentServlet extends HttpServlet {
 			if (fromDate == null || toDate == null) {
 				items = ExtendedDAO.doRetrieveAll(sort);
 				
-				System.err.println(String.format("Calling doRetrieveAll with %s", sort));
+			
 			} else {
 				Timestamp fromD = Timestamp.valueOf(fromDate.replace("T", " "));
 				Timestamp toD = Timestamp.valueOf(toDate.replace("T", " "));
@@ -195,8 +188,6 @@ public class CommentServlet extends HttpServlet {
 			LOGGER.log(Level.SEVERE, e.getMessage());
 		} 
 		
-//		request.setAttribute("comments", items);
-//		request.getRequestDispatcher("moderation.jsp").forward(request, response);
 		return items;
 	}
 }

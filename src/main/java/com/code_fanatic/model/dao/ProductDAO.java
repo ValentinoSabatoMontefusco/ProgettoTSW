@@ -58,7 +58,7 @@ public class ProductDAO implements IGenericDAO<ProductBean, Integer> {
 				prepStmt.setInt(4, bean.getId());
 				
 				prepStmt.executeUpdate();
-				System.err.println("Prodotto allegedly modificato");
+				LOGGER.log(Level.INFO, "Prodotto allegedly modificato");
 				
 			}
 		} else { 
@@ -71,7 +71,7 @@ public class ProductDAO implements IGenericDAO<ProductBean, Integer> {
 			prepStmt.setFloat(3, bean.getPrice());
 					
 			prepStmt.executeUpdate();
-			System.err.println("Prodotto allegedly inserito");
+			LOGGER.log(Level.INFO, "Prodotto allegedly inserito");
 				
 		}
 		} finally {

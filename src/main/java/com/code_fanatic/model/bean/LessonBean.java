@@ -6,14 +6,7 @@ public class LessonBean {
 	private String title;
 	private String content;
 	
-//	public LessonBean(int number, String title, String content) {
-//		
-//		this.number = number;
-//		this.title = title;
-//		this.content = content;
-//		
-//	}
-	
+
 	public LessonBean() {
 		
 	}
@@ -36,7 +29,7 @@ public class LessonBean {
 		this.content = content;
 	}
 	
-	//private Course course;
+
 	
 	
 	

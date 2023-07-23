@@ -36,20 +36,20 @@ public class MainContext implements ServletContextListener  {
 			context.setAttribute("courses", new CourseDAO(dataSource).doRetrieveAll("name"));
 			
 		} catch (NamingException e) {
-			System.out.println("Error:" + e.getMessage());
+			LOGGER.log(Level.SEVERE,  e.getMessage());
 		}	catch (SQLException e) {
 			LOGGER.log(Level.SEVERE, e.getMessage());
 		}
 		
 		context.setAttribute(DS_STRING, dataSource);
-		System.out.println("DataSource set as context attribute");
+		LOGGER.log(Level.FINE, "DataSource set as context attribute");
 		
 		// Setting contextPath as a web app wide variable for appropriate management of paths
 		
 		String ctxPath = context.getContextPath();
 		context.setAttribute("ctxPath", ctxPath);
 		
-		System.out.println(String.format("Proviamo a stampare una variabile dinamicamente: %s", ctxPath));
+		
 		
 	
 	}
@@ -75,16 +75,4 @@ public class MainContext implements ServletContextListener  {
 		}
 	}
 	
-//	private ArrayList<CourseBean> fetchDBCourses(DataSource ds){
-//		
-//		Connection conn;
-//		Statement stmt;
-//		
-//		try {
-//			conn = ds.getConnection();
-//			stmt = conn.createStatement();
-//			
-//			
-//		}
-//	}
 }

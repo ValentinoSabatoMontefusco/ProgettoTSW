@@ -65,7 +65,6 @@ public class ProductControlServlet extends HttpServlet {
 
 		
 		String type = request.getParameter("type");
-		System.err.println(request.getParameter("name"));
 		
 		ArrayList<String> errors = new ArrayList<String>();
 		
@@ -109,7 +108,7 @@ public class ProductControlServlet extends HttpServlet {
 			
 			request.setAttribute("product", product);
 				
-			reqDisp = routeRequest(request, response, reqDisp, ds, productID);
+			reqDisp = routeRequest(request, response, ds, productID);
 			
 			break;
 			
@@ -174,7 +173,7 @@ public class ProductControlServlet extends HttpServlet {
 
 			
 	
-			//System.out.println("Request URI: " + request.getRequestURI());
+
 			MainContext.updateAttributes(getServletContext());
 			reqDisp = request.getRequestDispatcher(HOME_PATH);
 			
@@ -261,7 +260,7 @@ public class ProductControlServlet extends HttpServlet {
 		
 		}
 		
-		System.err.println("ProductControl servlet avviata");
+
 	
 		reqDisp.forward(request, response);
 		
@@ -291,7 +290,11 @@ public class ProductControlServlet extends HttpServlet {
 				File oldFile = new File(save_path + oldname);
 				
 				if (oldFile.exists()) 
-					oldFile.renameTo(new File(save_path + filename));
+					if(oldFile.renameTo(new File(save_path + filename)))
+						LOGGER.log(Level.INFO, "Immagine rinominata");
+					else {
+						LOGGER.log(Level.WARNING, "Manipolazione immagine fallita");
+					}
 					
 				}
 			
@@ -321,9 +324,8 @@ public class ProductControlServlet extends HttpServlet {
 				
 			part.write(save_path + filename);
 			
-			System.out.println("Dovrebbesi aver salvato in: " + save_path + filename);
-			
-			
+			LOGGER.log(Level.INFO, "Dovrebbesi aver salvato in: " + save_path + filename);
+		
 		}
 	}
 	
@@ -335,14 +337,16 @@ public class ProductControlServlet extends HttpServlet {
 		int index = uri.lastIndexOf(".");
 		uri = stringBuilder.insert(index, "(" + counter + ")").toString();
 		
-		System.out.println("updatePath says: new Uri = " + uri);
+		LOGGER.log(Level.FINE, "updatePath says: new Uri = " + uri);
+
 		
 		return Paths.get(uri);
 		
 	}
 	
-	private RequestDispatcher routeRequest(HttpServletRequest request, HttpServletResponse response, RequestDispatcher reqDisp, DataSource ds, int productID) {
+	private RequestDispatcher routeRequest(HttpServletRequest request, HttpServletResponse response, DataSource ds, int productID) {
 		
+		RequestDispatcher reqDisp = null;
 		if (request.getRequestURI().contains("productCreate")) {
 			
 			request.setAttribute("isEdit", false);

@@ -29,7 +29,6 @@ public class CourseDAO implements IGenericDAO<CourseBean, Integer> {
 	public CourseDAO(DataSource dataSource) {
 
 		this.dataSource = dataSource;
-		System.out.print("DataSource connesso al DAO");
 	}
 
 	public synchronized void doSave(CourseBean bean) throws SQLException {
@@ -50,14 +49,6 @@ public class CourseDAO implements IGenericDAO<CourseBean, Integer> {
 			ResultSet rs = prepStmt.executeQuery();
 
 			if (rs.next()) {
-//					
-//					MerchBean newBean = new MerchBean();
-//					newBean.setId(bean.getId());
-//					newBean.setName(bean.getName());
-//					newBean.setDescription(bean.getDescription());
-//					newBean.setPrice(bean.getPrice());
-//					newBean.setType("Merchandise");
-//					newBean.setAmount(bean.getAmount());
 
 				prepStmt.close();
 				prepStmt = connection.prepareStatement(
@@ -75,7 +66,7 @@ public class CourseDAO implements IGenericDAO<CourseBean, Integer> {
 
 				prepStmt.setInt(1, bean.getLesson_count());
 				prepStmt.setInt(2, bean.getId());
-				System.err.println("Corsio allegedly modificato");
+				LOGGER.log(Level.INFO, "Corso modificato");
 			}
 		} else {
 
@@ -101,9 +92,11 @@ public class CourseDAO implements IGenericDAO<CourseBean, Integer> {
 				prepStmt.setInt(2, bean.getLesson_count());
 				prepStmt.executeUpdate();
 
-				System.err.println("Corsio allegedly inserito");
+
+				LOGGER.log(Level.INFO, "Corso inserito");
 			} else {
-				System.err.println("Qualcosa non andò bene");
+				LOGGER.log(Level.SEVERE, "Problemi con inserimento corso");
+
 			}
 
 		}
@@ -141,13 +134,13 @@ public class CourseDAO implements IGenericDAO<CourseBean, Integer> {
 			if (rs.next()) {
 				course = buildCourse(rs, connection);
 			} else {
+				LOGGER.log(Level.WARNING, "Corso non trovato");
 
-				System.out.print("Course not found");
 			}
 
 		} catch (SQLException e) {
 
-			System.out.print(e.getMessage());
+			LOGGER.log(Level.SEVERE, e.getMessage());
 		} finally {
 			try {
 				if (prepStmt != null)
