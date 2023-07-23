@@ -9,7 +9,7 @@ public class Cartesio {
 	
 	public Cartesio() {
 		
-		contenutoCarrello = new HashMap<Integer, Integer>();
+		contenutoCarrello = new HashMap<>();
 				
 	}
 	

@@ -289,13 +289,13 @@ public class ProductControlServlet extends HttpServlet {
 				
 				File oldFile = new File(savePath + oldname);
 				
-				if (oldFile.exists()) 
+				if (oldFile.exists()) {
 					if(oldFile.renameTo(new File(savePath + filename))) {
 						LOGGER.log(Level.INFO, "Immagine rinominata");
 					} else {
 						LOGGER.log(Level.WARNING, "Manipolazione immagine fallita");
 					}
-					
+				}	
 				}
 			
 		} catch (IOException e) {
@@ -324,7 +324,6 @@ public class ProductControlServlet extends HttpServlet {
 				
 			part.write(savePath + filename);
 			
-			LOGGER.log(Level.INFO, String.format("Dovrebbesi aver salvato in: %s%s", savePath, filename));
 		
 		}
 	}
@@ -337,7 +336,7 @@ public class ProductControlServlet extends HttpServlet {
 		int index = uri.lastIndexOf(".");
 		uri = stringBuilder.insert(index, "(" + counter + ")").toString();
 		
-		LOGGER.log(Level.FINE, String.format("updatePath says: new Uri = %s", uri));
+		
 
 		
 		return Paths.get(uri);

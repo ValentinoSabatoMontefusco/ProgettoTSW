@@ -26,7 +26,7 @@ public class MainContext implements ServletContextListener  {
 		
 		ServletContext context = sce.getServletContext();
 		DataSource dataSource = null;
-		System.out.println("Path di salvataggio: " + sce.getServletContext().getRealPath(""));
+		
 		try {
 			Context initContext = new InitialContext();
 			Context envContext = (Context) initContext.lookup("java:comp/env");
@@ -57,12 +57,12 @@ public class MainContext implements ServletContextListener  {
 		ServletContext context = sce.getServletContext();
 		
 		DataSource dataSource = (DataSource) context.getAttribute(DS_STRING);
-		System.out.print(DS_STRING+ dataSource.toString() + " handled on servlet expiring");
-		
+		if (dataSource != null)
+			LOGGER.log(Level.INFO, "DataSource handled on servlet expiring");
 		
 	}
 	
-	public synchronized static void updateAttributes(ServletContext ctx) {
+	public static synchronized void updateAttributes(ServletContext ctx) {
 		
 		DataSource dataSource = (DataSource) ctx.getAttribute(DS_STRING);
 		try {

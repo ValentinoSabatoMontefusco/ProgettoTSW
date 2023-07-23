@@ -2,6 +2,7 @@ package com.code_fanatic.model.bean;
 
 import java.sql.Timestamp;
 import java.util.HashSet;
+import java.util.Set;
 
 public class UserBean {
 
@@ -9,14 +10,14 @@ public class UserBean {
 	private String username;
 	private String password;
 	private String role;
-	private HashSet<Integer> ownedProducts; 
+	private Set<Integer> ownedProducts; 
 
-	public HashSet<Integer> getOwnedProducts() {
+	public Set<Integer> getOwnedProducts() {
 		return ownedProducts;
 	}
 
 
-	public void setOwnedProducts(HashSet<Integer> ownedProducts) {
+	public void setOwnedProducts(Set<Integer> ownedProducts) {
 		this.ownedProducts = ownedProducts;
 	}
 

@@ -151,13 +151,10 @@ public class AccessServlet extends HttpServlet {
 			request.getSession().setAttribute("cart", cart);
 				
 				
-		} catch (SQLException e) {
+		} catch (SQLException | ServletException |IOException e) {
 			
 			LOGGER.log(Level.SEVERE, e.getMessage());
-		} catch (ServletException e) {
-			LOGGER.log(Level.SEVERE, e.getMessage());
-		} catch (IOException e) {
-			LOGGER.log(Level.SEVERE, e.getMessage());
+
 		}
 	}
 

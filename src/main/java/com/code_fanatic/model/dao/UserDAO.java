@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.logging.Level;
@@ -83,7 +84,6 @@ public class UserDAO implements IGenericDAO<UserBean, String> {
 			
 			if (rs.next()) {
 				userCorrespondence = new UserBean();
-				//userCorrespondence.setId(rs.getInt("Id"));
 				userCorrespondence.setUsername(rs.getString("username"));
 				userCorrespondence.setPassword(rs.getString("password"));
 				userCorrespondence.setRole(rs.getString("role"));
@@ -107,7 +107,7 @@ public class UserDAO implements IGenericDAO<UserBean, String> {
 				
 				prepStmt.setString(1, key);
 				rs = prepStmt.executeQuery();
-				HashSet<Integer> productsOwned = new HashSet<Integer>();
+				HashSet<Integer> productsOwned = new HashSet<>();
 				
 				while(rs.next()) {
 					
@@ -138,8 +138,11 @@ public class UserDAO implements IGenericDAO<UserBean, String> {
 
 
 	public Collection<UserBean> doRetrieveAll(String order) throws SQLException {
+		
 
-		return null;
+		ArrayList<UserBean> users = new ArrayList<>();
+		
+		return users;
 	}
 	
 	public boolean doAddToCart(String username, int productID) throws SQLException {

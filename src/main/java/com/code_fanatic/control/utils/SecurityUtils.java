@@ -29,12 +29,15 @@ import com.mysql.cj.xdevapi.Schema.Validation;
 
 public class SecurityUtils {
 
-	private static HashSet<String> validInputs = new HashSet<String>(Arrays.asList("user_username ASC", "user_username DESC",
+	private static HashSet<String> validInputs = new HashSet<>(Arrays.asList("user_username ASC", "user_username DESC",
 												"order_date ASC", "order_date DESC", "name ASC", "name DESC",
 												"product_id ASC", "product_id DESC", "create_time ASC", "create_time DESC"));
 	
 	private static final Logger LOGGER = Logger.getLogger(SecurityUtils.class.getName());
 	
+	private SecurityUtils() {
+		
+	}
 
 	public static String toHash(String string) {
 		
@@ -81,7 +84,7 @@ public class SecurityUtils {
 		return "id ASC";
 	}
 	
-	public static List<String> addError(ArrayList<String> errors, String error) {
+	public static List<String> addError(List<String> errors, String error) {
 		
 		if (errors == null)
 			errors = new ArrayList<>();

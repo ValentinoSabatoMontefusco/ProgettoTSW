@@ -42,7 +42,7 @@ public class AjaxCartServlet extends HttpServlet {
 
 				
 		String type = request.getParameter("type");
-		int ProductID = Integer.parseInt(request.getParameter("prodID"));
+		int productID = Integer.parseInt(request.getParameter("prodID"));
 		String username = (String) request.getSession().getAttribute("username");		// Superflous
 		
 
@@ -68,13 +68,13 @@ public class AjaxCartServlet extends HttpServlet {
 		switch(type) {
 		
 		
-			case "Add":	cart.addProduct(ProductID, 1);
+			case "Add":	cart.addProduct(productID, 1);
 			
 						if (username == null)
 							break;
 
 						try {
-							cartDAO.doUpdateAddProduct(username, ProductID);
+							cartDAO.doUpdateAddProduct(username, productID);
 						} catch (SQLException e) {
 							LOGGER.log(Level.SEVERE, e.getMessage());
 						}
@@ -82,17 +82,17 @@ public class AjaxCartServlet extends HttpServlet {
 			
 						break;
 						
-			case "Sub": cart.subtractProduct(ProductID, 1);
+			case "Sub": cart.subtractProduct(productID, 1);
 			
 						if (username == null)
 							break;
 						
 						try {
 							
-							if (cart.getProductQuantity(ProductID) <= 0)
-								cartDAO.doUpdateRemoveProduct(username, ProductID);
+							if (cart.getProductQuantity(productID) <= 0)
+								cartDAO.doUpdateRemoveProduct(username, productID);
 							else 
-								cartDAO.doUpdateSubtractProduct(username, ProductID);
+								cartDAO.doUpdateSubtractProduct(username, productID);
 						} catch (SQLException e) {
 							LOGGER.log(Level.SEVERE, e.getMessage());
 						}
@@ -164,7 +164,7 @@ public class AjaxCartServlet extends HttpServlet {
 		response.setContentType("application/json");
 		
 		CartResponse cartResp = new CartResponse(cart.getTotalQuantity(),
-				ProductID == 0 ? 0 : cart.getProductQuantity(ProductID));
+				productID == 0 ? 0 : cart.getProductQuantity(productID));
 		String jCartResp = new Gson().toJson(cartResp);
 		response.getWriter().write(jCartResp);
 		

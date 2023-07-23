@@ -118,19 +118,19 @@ public class CommentServlet extends HttpServlet {
 		
 	}
 
-	private void commentDeletion(String role, String username, int comment_id, IExtendedDAO<CommentBean, Integer> commentDAO) throws SQLException {
+	private void commentDeletion(String role, String username, int commentId, IExtendedDAO<CommentBean, Integer> commentDAO) throws SQLException {
 		
 		boolean authorized = false;
 		if (role.equals("user")) {
 			
-			if (username.equals(commentDAO.doRetrieveByKey(comment_id).getUser_username()))
+			if (username.equals(commentDAO.doRetrieveByKey(commentId).getUser_username()))
 				authorized = true;
 		} else if (role.equals("admin"))
 			authorized = true;
 		
 		if (authorized) {
 			
-			if (commentDAO.doDelete(comment_id)) {
+			if (commentDAO.doDelete(commentId)) {
 				
 				LOGGER.log(Level.INFO, "Rimozione avvenuta con successo");
 			} else {

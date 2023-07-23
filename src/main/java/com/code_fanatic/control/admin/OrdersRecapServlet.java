@@ -50,7 +50,8 @@ public class OrdersRecapServlet extends HttpServlet {
 		
 		
 		
-		String fromDate = null, toDate = null;
+		String fromDate = null;
+		String toDate = null;
 		String allOrders = request.getParameter("all_items");
 		if (allOrders == null) {
 			

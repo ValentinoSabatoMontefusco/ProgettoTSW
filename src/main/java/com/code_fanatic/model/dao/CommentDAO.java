@@ -182,8 +182,7 @@ public class CommentDAO implements IExtendedDAO<CommentBean, Integer> {
 			
 			currentComment = buildComment(rs);
 			
-			if (currentComment != null)
-				comments.add(currentComment);
+			comments.add(currentComment);
 			
 			
 		}
@@ -199,7 +198,7 @@ public class CommentDAO implements IExtendedDAO<CommentBean, Integer> {
 			}
 		}
 	
-		if (comments != null && comments.size() == 0)
+		if (comments != null && !comments.isEmpty())
 			LOGGER.log(Level.WARNING, "Nessun commento trovato");
 		
 		return comments;
@@ -229,8 +228,7 @@ public Collection<CommentBean> doRetrieveAllByUser(String username) throws SQLEx
 			
 			currentComment = buildComment(rs);
 			
-			if (currentComment != null)
-				comments.add(currentComment);
+			comments.add(currentComment);
 			
 			
 		}
@@ -246,7 +244,7 @@ public Collection<CommentBean> doRetrieveAllByUser(String username) throws SQLEx
 				connection.close();
 		}
 		}
-		if (comments != null && comments.size() == 0)
+		if (comments != null && !comments.isEmpty())
 			LOGGER.log(Level.WARNING, "Nessun commento trovato per questo utente");
 		
 		return comments;
@@ -274,9 +272,7 @@ public Collection<CommentBean> doRetrieveAllByUser(String username) throws SQLEx
 			while(rs.next()) {
 				
 				currentComment = buildComment(rs);
-				
-				if (currentComment != null)
-					comments.add(currentComment);
+				comments.add(currentComment);
 				
 				
 			}
@@ -292,7 +288,7 @@ public Collection<CommentBean> doRetrieveAllByUser(String username) throws SQLEx
 					connection.close();
 			}
 		}
-		if (comments == null || comments.size() == 0)
+		if (comments == null || !comments.isEmpty())
 			LOGGER.log(Level.WARNING, "Nessun commento trovato per questo utente");
 
 			
@@ -327,8 +323,7 @@ public synchronized Collection<CommentBean> doRetrieveAll(Timestamp fromDate, Ti
 		while(rs.next()) {
 			
 			currentComment = buildComment(rs);
-			if (currentComment != null)
-				comments.add(currentComment);
+			comments.add(currentComment);
 		}
 		
 		} finally {
@@ -344,7 +339,7 @@ public synchronized Collection<CommentBean> doRetrieveAll(Timestamp fromDate, Ti
 		
 		}
 	
-		if (comments == null || comments.size() == 0)
+		if (comments == null || !comments.isEmpty())
 			LOGGER.log(Level.WARNING, "Nessun commento trovato");
 			
 		

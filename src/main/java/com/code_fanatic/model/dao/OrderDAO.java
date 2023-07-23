@@ -80,7 +80,7 @@ public class OrderDAO implements IExtendedDAO<OrderBean, Integer> {
 				ProductBean currentProduct = productDAO.doRetrieveByKey(entry.getKey());
 				
 				if (currentProduct == null) {
-					LOGGER.log(Level.WARNING, "Nessuna corrispondenza trovata in Products per un articolo dell'Ordine");
+					LOGGER.log(Level.WARNING, "Nessuna corrispondenza trovata in Products per un articolo dell\'Ordine");
 					break;
 				}
 				
@@ -320,7 +320,7 @@ public class OrderDAO implements IExtendedDAO<OrderBean, Integer> {
 		prepStmt.setInt(1, order.getId());
 		
 		rs = prepStmt.executeQuery();
-		Collection<Entry<ProductBean, Integer>> products = new HashSet<Entry<ProductBean,Integer>>();
+		Collection<Entry<ProductBean, Integer>> products = new HashSet<>();
 		ProductBean currentProduct;
 		
 		while (rs.next()) {
@@ -348,7 +348,9 @@ public class OrderDAO implements IExtendedDAO<OrderBean, Integer> {
 	@Override
 	public Collection<OrderBean> doRetrieveAllByProduct(int id) throws SQLException {
 
-		return null;
+		// TEMP STUFF
+		ArrayList<OrderBean> orders = new ArrayList<>();
+		return orders;
 	}
 
 	
