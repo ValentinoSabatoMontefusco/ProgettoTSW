@@ -28,7 +28,7 @@ import com.code_fanatic.model.dao.ProductDAO;
 @WebServlet("/user/myCart")
 public class MyCartServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOGGER = Logger.getLogger(OrdersRecapServlet.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(MyCartServlet.class.getName());
        
 
     public MyCartServlet() {

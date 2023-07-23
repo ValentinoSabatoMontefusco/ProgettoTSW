@@ -9,22 +9,24 @@ $(document).ready(function() {
 	let buttonSub;
 	let productID;
 	let productPrice;
+	let quantityBlock;
 
 	
-	for (let i = 0; i < productBlocks.length; i++) {
+	//for (let i = 0; i < productBlocks.length; i++) {
+	for (const productBlock of productBlocks) {
 		
-		quantity = parseInt(productBlocks[i].querySelector(".quantity").textContent);
+		quantity = parseInt(productBlock.querySelector(".quantity").textContent);
 
 		
-		buttonAdd  = productBlocks[i].querySelector(".product_buttonAdd");
-		buttonSub  = productBlocks[i].querySelector(".product_buttonSub");
+		buttonAdd  = productBlock.querySelector(".product_buttonAdd");
+		buttonSub  = productBlock.querySelector(".product_buttonSub");
 		
-		quantityBlock = productBlocks[i].querySelector(".quantity_block");
+		quantityBlock = productBlock.querySelector(".quantity_block");
 		console.log("Quantity Block mi penzo dovresbe esistere: " + quantityBlock);
 		
 		
-		productID = productBlocks[i].querySelector(".product_id").value;
-		productPrice = parseFloat(productBlocks[i].querySelector(".product_price").textContent);
+		productID = productBlock.querySelector(".product_id").value;
+		productPrice = parseFloat(productBlock.querySelector(".product_price").textContent);
 		
 		console.log("Test variabili -> quantity = " + quantity + ", productID = " + productID + ", productPrice = " + productPrice);
 		

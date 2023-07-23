@@ -17,7 +17,7 @@ import com.code_fanatic.model.bean.ProductBean;
 
 public class ProductDAO implements IGenericDAO<ProductBean, Integer> {
 	
-	private static final Logger LOGGER = Logger.getLogger(OrdersRecapServlet.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(ProductDAO.class.getName());
 
 	DataSource dataSource = null;
 	private static final String TABLE_NAME = "products";

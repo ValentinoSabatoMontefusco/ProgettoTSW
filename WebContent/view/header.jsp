@@ -16,12 +16,11 @@
 		<div id="title" class="hoverable"><a href="${ctxPath}/home.jsp"><img id = "fnc_logo" class="hoverable" src="${ctxPath}/images/fnatic_logo.png" alt="Fnatic logo"/></a>CODE FANATICS</div>
 </header>
 
-<div class = "subheader" align="center">The best site to learn how to code... at a small price! ;)</div>
+<div class = "subheader">The best site to learn how to code... at a small price! ;)</div>
 
 <div class="main_container">
 
 <aside class="search" id="homesearch">
-	<!-- <button id = "sidebar_toggle">&lt;&lt;&lt;</button>*/ -->	
 	<div>Select one of our many courses!</div>
 	<br><br>
 	<label>Search:</label>

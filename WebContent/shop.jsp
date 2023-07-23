@@ -60,16 +60,7 @@
 		   		var admin = false;
 		   		createProductBlock(JSONProduct, type, admin, inCart);</script>
 		   
-<!--	   		<div class="product_block">
-		   			<img src="images/logos/<%=currentProduct.getName().toLowerCase()%>.png" class= "product_logo" alt="product_logo">
-		   			<div class="product_name"><%= currentProduct.getName() %></div>
-		   			<div class="product_description"><%= currentProduct.getDescription() %></div>
-		   			<div class="product_price"><%= currentProduct.getPrice() %> $</div>
-		   			<input type="button" class="product_add" name="product_add" value="Add to Cart" 
-		   			onClick= "updateCart(<%= currentProduct.getId()%>, 'Add')">
-		   		</div>
-			   
-		    -->	 <%} %>
+	 <%} %>
 		   
 		   
 	</section>

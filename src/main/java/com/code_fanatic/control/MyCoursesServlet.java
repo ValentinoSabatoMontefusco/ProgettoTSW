@@ -22,7 +22,7 @@ import com.code_fanatic.model.dao.IGenericDAO;
 @WebServlet("/user/myCourses")
 public class MyCoursesServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOGGER = Logger.getLogger(OrdersRecapServlet.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(MyCoursesServlet.class.getName());
        
 
     public MyCoursesServlet() {

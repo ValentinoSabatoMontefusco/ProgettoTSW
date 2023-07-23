@@ -1,7 +1,7 @@
 	$(document).ready(function() {
 		
 		
-		var comments_container = document.getElementById("comments_container");
+		let comments_container = document.getElementById("comments_container");
 	
 	comments_container.addEventListener("click", function(event) {
 		

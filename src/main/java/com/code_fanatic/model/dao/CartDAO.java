@@ -17,7 +17,7 @@ import com.code_fanatic.control.admin.OrdersRecapServlet;
 import com.code_fanatic.model.bean.Cartesio;
 
 public class CartDAO implements ICartDAO {
-	private static final Logger LOGGER = Logger.getLogger(OrdersRecapServlet.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(CartDAO.class.getName());
 	
 	DataSource dataSource = null;
 	private static final String TABLE_NAME = "cart"; //carts?

@@ -16,6 +16,7 @@ $(document).ready(function() {
 	function updateCart(productID, type, source) {
 		
 
+
 		return $.get({url: contextPath + "/ajaxCart", data: {prodID: productID, type: type},  success: function(response) {
 			
 			$(source).trigger('cartUpdated', response);

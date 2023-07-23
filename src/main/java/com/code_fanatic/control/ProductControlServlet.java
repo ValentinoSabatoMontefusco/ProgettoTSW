@@ -42,9 +42,11 @@ import com.code_fanatic.model.dao.ProductDAO;
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, maxFileSize = 1024*1024*10, maxRequestSize = 1024*1024*100)
 public class ProductControlServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOGGER = Logger.getLogger(OrdersRecapServlet.class.getName());
-       
-
+	private static final Logger LOGGER = Logger.getLogger(ProductControlServlet.class.getName());
+    private static final String PID_STRING = "product_id";
+    private static final String TCOURSE_STRING = "Course";
+    private static final String TMERC_STRING = "Merchandise";
+    private static final String INTEGRITY_ERROR = "Hai provato a inserire un prodotto già presente in catalogo";
     public ProductControlServlet() {
         super();
 
@@ -76,7 +78,7 @@ public class ProductControlServlet extends HttpServlet {
 			 ************** RETRIEVE PRODUCT ***************
 			 ***********************************************/
 		
-			case "retrieve": int productID = Integer.parseInt(request.getParameter("product_id"));
+			case "retrieve": int productID = Integer.parseInt(request.getParameter(PID_STRING));
 			
 			if (productID == -1) {
 				product = new ProductBean();
@@ -89,10 +91,10 @@ public class ProductControlServlet extends HttpServlet {
 					product = productDao.doRetrieveByKey(productID);
 					switch (product.getType()) {
 					
-					case "Course": product = (CourseBean) new CourseDAO(ds).doRetrieveByKey(product.getId());
+					case TCOURSE_STRING: product = (CourseBean) new CourseDAO(ds).doRetrieveByKey(product.getId());
 									break;
 									
-					case "Merchandise": product = (MerchBean) new MerchDAO(ds).doRetrieveByKey(product.getId());
+					case TMERC_STRING: product = (MerchBean) new MerchDAO(ds).doRetrieveByKey(product.getId());
 										break;
 									
 					default: break; 
@@ -142,7 +144,7 @@ public class ProductControlServlet extends HttpServlet {
 			case "edit": String newName = request.getParameter("name_input");
 			String newDescription = request.getParameter("description_input");
 			float newPrice = Float.parseFloat(request.getParameter("price_input"));
-			int productId = Integer.parseInt(request.getParameter("product_id"));
+			int productId = Integer.parseInt(request.getParameter(PID_STRING));
 			String newType = request.getParameter("type_input");
 			String nameChanged = request.getParameter("oldname_input");
 			
@@ -157,14 +159,14 @@ public class ProductControlServlet extends HttpServlet {
 			
 			switch (newProduct.getType()) {
 			
-				case "Course": CourseBean createdCourse = new CourseBean(newProduct);
+				case TCOURSE_STRING: CourseBean createdCourse = new CourseBean(newProduct);
 								createdCourse.setLesson_count(Integer.parseInt(request.getParameter("lescount_input")));
 				try {
 					new CourseDAO(ds).doSave(createdCourse);
 					imageSave(request, newProduct.getName(), nameChanged);
 				} catch (SQLIntegrityConstraintViolationException e) {
 					
-					errors.add("Hai provato a inserire un prodotto già presente in catalogo");
+					errors.add(INTEGRITY_ERROR);
 					
 				} catch (SQLException e1) {
 	
@@ -172,14 +174,14 @@ public class ProductControlServlet extends HttpServlet {
 				}
 							break;
 							
-				case "Merchandise": MerchBean createdMerch = new MerchBean(newProduct);
+				case TMERC_STRING: MerchBean createdMerch = new MerchBean(newProduct);
 									createdMerch.setAmount(Integer.parseInt(request.getParameter("amount_input")));
 				try {
 					new MerchDAO(ds).doSave(createdMerch);
 					imageSave(request, newProduct.getName(), nameChanged);
 				} catch (SQLIntegrityConstraintViolationException e) {
 					
-					errors.add("Hai provato a inserire un prodotto già presente in catalogo");
+					errors.add(INTEGRITY_ERROR);
 					
 				} catch (SQLException e1) {
 				
@@ -216,14 +218,14 @@ public class ProductControlServlet extends HttpServlet {
 				
 				switch (createdProduct.getType()) {
 				
-					case "Course": CourseBean createdCourse = new CourseBean(createdProduct);
+					case TCOURSE_STRING: CourseBean createdCourse = new CourseBean(createdProduct);
 									createdCourse.setLesson_count(Integer.parseInt(request.getParameter("lescount_input")));
 					try {
 						new CourseDAO(ds).doSave(createdCourse);
 						imageSave(request, createdProduct.getName(), null);
 					} catch (SQLIntegrityConstraintViolationException e) {
 						
-						errors.add("Hai provato a inserire un prodotto già presente in catalogo");
+						errors.add(INTEGRITY_ERROR);
 						
 					} catch (SQLException e1) {
 
@@ -231,14 +233,14 @@ public class ProductControlServlet extends HttpServlet {
 					}
 								break;
 								
-					case "Merchandise": MerchBean createdMerch = new MerchBean(createdProduct);
+					case TMERC_STRING: MerchBean createdMerch = new MerchBean(createdProduct);
 										createdMerch.setAmount(Integer.parseInt(request.getParameter("amount_input")));
 					try {
 						new MerchDAO(ds).doSave(createdMerch);
 						imageSave(request, createdProduct.getName(), null);
 					} catch (SQLIntegrityConstraintViolationException e) {
 						
-						errors.add("Hai provato a inserire un prodotto già presente in catalogo");
+						errors.add(INTEGRITY_ERROR);
 						
 					} catch (SQLException e1) {
 					
@@ -261,7 +263,7 @@ public class ProductControlServlet extends HttpServlet {
 			 *************** DELETE PRODUCT ****************
 			 ***********************************************/
 			
-			case "delete": int prodId = Integer.parseInt(request.getParameter("product_id"));
+			case "delete": int prodId = Integer.parseInt(request.getParameter(PID_STRING));
 			
 			try {
 				productDao.doDelete(prodId);
@@ -326,12 +328,14 @@ public class ProductControlServlet extends HttpServlet {
 					
 					File oldFile = new File(save_path + oldname);
 					
-					if (oldFile.exists()) 
-					if(oldFile.renameTo(new File(save_path + filename)))
-						System.out.println("Manipolazione immagine avvenuta con successo");
-					else {
-						System.err.println("Manipolazione immagine fallita");
+					if (oldFile.exists()) {
+						if(oldFile.renameTo(new File(save_path + filename)))
+							System.out.println("Manipolazione immagine avvenuta con successo");
+						else {
+							System.err.println("Manipolazione immagine fallita");
+						}
 					}
+						
 					
 					
 				}

@@ -31,7 +31,7 @@ import com.google.gson.Gson;
 @WebServlet("/ajaxCart")
 public class AjaxCartServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOGGER = Logger.getLogger(OrdersRecapServlet.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(AjaxCartServlet.class.getName());
 
     public AjaxCartServlet() {
         super();

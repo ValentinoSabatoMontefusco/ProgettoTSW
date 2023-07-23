@@ -27,7 +27,8 @@ import com.code_fanatic.model.dao.UserDAO;
 @WebServlet ("/access")
 public class AccessServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOGGER = Logger.getLogger(OrdersRecapServlet.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(AccessServlet.class.getName());
+	private static final String ERROR_STRING = "errors";
     public AccessServlet() {
         super();
 
@@ -73,7 +74,7 @@ public class AccessServlet extends HttpServlet {
 			
 				LOGGER.log(Level.SEVERE, e.getMessage());
 				
-				request.setAttribute("errors",  errors);
+				request.setAttribute(ERROR_STRING,  errors);
 				request.getRequestDispatcher("access.jsp?type=register").forward(request, response);
 				return;
 				
@@ -122,13 +123,13 @@ public class AccessServlet extends HttpServlet {
 					} else {
 						errors.add("La password inserita non è corretta");
 					
-						request.setAttribute("errors",  errors);
+						request.setAttribute(ERROR_STRING,  errors);
 						request.getRequestDispatcher("access.jsp?type=login").forward(request, response);
 						return;
 				}} else {
 					
 					errors.add("L'username inserito non esiste");
-					request.setAttribute("errors",  errors);
+					request.setAttribute(ERROR_STRING,  errors);
 					request.getRequestDispatcher("access.jsp?type=login").forward(request, response);
 					return;
 					

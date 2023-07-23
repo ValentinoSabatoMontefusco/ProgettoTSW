@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class OrderDAO implements IOrderDAO<OrderBean, Integer> {
 		try {
 		connection = dataSource.getConnection();
 		prepStmt = connection.prepareStatement("INSERT INTO " + TABLE_NAME + " (user_username, order_date)"
-													+ " VALUES (?, ?);", PreparedStatement.RETURN_GENERATED_KEYS);
+													+ " VALUES (?, ?);", Statement.RETURN_GENERATED_KEYS);
 		
 		PreparedStatement consumeMerch = connection.prepareStatement("UPDATE merchandise SET amount = amount - ? WHERE product_id = ?;");
 		

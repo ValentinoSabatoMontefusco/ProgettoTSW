@@ -9,15 +9,15 @@
 		<link rel="stylesheet" href = "${ctxPath}/styles/Course.css" />
 		
 		<jsp:useBean id = "course" class = "com.code_fanatic.model.bean.CourseBean" scope = "request"/>
-		<title> <!--<jsp:getProperty name="course" property = "name" />--> ${course.name} Course</title>
+		<title>${course.name} Course</title>
 	</head>
 	<body>
 		
 		<%@include file ="BulkView.jsp" %>
 		<section class = "main_section">
-			<h1>Welcome to our <!--<jsp:getProperty name="course" property = "name" />--> ${course.name} Course!</h1>
+			<h1>Welcome to our ${course.name} Course!</h1>
 			<img src="${ctxPath}/images/logos/<%= course.getName().toLowerCase() %>.png" id="course_logo" alt="course logo">
-			<p><!--<jsp:getProperty name="course" property = "description" />--> ${course.description}</p>
+			<p>${course.description}</p>
 			<br>
 			<%	
 				Collection<LessonBean> lessons = course.getLessons();

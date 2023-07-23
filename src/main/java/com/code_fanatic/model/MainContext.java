@@ -19,13 +19,13 @@ import com.code_fanatic.model.dao.CourseDAO;
 @WebListener
 public class MainContext implements ServletContextListener  {
 
-	static DataSource dataSource;
-	private static final Logger LOGGER = Logger.getLogger(OrdersRecapServlet.class.getName());
+	private static final String DS_STRING = "DataSource";
+	private static final Logger LOGGER = Logger.getLogger(MainContext.class.getName());
 	
 	public void contextInitialized(ServletContextEvent sce) {
 		
 		ServletContext context = sce.getServletContext();
-		
+		DataSource dataSource = null;
 		System.out.println("Path di salvataggio: " + sce.getServletContext().getRealPath(""));
 		try {
 			Context initContext = new InitialContext();
@@ -41,7 +41,7 @@ public class MainContext implements ServletContextListener  {
 			LOGGER.log(Level.SEVERE, e.getMessage());
 		}
 		
-		context.setAttribute("DataSource", dataSource);
+		context.setAttribute(DS_STRING, dataSource);
 		System.out.println("DataSource set as context attribute");
 		
 		// Setting contextPath as a web app wide variable for appropriate management of paths
@@ -58,14 +58,15 @@ public class MainContext implements ServletContextListener  {
 		
 		ServletContext context = sce.getServletContext();
 		
-		DataSource dataSource = (DataSource) context.getAttribute("DataSource");
-		System.out.print("DataSource"+ dataSource.toString() + " handled on servlet expiring");
+		DataSource dataSource = (DataSource) context.getAttribute(DS_STRING);
+		System.out.print(DS_STRING+ dataSource.toString() + " handled on servlet expiring");
 		
 		
 	}
 	
-	public static void updateAttributes(ServletContext ctx) {
+	public synchronized static void updateAttributes(ServletContext ctx) {
 		
+		DataSource dataSource = (DataSource) ctx.getAttribute(DS_STRING);
 		try {
 			ctx.setAttribute("courses", new CourseDAO(dataSource).doRetrieveAll("name") );
 		} catch (SQLException e) {

@@ -32,4 +32,7 @@
 	<div>This site was made in 2023 for the TSW exam by Valentino Sabato Montefusco</div>
 	
 </footer>
+
+
+
 <script src = "${ctxPath}/scripts/general.js"></script>

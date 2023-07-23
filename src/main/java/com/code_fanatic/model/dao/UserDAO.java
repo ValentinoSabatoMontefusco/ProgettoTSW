@@ -18,7 +18,7 @@ import com.code_fanatic.model.bean.UserBean;
 
 public class UserDAO implements IGenericDAO<UserBean, String> {
 
-	private static final Logger LOGGER = Logger.getLogger(OrdersRecapServlet.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(UserDAO.class.getName());
 	DataSource dataSource = null;
 	private static final String TABLE_NAME = "users";
 	

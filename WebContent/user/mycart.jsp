@@ -58,8 +58,7 @@
 	  						"" %>
 	  				</div>
 	  				<div class="product_quantity">Qt. <span class = "quantity"><%= quantity %></span></div>
-	  				<!--  <input type="button" class="product_buttonAdd" value="+"></input>
-	  				<input type="button" class="product_buttonSub" value="-"></input>-->
+	  			
 	  				<button class="product_buttonAdd"  
 	  				<% if (currentProduct.getType().equals("Course") || 
 	  					(currentProduct.getType().equals("Merchandise") &&

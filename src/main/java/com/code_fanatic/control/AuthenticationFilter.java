@@ -27,11 +27,11 @@ public class AuthenticationFilter extends HttpFilter implements Filter {
 
     public AuthenticationFilter() {
         super();
-
+        
     }
 
 	public void destroy() {
-
+		//NO OVERRIDE
 	}
 
 
@@ -65,7 +65,7 @@ public class AuthenticationFilter extends HttpFilter implements Filter {
 
 
 	public void init(FilterConfig fConfig) throws ServletException {
-
+		//NO OVERRIDE
 	}
 
 }

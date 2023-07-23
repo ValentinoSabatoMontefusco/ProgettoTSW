@@ -78,7 +78,7 @@ function createProductButton(product, inCart) {
 			productButton.innerText = inCart ? "Already in Cart" : "Add to Cart";
 		else if (product.type == "Merchandise")
 			productButton.innerText = inCart ? "Can't buy more" : "Add to Cart";
-		productButton.disabled = inCart ? true : false;
+		productButton.disabled = inCart;
 		productButton.addEventListener("click", function(event) {
 			let response = updateCart(product.id, "Add", this);
 			let control = this.closest("div.product_block").dataset;

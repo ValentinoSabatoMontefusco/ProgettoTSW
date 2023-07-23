@@ -27,7 +27,8 @@ import com.code_fanatic.model.dao.IGenericDAO;
 @WebServlet("/courses")
 public class CourseServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOGGER = Logger.getLogger(OrdersRecapServlet.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(CourseServlet.class.getName());
+	private static final String COURSE_STRING = "courses";
 
     public CourseServlet() {
         super();
@@ -41,13 +42,13 @@ public class CourseServlet extends HttpServlet {
 			DataSource dataSource = (DataSource) getServletContext().getAttribute("DataSource"); 
 			IGenericDAO<CourseBean, Integer> courseDao = new CourseDAO(dataSource);
 			
-			if (request.getAttribute("courses") == null) {
+			if (request.getAttribute(COURSE_STRING) == null) {
 				
 				Collection<CourseBean> courses = new ArrayList<CourseBean>();
 				
 				try {
 					courses = courseDao.doRetrieveAll("name");		
-					request.setAttribute("courses", courses);
+					request.setAttribute(COURSE_STRING, courses);
 				} catch (SQLException e) {
 					LOGGER.log(Level.SEVERE, e.getMessage());
 					System.out.println("Courses exception doublecheck");
@@ -91,7 +92,7 @@ public class CourseServlet extends HttpServlet {
 
 			
 
-			RequestDispatcher view = request.getRequestDispatcher("view/Course.jsp");
+			RequestDispatcher view = request.getRequestDispatcher("view/course.jsp");
 			view.forward(request, response);
 				
 	

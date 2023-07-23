@@ -28,7 +28,7 @@ import com.code_fanatic.model.dao.ICommentDAO;
 @WebServlet(urlPatterns = {"/user/comment", "/admin/moderation"})
 public class CommentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOGGER = Logger.getLogger(OrdersRecapServlet.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(CommentServlet.class.getName());
        
 
     public CommentServlet() {

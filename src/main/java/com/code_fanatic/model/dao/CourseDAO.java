@@ -21,7 +21,7 @@ import com.code_fanatic.model.bean.CourseBean;
 import com.code_fanatic.model.bean.LessonBean;
 
 public class CourseDAO implements IGenericDAO<CourseBean, Integer> {
-	private static final Logger LOGGER = Logger.getLogger(OrdersRecapServlet.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(CourseDAO.class.getName());
 
 	DataSource dataSource;
 	private static final String TABLE_NAME = "courses INNER JOIN products ON products.id = courses.product_id";
@@ -81,7 +81,7 @@ public class CourseDAO implements IGenericDAO<CourseBean, Integer> {
 
 			prepStmt = connection.prepareStatement(
 					"INSERT INTO products (name, description, type, price) " + " VALUE (?, ?, ?, ?);",
-					PreparedStatement.RETURN_GENERATED_KEYS);
+					Statement.RETURN_GENERATED_KEYS);
 
 			prepStmt.setString(1, bean.getName());
 			prepStmt.setString(2, bean.getDescription());

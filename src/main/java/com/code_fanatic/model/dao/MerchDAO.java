@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -76,7 +77,7 @@ public class MerchDAO implements IGenericDAO<MerchBean, Integer> {
 				}} else {
 				
 				prepStmt = connection.prepareStatement("INSERT INTO products (name, description, type, price) "
-						+ " VALUES (?, ?, ?, ?);", PreparedStatement.RETURN_GENERATED_KEYS);
+						+ " VALUES (?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
 				
 				prepStmt.setString(1, bean.getName());
 				prepStmt.setString(2, bean.getDescription());
