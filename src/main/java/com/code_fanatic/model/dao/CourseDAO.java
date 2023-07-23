@@ -204,10 +204,12 @@ public class CourseDAO implements IGenericDAO<CourseBean, Integer> {
 		course.setType(rs.getString("type"));
 
 		ArrayList<LessonBean> lessons = new ArrayList<LessonBean>();
-
+		PreparedStatement prepStmt = null;
+		try {
+			
 		if (course.getLesson_count() > 0) {
 
-			PreparedStatement prepStmt = conn.prepareStatement("SELECT * FROM lessons WHERE course_id = ?");
+			prepStmt = conn.prepareStatement("SELECT * FROM lessons WHERE course_id = ?");
 			prepStmt.setInt(1, course.getId());
 
 			rs = prepStmt.executeQuery();
@@ -226,7 +228,12 @@ public class CourseDAO implements IGenericDAO<CourseBean, Integer> {
 		}
 
 		course.setLessons(lessons);
-
+		} finally {
+		
+			if (prepStmt != null)
+				prepStmt.close();
+			
+		}
 		return course;
 
 	}

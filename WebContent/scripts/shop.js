@@ -12,7 +12,6 @@ $(document).ready(function() {
 
 });
 
-var testCounter = 0;
 
 function createProductBlock(JSONProduct, type, admin, inCart) {
 	

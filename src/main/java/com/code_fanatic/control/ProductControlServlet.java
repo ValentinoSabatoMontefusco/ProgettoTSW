@@ -340,10 +340,8 @@ public class ProductControlServlet extends HttpServlet {
 					
 				}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			LOGGER.log(Level.SEVERE, e.getMessage());
 		} catch (ServletException e) {
-			// TODO Auto-generated catch block
 			LOGGER.log(Level.SEVERE, e.getMessage());
 		}
 		}
