@@ -107,7 +107,7 @@ div.product_block {
 	.product_container {
 
 		font-size: clamp(0.6em, 3vw, 1em);
-		overflox: hidden;
+		overflow: hidden;
 		
 		
 	}
