@@ -1,14 +1,20 @@
 <%@page import="java.util.*, com.code_fanatic.model.bean.*"%>
 <aside class="userbar">
+
+	<% String footerRole = (String) request.getSession().getAttribute("role");
+		String footerUsername = (String) request.getSession().getAttribute("username");
+		
+		if (footerUsername != null) {
+		%> <div class="intro"> Ciao <%= footerUsername %>!</div>
+		<%} %>
 	<div class="cart_container">
 	<a href="${ctxPath}/user/myCart"><img src="${ctxPath}/images/cart.png" id="cart_icon" alt="cart icon">
-	<button id ="cart_span">
+	   <button id ="cart_span">
 		<% Cartesio footerCart = (Cartesio)  request.getSession().getAttribute("cart"); %>
 			<%= footerCart == null ? 0 : footerCart.getTotalQuantity() %></button>
 	</a>
 	</div>
-	<% String footerRole = (String) request.getSession().getAttribute("role");
-	if (footerRole == null) { %>
+	<% if (footerRole == null) { %>
 	<ul>
 		<li><a href="${ctxPath}/access.jsp?type=login" class="hoverable">Log in</a></li>
 		<li><a href="${ctxPath}/access.jsp?type=register" class="hoverable">Register</a></li>

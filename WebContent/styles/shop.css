@@ -13,11 +13,12 @@ h1 {
 	
 	display: grid;
 	grid-template-columns: 33% 33% 33%;
+	place-content: center;
 }
 div.product_block {
 	
 	height: 240px;
-	width: auto;
+	width: inherit;
 	margin: 0.75em;
 	padding: 2px;
 	border-color: #674F41;
@@ -65,6 +66,43 @@ div.product_block {
 	bottom: 2px;
 	right: 2px;
 	
+}
+
+@media screen and (max-width: 768px) {
+	
+	.product_container {
+		grid-template-columns: 45% 45%;
+		
+	}
+	
+	body:has(aside:hover) .product_container {
+
+		grid-template-columns: 70%;
+	}
+	
+}
+
+@media screen and (max-width: 540px) {
+	
+	.product_container {
+		grid-template-columns: 90%;
+		
+	}
+	
+	.product_container {
+		grid-template-columns: 90%;
+		
+	}
+
+	body:has(aside:hover) h1, h2 {
+
+		font-size: clamp(1em, 5vw, 2em);
+	}
+
+	body:has(aside:hover) .main_section {
+
+		min-width: 10%;
+	}
 }
 
 

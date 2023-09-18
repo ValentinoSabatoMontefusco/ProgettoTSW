@@ -5,7 +5,9 @@
 <html lang="en">
 	<head>
 		<meta charset="ISO-8859-1">
-		<link rel="stylesheet" href = "${ctxPath}/styles/home.css" />
+		<script src="${ctxPath}/scripts/jquery-3.6.3.js"></script>
+		<script src="${ctxPath}/scripts/general.js"></script>
+		<link rel="stylesheet" href = "${ctxPath}/styles/general.css" />
 		<link rel="stylesheet" href = "${ctxPath}/styles/Course.css" />
 		
 		<jsp:useBean id = "course" class = "com.code_fanatic.model.bean.CourseBean" scope = "request"/>
@@ -13,14 +15,14 @@
 	</head>
 	<body>
 		
-		<%@include file ="BulkView.jsp" %>
+		<%@include file ="/view/header.jsp" %>
 		<section class = "main_section">
 			<h1>Welcome to our ${course.name} Course!</h1>
 			<img src="${ctxPath}/images/logos/<%= course.getName().toLowerCase() %>.png" id="course_logo" alt="course logo">
-			<p>${course.description}</p>
+			<div>${course.description}</div>
 			<br>
 			<%	
-				Collection<LessonBean> lessons = course.getLessons();
+				List<LessonBean> lessons = course.getLessons();
 				boolean isOwned = (boolean) request.getAttribute("isOwned");
 					
 					
@@ -39,9 +41,15 @@
 					
 					
 					%>
-				}
+				<br>
 				
+				<% ProductBean product = (ProductBean) course;
+				request.setAttribute("product", product); %>
+				<%@include file="comments_form.jsp" %>
+				<%@include file="comments.jsp" %>
+				
+			</section>
 		</section>
-		
+		<%@include file ="/view/footer.jsp" %>
 	</body>
 </html>

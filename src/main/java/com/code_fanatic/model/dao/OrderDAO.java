@@ -104,6 +104,7 @@ public class OrderDAO implements IExtendedDAO<OrderBean, Integer> {
 				
 			
 			}
+			prepStmt.executeBatch();
 			consumeMerch.executeBatch();
 	
 		}
@@ -330,7 +331,7 @@ public class OrderDAO implements IExtendedDAO<OrderBean, Integer> {
 			currentProduct.setName(rs.getString("product_name"));
 			currentProduct.setType(rs.getString("product_type"));
 			currentProduct.setPrice(rs.getFloat("product_price"));
-			products.add(new SimpleEntry<ProductBean, Integer>(currentProduct, rs.getInt("quantity")));
+			products.add(new SimpleEntry<>(currentProduct, rs.getInt("quantity")));
 		}
 
 		order.setProducts(products);

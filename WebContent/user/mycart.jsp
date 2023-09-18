@@ -7,14 +7,14 @@
 <head>
 	<meta charset="ISO-8859-1">
 	<script src="${ctxPath}/scripts/jquery-3.6.3.js"></script>
-	<link rel="stylesheet" href="${ctxPath}/styles/home.css"/>
+	<link rel="stylesheet" href="${ctxPath}/styles/general.css"/>
 	<link rel="stylesheet" href="${ctxPath}/styles/mycart.css"/>
 	<link rel="stylesheet" href="${ctxPath}/styles/buttons.css"/>
 	<title>My Orders</title>
 </head>
 <body>
-	<%@include file="/view/BulkView.jsp" %>
-	<section>
+	<%@include file="/view/header.jsp" %>
+	<section class="main_section">
 		<div class="navigation_div"><a href = "${ctxPath}/user/myaccount.jsp">My Account</a> > My Cart</div>
 		
 		<br>
@@ -84,8 +84,10 @@
 		</div>
 	</section>
 	
-	
-	<script src="${ctxPath}/scripts/general.js"></script>
+	<%@include file="/view/footer.jsp" %>
+
 	<script src="${ctxPath}/scripts/mycart.js"></script>
+	
+	
 </body>
 </html>

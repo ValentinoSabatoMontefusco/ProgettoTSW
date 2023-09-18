@@ -5,13 +5,14 @@
 <head>
 	<meta charset="ISO-8859-1">
 	<script src="${ctxPath}/scripts/jquery-3.6.3.js"></script>
-	<link rel="stylesheet" href="${ctxPath}/styles/home.css"/>
+	<link rel="stylesheet" href="${ctxPath}/styles/general.css"/>
+	<link rel="stylesheet" href="${ctxPath}/styles/mycourses.css"/>
 	<title>My Courses</title>
 </head>
 <body>
-	<%@include file="/view/BulkView.jsp" %>
+	<%@include file="/view/header.jsp" %>
 	
-	<section>
+	<section class="main_section">
 		<div class="navigation_div"><a href = "${ctxPath}/user/myaccount.jsp">My Account</a> > My Courses</div>
 		
 		<br>
@@ -27,8 +28,12 @@
 					%>
 					
 					<div class="course_container">
+						<a href="${ctxPath}/courses?name=<%= course.getName() %>">
 						<img class ="course_logo" src="${ctxPath}/images/logos/<%= course.getName().toLowerCase().replaceAll("\\s", "") %>.png" alt="course logo">
-						<div class ="course_name"><%= course.getName() %></div>
+						</a>
+						<a href="${ctxPath}/courses?name=<%= course.getName() %>" class="course_name">
+						<%= course.getName() %></a>
+						
 					</div>
 					
 					
@@ -36,5 +41,7 @@
 				<% }}%>
 				
 		</section>
+		
+		<%@include file="/view/footer.jsp" %>
 </body>
 </html>

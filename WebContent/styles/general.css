@@ -15,8 +15,8 @@
 
 body {
 	font-family: Poppins, HelveticaNow, Arial,sans-serif;
-	min-width: 100vw;
-	min-height: 130vh;
+	max-width: 100%;
+	min-height: 100vh;
 	background-color: #ff8c1a;
 	margin: 0px;
 	padding: 0px;
@@ -53,7 +53,7 @@ header.page_header {
 	display: contents;
 	font-family: fantasy;
 	/*text-align: center;*/
-	font-size: 66px;
+	font-size: clamp(3em, 10vw, 66px);
 	font-weight: 600;
 	text-shadow: 2px 2px coral; 
 	margin: 0  auto;
@@ -100,23 +100,40 @@ header.page_header {
 
 .main_section {
 	
-	flex-grow: 2;
+	margin: 2%;
+	flex-grow: 1;
 }
 
+.intro {
+	
+	margin: 3%;
+	text-align: center;
+	font-weight: 700;
+	font-size: 150%;
+}
+
+.cart_container {
+	
+	display: flex;
+	margin: 3%;
+	justify-content: flex-start;
+}
 aside {
 	
 
 	height: inherit;
-	min-width: 15%;
-	max-width: 18%;
+	flex: 0 0 15%;
 	background: orange;
 	border-color: coral;
 	border-width: 5px;
 	border-style: solid;
 	padding: 5px;
-	transition: transform 0.3s ease-in-out;
+	transition: flex 0.3s ease-in-out;
+	overflow: hidden;
 
 }
+
+
 
 /* .search { */
 	
@@ -202,6 +219,7 @@ div#main {
 	font-variant: small-caps;
 	text-shadow: coral 2px 2px;
 	text-align: center;
+	transition: font-size 0.3s ease-out;
 }
 
 div#shop {
@@ -214,11 +232,70 @@ img#shop_icon {
 	width: 50px;
 	height: 50px;
 }
-
+.owned {
+	
+	color: green;
+}
 .error {
 	
 	color: red;	
 }
+
+.options_container  a {
+	
+	font-size: large;
+	font-family: Druk Wide, HelveticaNow, Arial,sans-serif;
+	text-align: center;
+	color: #0063A1;
+	
+}
+/* MEDIA QUERIES */ 
+
+
+@media screen and (max-width: 768px) {
+	
+
+	aside {
+		flex: 0 0 3%;
+		background-repeat: no-repeat;
+		background-size: contain;
+	}
+	
+	.userbar {
+	background-image: url('/Code_Fanatic/images/arrow-left.png');
+	
+	}
+	.search {
+	background-image: url('/Code_Fanatic/images/arrow-right.png');
+	}
+	
+	aside * {
+		opacity: 0;
+	}
+	
+	aside:hover {
+		flex: 0 0 40%;
+		background-image: none;
+	}
+	
+	aside:hover *{
+		opacity: 1;
+		
+	}
+	
+	body:has(aside:hover) #main {
+		
+		font-size: clamp(0.5em, 20vw, 3em);
+	}
+	
+	body:has(aside:hover) .main_section {
+	
+		min-width: 10%;
+		opacity: 0.5;
+	}
+
+}
+
 
 /* BUTTONS */
 

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -58,26 +59,30 @@ public class AccessServlet extends HttpServlet {
 		newUser.setPassword(password);
 		
 		DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
+		boolean responseForwarded = false;
+		RequestDispatcher view = null;
 	
 		
 		IGenericDAO<UserBean, String> userDAO = new UserDAO(ds);
 		
 		if (request.getParameter("action").equals("register")) {
 			
-			tryRegisterUser(newUser, userDAO, errors, request, response);
+			responseForwarded = tryRegisterUser(newUser, userDAO, errors, request, response);
 			
 			
 		} else if (request.getParameter("action").equals("login")) {
 			
-			tryLogUser(newUser, userDAO, errors, request, response, password, ds);
+			responseForwarded = tryLogUser(newUser, userDAO, errors, request, response, password, ds);
 		}
 		
-		
-		RequestDispatcher view = request.getRequestDispatcher("/home.jsp");
-		view.forward(request, response);
+		if (!responseForwarded) {
+			view = request.getRequestDispatcher("/home.jsp");
+			view.forward(request, response);
+		}
+			
 	}
 	
-	private synchronized void tryRegisterUser(UserBean newUser, IGenericDAO<UserBean, String> userDAO, ArrayList<String> errors
+	private synchronized boolean tryRegisterUser(UserBean newUser, IGenericDAO<UserBean, String> userDAO, List<String> errors
 			, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		try {
@@ -87,42 +92,45 @@ public class AccessServlet extends HttpServlet {
 			
 		} catch (SQLIntegrityConstraintViolationException e) {
 			
-			SecurityUtils.addError(errors, "The username '" + newUser.getUsername() + "' is already in use");
+			errors = SecurityUtils.addError(errors, "The username '" + newUser.getUsername() + "' is already in use");
 			
 		
 			LOGGER.log(Level.SEVERE, e.getMessage());
 			
 			request.setAttribute(ERROR_STRING,  errors);
 			request.getRequestDispatcher("access.jsp?type=register").forward(request, response);
+			return true;
 			
 			
 		} catch (SQLException e) {
 			LOGGER.log(Level.SEVERE, e.getMessage());
 		
 		}
+		
+		return false;
 	}
 	
-	private synchronized void tryLogUser(UserBean newUser, IGenericDAO<UserBean, String> userDAO, ArrayList<String> errors
-			, HttpServletRequest request, HttpServletResponse response, String password, DataSource ds) {
+	private synchronized boolean tryLogUser(UserBean newUser, IGenericDAO<UserBean, String> userDAO, List<String> errors
+			, HttpServletRequest request, HttpServletResponse response, String password, DataSource ds) throws ServletException, IOException {
 		
 		try {
 			
 			if ((newUser = userDAO.doRetrieveByKey(newUser.getUsername())) == null) {
 					
 					
-					SecurityUtils.addError(errors, "L'username inserito non esiste");
+					errors = SecurityUtils.addError(errors, "L'username inserito non esiste");
 					request.setAttribute(ERROR_STRING,  errors);
 					request.getRequestDispatcher("access.jsp?type=login").forward(request, response);
-					return;
+					return true;
 					
 					// GESTIRE ERRORE
 			}
 			if (!newUser.getPassword().equals(password)) {
-				SecurityUtils.addError(errors, "La password inserita non è corretta");
+				errors = SecurityUtils.addError(errors, "La password inserita non è corretta");
 				
 				request.setAttribute(ERROR_STRING,  errors);
 				request.getRequestDispatcher("access.jsp?type=login").forward(request, response);
-				return;
+				return true;
 			}
 			
 		
@@ -151,11 +159,13 @@ public class AccessServlet extends HttpServlet {
 			request.getSession().setAttribute("cart", cart);
 				
 				
-		} catch (SQLException | ServletException |IOException e) {
+		} catch (SQLException e) {
 			
 			LOGGER.log(Level.SEVERE, e.getMessage());
 
 		}
+		
+		return false;
 	}
 
 }

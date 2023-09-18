@@ -21,19 +21,21 @@
 <div class="main_container">
 
 <aside class="search" id="homesearch">
-	<div>Select one of our many courses!</div>
-	<br><br>
-	<label>Search:</label>
-	<input type="text" placeholder="Type some programming language here..." name="searchbar" id="searchbar"></input>
+	<div class="intro">Select one of our many courses!</div>
+	
 	<br>
 	<ul id="lang_list">
 	<% 	Iterator<CourseBean> iterator = courses.iterator();
+		Set<Integer> productsOwned = (Set<Integer>) request.getSession().getAttribute("productsOwned");
 		CourseBean currentCourse;
 		while (iterator.hasNext()) {
 			currentCourse = (CourseBean) iterator.next();
-		%>
+			if (productsOwned != null && productsOwned.contains(currentCourse.getId())) { %>
+				<li><a href="${ctxPath}/courses?name=<%=currentCourse.getName()%>" class="owned hoverable"><%= currentCourse.getName()%></a>
+				<% } else { %>
+
 		<li><a href="${ctxPath}/courses?name=<%=currentCourse.getName()%>" class="hoverable"><%= currentCourse.getName()%></a>
-		<%} %>
+		<%}} %>
 	</ul>
 	
 </aside>

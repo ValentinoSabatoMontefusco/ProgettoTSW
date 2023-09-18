@@ -198,7 +198,7 @@ public class CommentDAO implements IExtendedDAO<CommentBean, Integer> {
 			}
 		}
 	
-		if (comments != null && comments.isEmpty())
+		if ( comments.isEmpty())
 			LOGGER.log(Level.WARNING, "Nessun commento trovato");
 		
 		return comments;
@@ -244,7 +244,7 @@ public Collection<CommentBean> doRetrieveAllByUser(String username) throws SQLEx
 				connection.close();
 		}
 		}
-		if (comments != null && comments.isEmpty())
+		if (comments.isEmpty())
 			LOGGER.log(Level.WARNING, "Nessun commento trovato per questo utente");
 		
 		return comments;
@@ -288,7 +288,7 @@ public Collection<CommentBean> doRetrieveAllByUser(String username) throws SQLEx
 					connection.close();
 			}
 		}
-		if (comments == null || comments.isEmpty())
+		if ( comments.isEmpty())
 			LOGGER.log(Level.WARNING, "Nessun commento trovato per questo utente");
 
 			

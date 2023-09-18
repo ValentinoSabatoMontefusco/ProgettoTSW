@@ -16,9 +16,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-
+import com.code_fanatic.model.bean.CommentBean;
 import com.code_fanatic.model.bean.CourseBean;
+import com.code_fanatic.model.dao.CommentDAO;
 import com.code_fanatic.model.dao.CourseDAO;
+import com.code_fanatic.model.dao.IExtendedDAO;
 import com.code_fanatic.model.dao.IGenericDAO;
 
 /**
@@ -91,7 +93,17 @@ public class CourseServlet extends HttpServlet {
 			
 			request.setAttribute("isOwned", isOwned);
 		
-		
+			// RECUPERO COMMENTI
+			
+			IExtendedDAO<CommentBean, Integer> commentDAO = new CommentDAO(dataSource);
+			Collection<CommentBean> comments = null;
+			try {
+				 comments = commentDAO.doRetrieveAllByProduct(course.getId());
+			} catch (SQLException e) {
+				LOGGER.log(Level.SEVERE, e.getMessage());
+			} 
+			
+			request.setAttribute("comments", comments);
 
 			
 

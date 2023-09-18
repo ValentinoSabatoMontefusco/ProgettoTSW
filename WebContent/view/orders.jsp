@@ -1,7 +1,7 @@
 <%@ page import="com.code_fanatic.model.bean.*" %>
 <%@ page import="java.util.Map.*" import="java.util.*" import="java.text.DecimalFormat" %>
 
-<section>
+<section class="main_section">
 		<div class="navigation_div"><a href = "${ctxPath}/user/myaccount.jsp">My Account</a> > My Cart</div>
 		
 		<br>

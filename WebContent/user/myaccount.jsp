@@ -7,12 +7,12 @@
 <head>
 <meta charset="ISO-8859-1">
 	<script src="${ctxPath}/scripts/jquery-3.6.3.js"></script>
-	<link rel="stylesheet" href="${ctxPath}/styles/home.css"/>
+	<link rel="stylesheet" href="${ctxPath}/styles/general.css"/>
 	<title> ${username} Page</title>
 </head>
 <body>
-	<%@include file="/view/BulkView.jsp" %>
-	<section>
+	<%@include file="/view/header.jsp" %>
+	<section class="main_section">
 		<h1>My Account</h1>
 		<div>Hi ${username}, here you can control and manage all your personal information and items!</div>
 		<br><br>
@@ -25,6 +25,6 @@
 		<br><br>
 		</div>
 	</section>
-	
+	<%@include file="/view/footer.jsp" %>
 </body>
 </html>

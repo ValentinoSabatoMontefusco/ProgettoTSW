@@ -27,5 +27,6 @@
 					
 			<% } %>
 		
+		<script src="${ctxPath}/scripts/comments.js"></script>
 </div>
 		

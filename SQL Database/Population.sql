@@ -39,12 +39,52 @@ SELECT id, "Richieste asincrone", "Poi vedremo... ;)"
 FROM products WHERE name = 'Ajax';
 
 INSERT INTO lessons (course_id, title, content)
-SELECT id, 
-  CONCAT('Random Title ', FLOOR(RAND() * 100)), 
-  CONCAT('Random Content ', FLOOR(RAND() * 100))
-FROM products
-WHERE name = 'Ajax'
-LIMIT 10;
+VALUES
+(1, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(1, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(1, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(1, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(2, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(2, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(2, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(2, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(2, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(3, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(3, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(3, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(4, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(4, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(4, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(4, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(5, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(5, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(5, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(5, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(5, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(6, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(6, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(6, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(6, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(7, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(7, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(7, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(8, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(8, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(8, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(8, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(9, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(9, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(9, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(10, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(10, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(10, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(10, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),
+(10, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100)));
+
+
+
+
+
 
 INSERT INTO orders (user_username, order_date)
 VALUES 
@@ -75,3 +115,4 @@ VALUES
 (6, 6, "JSON", "Course", 12.99, 1),
 (7, 7, "JQuery", "Course", 9.99, 1),
 (7, 11, "Web Coding and Development All in One For Dummies", "Merchandise", 44.99, 1);
+

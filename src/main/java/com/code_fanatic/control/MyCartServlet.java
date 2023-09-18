@@ -58,7 +58,7 @@ public class MyCartServlet extends HttpServlet {
 					if (currentProduct.getType().equals("Merchandise"))
 						currentProduct = new MerchDAO(ds).doRetrieveByKey(currentProduct.getId());
 					currentQuantity = entry.getValue();
-					products.add(new SimpleEntry<ProductBean, Integer>(currentProduct, currentQuantity));
+					products.add(new SimpleEntry<>(currentProduct, currentQuantity));
 					
 				} catch (SQLException e) {
 					LOGGER.log(Level.SEVERE, e.getMessage());

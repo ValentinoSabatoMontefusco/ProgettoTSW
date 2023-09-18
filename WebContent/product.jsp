@@ -8,6 +8,7 @@
 	<script src="${ctxPath}/scripts/jquery-3.6.3.js"></script>
 	<script src="${ctxPath}/scripts/general.js"></script>
 	<link rel="stylesheet" href="${ctxPath}/styles/general.css"/>
+	<link rel="stylesheet" href="${ctxPath}/styles/product.css"/>
 	<link rel="stylesheet" href="${ctxPath}/styles/comments.css"/>
 	
 	<jsp:useBean id="product" class="com.code_fanatic.model.bean.ProductBean" scope = "request"></jsp:useBean>
@@ -61,28 +62,11 @@
 		   		</div>
 		</div>
 		
-		<section class="comment_section">
-			
-			<% if (role != null && role.equals("user")) { %>
-			<form>
-			
-				<input type ="hidden" name="type" id="comment_type" value="Add">
-				<input type="hidden" name="product_id" id = "comment_pid" value="${product.id}">
-				<input type="hidden" name="product_name" value ="${product.name}">
-				<input type="hidden" name="user_username" id="comment_username" value="<%= (String) request.getSession().getAttribute("username") %>">
-				
-				
-				
-				<label for="content_input">Sezione commenti: </label>
-				<textarea id = "content_input" name="content_input" placeholder="Inserisci il tuo feedback qui :)"
-				 rows = "4" cols ="50" required></textarea>
-				
-				<button type="submit" id="submit_comment">Invia Commento</button>
-			</form>
+
 			<br>
 			
-			<%} %>
-			
+		
+			<%@include file="view/comments_form.jsp" %>
 			<%@include file="view/comments.jsp"%>
 		
 		
@@ -97,6 +81,27 @@
 	
 	<%@include file="/view/footer.jsp" %>
 	<script src="${ctxPath}/scripts/product.js"></script>
-	<script src="${ctxPath}/scripts/comments.js"></script>
+	
 </body>
 </html>
+
+
+<!-- 		<section class="comment_section"> -->
+			
+<%-- 			<% if (role != null && role.equals("user")) { %> --%>
+<!-- 			<form> -->
+			
+<!-- 				<input type ="hidden" name="type" id="comment_type" value="Add"> -->
+<%-- 				<input type="hidden" name="product_id" id = "comment_pid" value="${product.id}"> --%>
+<%-- 				<input type="hidden" name="product_name" value ="${product.name}"> --%>
+<%-- 				<input type="hidden" name="user_username" id="comment_username" value="<%= (String) request.getSession().getAttribute("username") %>"> --%>
+				
+				
+				
+<!-- 				<label for="content_input">Sezione commenti: </label> -->
+<!-- 				<textarea id = "content_input" name="content_input" placeholder="Inserisci il tuo feedback qui :)" -->
+<!-- 				 rows = "4" cols ="50" required></textarea> -->
+				
+<!-- 				<button type="submit" id="submit_comment">Invia Commento</button> -->
+<!-- 			</form> -->
+<%--  	<%} %> --%>
