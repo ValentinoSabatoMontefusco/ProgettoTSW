@@ -115,12 +115,11 @@ header.page_header {
     #e21156 67%,
     #fff800 100%
   );
-  background-size: auto auto;
-  background-clip: border-box;
+  /*background-size: auto auto;*/
+  /*background-clip: border-box;*/
   background-size: 200% auto;
   color: #ff6f00;
   background-clip: text;
-  text-fill-color: transparent;
   -webkit-background-clip: text;
   -webkit-text-fill-color: #fc9a0300;
   animation: textclip 2s linear infinite;
