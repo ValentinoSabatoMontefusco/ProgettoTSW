@@ -13,7 +13,7 @@
 	<%@include file = "/view/header.jsp"%>
 
 	<section class = "main_section">
-		<div id = "main">Start by <a href="${ctxPath}/shop">selecting</a> one of our courses <br>and seeing what we have to offer!</div>
+		<div id = "main">It's time to start your development journey! Visit our <br><span id="homeshop" class="hoverable"><a href="${ctxPath}/shop">Shop</a></span><br> to see what  we have in store for you</div>
 		
 	
 	</section>

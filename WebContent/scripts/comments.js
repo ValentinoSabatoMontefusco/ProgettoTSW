@@ -30,10 +30,17 @@
 		document.getElementById("submit_comment").addEventListener("click", function(event) {
 		
 		event.preventDefault();
+		let error = $(".error:first");
 		let type = document.getElementById("comment_type").value;
 		let product_id = document.getElementById("comment_pid").value;
 		let username = document.getElementById("comment_username").value;
 		let content = document.getElementById("content_input").value;
+		
+		if (content == "") {
+			error.text("You cannot send empty comments!");
+			return;
+		}
+		error.text("");
 		
 		let xhr =$.post({url: "user/comment", data: {type: type, product_id: product_id, user_username: username, content_input: content}});
 		

@@ -339,7 +339,7 @@ public synchronized Collection<CommentBean> doRetrieveAll(Timestamp fromDate, Ti
 		
 		}
 	
-		if (comments == null || comments.isEmpty())
+		if (comments.isEmpty())
 			LOGGER.log(Level.WARNING, "Nessun commento trovato");
 			
 		

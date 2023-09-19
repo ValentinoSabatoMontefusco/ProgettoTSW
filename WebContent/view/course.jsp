@@ -9,6 +9,7 @@
 		<script src="${ctxPath}/scripts/general.js"></script>
 		<link rel="stylesheet" href = "${ctxPath}/styles/general.css" />
 		<link rel="stylesheet" href = "${ctxPath}/styles/Course.css" />
+		<link rel="stylesheet" href="${ctxPath}/styles/comments.css" />
 		
 		<jsp:useBean id = "course" class = "com.code_fanatic.model.bean.CourseBean" scope = "request"/>
 		<title>${course.name} Course</title>

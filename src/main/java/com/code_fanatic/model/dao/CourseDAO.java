@@ -61,7 +61,7 @@ public class CourseDAO implements IGenericDAO<CourseBean, Integer> {
 				prepStmt.close();
 				prepStmt = connection.prepareStatement("UPDATE courses SET lesson_count = ?, WHERE product_id = ?;");
 
-				prepStmt.setInt(1, bean.getLesson_count());
+				prepStmt.setInt(1, bean.getLessonCount());
 				prepStmt.setInt(2, bean.getId());
 				LOGGER.log(Level.INFO, "Corso modificato");
 			}
@@ -86,7 +86,7 @@ public class CourseDAO implements IGenericDAO<CourseBean, Integer> {
 				prepStmt = connection.prepareStatement("INSERT INTO courses (product_id, lesson_count) VALUES(?, ?);");
 
 				prepStmt.setInt(1, bean.getId());
-				prepStmt.setInt(2, bean.getLesson_count());
+				prepStmt.setInt(2, bean.getLessonCount());
 				prepStmt.executeUpdate();
 
 
@@ -190,14 +190,14 @@ public class CourseDAO implements IGenericDAO<CourseBean, Integer> {
 		course.setName(rs.getString("name"));
 		course.setDescription(rs.getString("description"));
 		course.setPrice(rs.getFloat("price"));
-		course.setLesson_count(rs.getInt("lesson_count"));
+		course.setLessonCount(rs.getInt("lesson_count"));
 		course.setType(rs.getString("type"));
 
 		ArrayList<LessonBean> lessons = new ArrayList<>();
 		PreparedStatement prepStmt = null;
 		try {
 			
-		if (course.getLesson_count() > 0) {
+		if (course.getLessonCount() > 0) {
 
 			prepStmt = conn.prepareStatement("SELECT * FROM lessons WHERE course_id = ?");
 			prepStmt.setInt(1, course.getId());

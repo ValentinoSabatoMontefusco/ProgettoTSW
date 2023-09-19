@@ -30,7 +30,7 @@ div.product_block {
 
 .product_logo {
 	
-	width: auto;
+	max-width: 80%;
 	max-height: 30%;
 	margin: 3px 2px;
 	
@@ -89,10 +89,6 @@ div.product_block {
 		
 	}
 	
-	.product_container {
-		grid-template-columns: 90%;
-		
-	}
 
 	body:has(aside:hover) h1, h2 {
 
@@ -102,6 +98,10 @@ div.product_block {
 	body:has(aside:hover) .main_section {
 
 		min-width: 10%;
+	}
+	
+	.product_price {
+		font-size: medium;
 	}
 }
 

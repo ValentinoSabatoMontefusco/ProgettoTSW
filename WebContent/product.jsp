@@ -31,7 +31,7 @@
 		   			
 		   				switch(product.getType()) {
 		   			
-		   				case "Course": %> <div class="course_lessons">Number of Lessons: <%= ((CourseBean) product).getLesson_count() %></div>
+		   				case "Course": %> <div class="course_lessons">Number of Lessons: <%= ((CourseBean) product).getLessonCount() %></div>
 		   				<%   		break;
 		   				case "Merchandise": %> <div class="merch_amount">Amount available: <%= ((MerchBean) product).getAmount() %></div>
 		   				<%			break;
@@ -84,24 +84,3 @@
 	
 </body>
 </html>
-
-
-<!-- 		<section class="comment_section"> -->
-			
-<%-- 			<% if (role != null && role.equals("user")) { %> --%>
-<!-- 			<form> -->
-			
-<!-- 				<input type ="hidden" name="type" id="comment_type" value="Add"> -->
-<%-- 				<input type="hidden" name="product_id" id = "comment_pid" value="${product.id}"> --%>
-<%-- 				<input type="hidden" name="product_name" value ="${product.name}"> --%>
-<%-- 				<input type="hidden" name="user_username" id="comment_username" value="<%= (String) request.getSession().getAttribute("username") %>"> --%>
-				
-				
-				
-<!-- 				<label for="content_input">Sezione commenti: </label> -->
-<!-- 				<textarea id = "content_input" name="content_input" placeholder="Inserisci il tuo feedback qui :)" -->
-<!-- 				 rows = "4" cols ="50" required></textarea> -->
-				
-<!-- 				<button type="submit" id="submit_comment">Invia Commento</button> -->
-<!-- 			</form> -->
-<%--  	<%} %> --%>

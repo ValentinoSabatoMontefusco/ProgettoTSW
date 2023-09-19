@@ -92,7 +92,7 @@ public class AccessServlet extends HttpServlet {
 			
 		} catch (SQLIntegrityConstraintViolationException e) {
 			
-			List<String> errors = new ArrayList<String>(); 
+			List<String> errors = new ArrayList<>(); 
 			 errors = SecurityUtils.addError(errors, "The username '" + newUser.getUsername() + "' is already in use");
 			
 		
@@ -119,7 +119,7 @@ public class AccessServlet extends HttpServlet {
 			if ((newUser = userDAO.doRetrieveByKey(newUser.getUsername())) == null) {
 					
 					
-					List<String> errors = new ArrayList<String>(); 
+					List<String> errors = new ArrayList<>(); 
 					 errors = SecurityUtils.addError(errors, "L'username inserito non esiste");
 					request.setAttribute(ERROR_STRING,  errors);
 					request.getRequestDispatcher("access.jsp?type=login").forward(request, response);
@@ -128,7 +128,7 @@ public class AccessServlet extends HttpServlet {
 					// GESTIRE ERRORE
 			}
 			if (!newUser.getPassword().equals(password)) {
-				List<String> errors = new ArrayList<String>(); 
+				List<String> errors = new ArrayList<>(); 
 				 errors = SecurityUtils.addError(errors, "La password inserita non è corretta");
 				
 				request.setAttribute(ERROR_STRING,  errors);

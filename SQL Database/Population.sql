@@ -38,6 +38,7 @@ INSERT INTO lessons (course_id, title, content)
 SELECT id, "Richieste asincrone", "Poi vedremo... ;)"
 FROM products WHERE name = 'Ajax';
 
+
 INSERT INTO lessons (course_id, title, content)
 VALUES
 (1, CONCAT('Random Title ', FLOOR(RAND() * 100)), CONCAT('Random Content ', FLOOR(RAND() * 100))),

@@ -20,6 +20,22 @@ $(document).ready(function() {
 		
 
 	})
+	
+	let pwd = document.getElementById("password");
+	let pwdConfirm = document.getElementById("password_confirm");
+	
+	if (pwd != null && pwdConfirm != null) {
+		
+		document.getElementById("submit_button").addEventListener("click", function(event){
+			
+			if (pwd.innerText != pwdConfirm.innerText) {
+				
+				event.preventDefault();
+				let errors = document.getElementsByClassName("error_container");
+				errors[0].textContent = "Passwords don't match!"
+			}
+		})
+	}
 		
 	
 })

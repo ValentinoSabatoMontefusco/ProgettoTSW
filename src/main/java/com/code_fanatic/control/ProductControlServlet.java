@@ -136,7 +136,7 @@ public class ProductControlServlet extends HttpServlet {
 			switch (newProduct.getType()) {
 			
 				case TCOURSE_STRING: CourseBean createdCourse = new CourseBean(newProduct);
-								createdCourse.setLesson_count(Integer.parseInt(request.getParameter("lescount_input")));
+								createdCourse.setLessonCount(Integer.parseInt(request.getParameter("lescount_input")));
 				try {
 					new CourseDAO(ds).doSave(createdCourse);
 					imageSave(request, newProduct.getName(), nameChanged);
@@ -195,7 +195,7 @@ public class ProductControlServlet extends HttpServlet {
 				switch (createdProduct.getType()) {
 				
 					case TCOURSE_STRING: CourseBean createdCourse = new CourseBean(createdProduct);
-									createdCourse.setLesson_count(Integer.parseInt(request.getParameter("lescount_input")));
+									createdCourse.setLessonCount(Integer.parseInt(request.getParameter("lescount_input")));
 					try {
 						new CourseDAO(ds).doSave(createdCourse);
 						imageSave(request, createdProduct.getName(), null);

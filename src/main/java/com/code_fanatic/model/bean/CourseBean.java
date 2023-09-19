@@ -32,11 +32,11 @@ public class CourseBean extends ProductBean {
 		this.lessons = lessons;
 	}
 
-	public int getLesson_count() {
+	public int getLessonCount() {
 		return lesson_count;
 	}
 
-	public void setLesson_count(int lesson_count) {
+	public void setLessonCount(int lesson_count) {
 		this.lesson_count = lesson_count;
 	}
 	

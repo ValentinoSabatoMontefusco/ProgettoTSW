@@ -1,6 +1,6 @@
 @charset "ISO-8859-1";
 
-.comment_container {
+.comment_container, #comment_form {
 	
 	position: relative;
 	margin: 0.75em 3%;
@@ -9,6 +9,27 @@
 	border-radius: 1em;
 	background-color: orange;
 	
+}
+
+#comment_form {
+	
+	background-color: #e3b788;
+	font-family: Druk Wide, HelveticaNow, Arial,sans-serif;
+	font-weight: bold;
+	display: block;
+	
+}
+
+#content_input {
+	
+	border-radius: 1em;
+	min-height: 2.25em;
+	width: 90%;
+	margin: 4px;
+	margin-bottom: 1.5em;
+	padding-left: 1em;
+	font-family: Poppins, HelveticaNow, Arial,sans-serif;
+	background-color: #f9e076;
 }
 
 .comment_user {
@@ -29,7 +50,7 @@
 	margin-bottom: 2em;
 }
 
-.delete_comment {
+.delete_comment, #submit_comment {
 	
 	position: absolute;
 	right: 1em;
